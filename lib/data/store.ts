@@ -9,11 +9,27 @@ import { buildSeed, type DemoData } from "@/lib/mock/seed";
 
 const STORAGE_KEY = "migsflow-studio:demo:v4"; // bump the number if the data shape changes
 
+// Data saved by an earlier version of the prototype may lack things that
+// were added later. This fills those in, so nobody's saved edits are lost
+// when a new kind of data is introduced.
+function withNewerFields(saved: Partial<DemoData>): DemoData {
+  const fresh = buildSeed(new Date());
+  return {
+    websites: (saved.websites ?? fresh.websites).map((website) => ({
+      ...website,
+      domainStatus: website.domainStatus ?? (website.customDomain ? "pending" : "none"),
+    })),
+    activity: saved.activity ?? fresh.activity,
+    deployments: saved.deployments ?? fresh.deployments,
+    purchases: saved.purchases ?? fresh.purchases,
+  };
+}
+
 /** Reads the demo data, creating it from the sample seed on the first visit. */
 export function readDemoData(): DemoData {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) return JSON.parse(saved) as DemoData;
+    if (saved) return withNewerFields(JSON.parse(saved) as Partial<DemoData>);
   } catch {
     // Storage blocked or the saved text is damaged: fall through and start fresh.
   }

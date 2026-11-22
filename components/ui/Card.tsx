@@ -10,7 +10,9 @@ type CardProps = {
 
 export default function Card({ title, description, action, children }: CardProps) {
   return (
-    <section className="rounded-panel border border-line bg-panel p-5 sm:p-6">
+    // min-w-0 lets the card shrink on a narrow screen even when it holds a wide
+    // table (the table then scrolls inside the card instead of widening the page).
+    <section className="min-w-0 rounded-panel border border-line bg-panel p-5 sm:p-6">
       {(title || action) && (
         <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
           <div>

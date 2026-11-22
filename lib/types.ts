@@ -12,6 +12,7 @@ export type Customer = {
   name: string;
   email: string;
   businessName: string;
+  businessPhone: string;
 };
 
 // A "union" type: the value must be exactly one of these words. A typo such
@@ -25,6 +26,12 @@ export type Template = {
   industry: Industry;
   description: string;
 };
+
+/**
+ * Where a customer's own domain stands.
+ * "none" = not added; "pending" = added, waiting for their DNS records; "connected" = working.
+ */
+export type DomainStatus = "none" | "pending" | "connected";
 
 /** "draft" = never been published. "published" = a version is live. */
 export type WebsiteStatus = "draft" | "published";
@@ -41,6 +48,7 @@ export type Website = {
   address: string;
   /** The customer's own domain, or null if none is connected. */
   customDomain: string | null;
+  domainStatus: DomainStatus;
   /** The site's main brand color, used to tint its thumbnail. */
   brandColor: string;
   /** The working copy the customer edits. Changing it never changes the live site. */
@@ -76,4 +84,24 @@ export type MediaItem = {
   /** Size in bytes after shrinking. */
   size: number;
   createdAt: string;
+};
+
+/** One time a website was published. Together these are its deployment history. */
+export type Deployment = {
+  id: string;
+  websiteId: string;
+  at: string;
+  status: "success" | "failed";
+};
+
+/** One template purchase. Also the source of the payment and invoice lists. */
+export type Purchase = {
+  id: string;
+  templateId: string;
+  /** The website that was created from this purchase. */
+  websiteId: string;
+  /** Money is always whole cents (35000 = $350.00), never a decimal, so sums stay exact. */
+  amountCents: number;
+  purchasedAt: string;
+  invoiceNumber: string;
 };

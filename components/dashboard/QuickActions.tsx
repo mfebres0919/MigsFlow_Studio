@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { ChevronRight, Globe, Images, PanelsTopLeft, type LucideIcon } from "lucide-react";
+import { Globe, Images, PanelsTopLeft, type LucideIcon } from "lucide-react";
 
-// Shortcuts to the things a customer does most.
+// Shortcuts to the things a customer does most, as a row of three tiles.
 
 type QuickAction = {
   href: string;
@@ -18,19 +18,19 @@ const actions: QuickAction[] = [
 
 export default function QuickActions() {
   return (
-    <ul role="list" className="-mx-2 grid">
+    // One column on phones, three across from 640px.
+    <ul role="list" className="grid gap-3 sm:grid-cols-3">
       {actions.map(({ href, label, hint, icon: Icon }) => (
-        <li key={href}>
+        <li key={href} className="grid">
           <Link
             href={href}
-            className="flex items-center gap-3 rounded-control px-2 py-2.5 transition-colors hover:bg-raised"
+            className="flex gap-3 rounded-control border border-line p-4 transition-colors hover:border-line-strong hover:bg-raised sm:flex-col"
           >
-            <Icon aria-hidden="true" className="size-5 shrink-0 text-signal" />
-            <span className="flex-1">
+            <Icon aria-hidden="true" className="size-6 shrink-0 text-signal" />
+            <span>
               <span className="block font-medium">{label}</span>
-              <span className="block text-sm text-fg-muted">{hint}</span>
+              <span className="mt-0.5 block text-sm text-fg-muted">{hint}</span>
             </span>
-            <ChevronRight aria-hidden="true" className="size-4 shrink-0 text-fg-muted" />
           </Link>
         </li>
       ))}

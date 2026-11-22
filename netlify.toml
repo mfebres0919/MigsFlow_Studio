@@ -1,0 +1,6 @@
+# Tells Netlify how to build and serve MigsFlow Studio.
+# Netlify recognises Next.js by itself; these two lines just make it explicit.
+# The Node.js version comes from the .nvmrc file.
+[build]
+  command = "npm run build"
+  publish = ".next"

@@ -30,6 +30,17 @@ function load(id: string) {
 }
 
 /**
+ * Call after a picture is deleted or replaced, so its old address is thrown
+ * away and the new picture (if any) is read fresh.
+ */
+export function forgetMediaUrl(id: string) {
+  const old = urls.get(id);
+  if (old) URL.revokeObjectURL(old); // tells the browser it can free the old picture's memory
+  urls.delete(id);
+  listeners.forEach((redraw) => redraw());
+}
+
+/**
  * @param ids The uploaded pictures that may need showing.
  * @returns resolve(src): the drawable address for a "media:…" reference
  *   ("" until it has loaded), or the src unchanged if it is an ordinary address.
@@ -47,11 +58,14 @@ export function useMediaUrls(ids: string[]): (src: string) => string {
     };
   }, []);
 
+  // No list of things to watch: this checks after every redraw, which is how
+  // a picture that was just replaced (and so forgotten) gets loaded again.
+  // It only does work when a wanted picture has no address yet.
   useEffect(() => {
     for (const id of wanted ? wanted.split(",") : []) {
       if (!urls.has(id)) load(id);
     }
-  }, [wanted]);
+  });
 
   return useCallback((src: string) => {
     const id = mediaIdFrom(src);

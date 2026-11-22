@@ -58,7 +58,11 @@ export default function SiteHeader({ site, pages, pageKey, host }: SiteHeaderPro
 
         {/* Phones: <details> is the browser's own open/close element, so the
             menu works with no JavaScript at all on the finished website. */}
-        <details className="relative md:hidden">
+        {/* details-content: styles the part of <details> that opens and closes.
+            The menu fades in and out over a fifth of a second; "transition-discrete"
+            keeps it drawn while it fades out. No animation for reduced motion,
+            and browsers without this feature just show and hide it. */}
+        <details className="relative md:hidden details-content:opacity-0 details-content:transition-[opacity,content-visibility] details-content:transition-discrete details-content:duration-200 open:details-content:opacity-100 motion-reduce:details-content:transition-none">
           <summary className="flex min-h-11 cursor-pointer list-none items-center rounded-full border-2 border-slate-300 px-4 font-bold text-slate-800 [&::-webkit-details-marker]:hidden">
             Menu
           </summary>

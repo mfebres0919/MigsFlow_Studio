@@ -301,7 +301,9 @@ export default function EditorShell({ website: loaded, template }: EditorShellPr
     // own, like an app, instead of the whole page scrolling. overflow-hidden
     // makes sure nothing can ever scroll the editor as a whole.
     <div className="relative flex h-dvh flex-col overflow-hidden">
-      <header className="border-b border-line bg-panel">
+      {/* The names on <header> and <main> tell the editor's own regions apart from
+          the website's header and main content, which sit in the preview below. */}
+      <header aria-label="Website editor" className="border-b border-line bg-panel">
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-2">
           <div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1">
             <Link
@@ -340,88 +342,92 @@ export default function EditorShell({ website: loaded, template }: EditorShellPr
         </div>
       </header>
 
-      {/* min-h-0 lets the two sides shrink to the space left and scroll inside it. */}
-      <div className="flex min-h-0 flex-1">
-        {/* The editing panel: a scrolling form with a title that stays at the
-            top and the Save / Publish bar that stays at the bottom. */}
-        <div
-          // The panel's width is a number that changes as the divider is
-          // dragged, so it is passed in as a CSS variable (the handbook's
-          // dynamic-value exception). It only applies on wide screens; on a
-          // phone the panel is simply full width.
-          style={{ "--panel-width": `${panelWidth}px` } as React.CSSProperties}
-          className={`w-full shrink-0 flex-col lg:flex lg:w-(--panel-width) ${phoneView === "edit" ? "flex" : "hidden"}`}
-        >
-          <main
-            id="main"
-            ref={form}
-            data-scope={scope}
-            // "relative" matters: the form contains visually hidden helpers
-            // (screen-reader text, the file inputs) that are positioned
-            // absolutely. Without it they are placed against the whole page,
-            // escape this panel's scrolling, and make the page itself scrollable,
-            // which showed up as an empty grey band under the editor.
-            className="relative min-h-0 flex-1 overflow-y-auto bg-ink"
+      {/* <main> holds everything below the top bar, so every part of the editor
+          sits inside a named region that screen-reader users can jump between.
+          min-h-0 lets the two sides shrink to the space left and scroll inside it. */}
+      <main id="main" aria-label="Website editor" className="flex min-h-0 flex-1 flex-col">
+        <div className="flex min-h-0 flex-1">
+          {/* The editing panel: a scrolling form with a title that stays at the
+              top and the Save / Publish bar that stays at the bottom. */}
+          <div
+            // The panel's width is a number that changes as the divider is
+            // dragged, so it is passed in as a CSS variable (the handbook's
+            // dynamic-value exception). It only applies on wide screens; on a
+            // phone the panel is simply full width.
+            style={{ "--panel-width": `${panelWidth}px` } as React.CSSProperties}
+            className={`w-full shrink-0 flex-col lg:flex lg:w-(--panel-width) ${phoneView === "edit" ? "flex" : "hidden"}`}
           >
-            {/* "sticky" keeps the title and the page choices in view while the form scrolls under them. */}
-            <div className="sticky top-0 z-10 border-b border-line bg-ink p-4">
-              <h2 className="font-display text-lg font-semibold tracking-wide">Edit your website</h2>
-              <p className="mt-1 mb-3 text-sm text-fg-muted">
-                Pick a page, then open a section. You can also click things in the preview.
-              </p>
-              <ScopePicker pages={pages} scope={scope} issues={issues} onChange={chooseScope} />
-            </div>
+            <section
+              aria-label="Editing panel"
+              ref={form}
+              data-scope={scope}
+              // "relative" matters: the form contains visually hidden helpers
+              // (screen-reader text, the file inputs) that are positioned
+              // absolutely. Without it they are placed against the whole page,
+              // escape this panel's scrolling, and make the page itself scrollable,
+              // which showed up as an empty grey band under the editor.
+              className="relative min-h-0 flex-1 overflow-y-auto bg-ink"
+            >
+              {/* "sticky" keeps the title and the page choices in view while the form scrolls under them. */}
+              <div className="sticky top-0 z-10 border-b border-line bg-ink p-4">
+                <h2 className="font-display text-lg font-semibold tracking-wide">Edit your website</h2>
+                <p className="mt-1 mb-3 text-sm text-fg-muted">
+                  Pick a page, then open a section. You can also click things in the preview.
+                </p>
+                <ScopePicker pages={pages} scope={scope} issues={issues} onChange={chooseScope} />
+              </div>
 
-            <div className="grid gap-3 p-4">
-              {sections.map((section) => {
-                // Does this section still hold placeholder content? The worst case decides the note.
-                const found = issues.filter((issue) => issue.scope === scope && issue.sectionKey === section.key);
-                const flag = found.some((issue) => issue.level === "required") ? "required" : found.length > 0 ? "recommended" : undefined;
-                return (
-                  <SectionForm
-                    // The key includes the scope, so switching pages starts each section fresh.
-                    key={`${scope}:${section.key}`}
-                    section={section}
-                    content={getSectionContent(content, scope, section.key)}
-                    open={openSection === section.key}
-                    onToggle={(open) => setOpenSection((current) => (open ? section.key : current === section.key ? null : current))}
-                    onFieldChange={(fieldKey, value) => changeField(section.key, fieldKey, value)}
-                    context={context}
-                    flag={flag}
-                  />
-                );
-              })}
-            </div>
-          </main>
+              <div className="grid gap-3 p-4">
+                {sections.map((section) => {
+                  // Does this section still hold placeholder content? The worst case decides the note.
+                  const found = issues.filter((issue) => issue.scope === scope && issue.sectionKey === section.key);
+                  const flag = found.some((issue) => issue.level === "required") ? "required" : found.length > 0 ? "recommended" : undefined;
+                  return (
+                    <SectionForm
+                      // The key includes the scope, so switching pages starts each section fresh.
+                      key={`${scope}:${section.key}`}
+                      section={section}
+                      content={getSectionContent(content, scope, section.key)}
+                      open={openSection === section.key}
+                      onToggle={(open) => setOpenSection((current) => (open ? section.key : current === section.key ? null : current))}
+                      onFieldChange={(fieldKey, value) => changeField(section.key, fieldKey, value)}
+                      context={context}
+                      flag={flag}
+                    />
+                  );
+                })}
+              </div>
+            </section>
 
-          {/* Wide screens: Save and Publish sit at the bottom of the panel. */}
-          <div className="hidden lg:block">
-            <EditorActions unsaved={unsaved} busy={busy} onSave={() => void handleSave()} onPublish={() => setPublishOpen(true)} />
+            {/* Wide screens: Save and Publish sit at the bottom of the panel. */}
+            <div className="hidden lg:block">
+              <EditorActions unsaved={unsaved} busy={busy} onSave={() => void handleSave()} onPublish={() => setPublishOpen(true)} />
+            </div>
           </div>
+
+          <PanelResizer width={panelWidth} min={PANEL.min} max={PANEL.max} onChange={resizePanel} />
+
+          <section aria-label="Live preview" className={`min-w-0 flex-1 flex-col lg:flex ${phoneView === "preview" ? "flex" : "hidden"}`}>
+            <PreviewPane
+              websiteId={website.id}
+              content={content}
+              pageKey={previewPage}
+              device={device}
+              onDeviceChange={setDevice}
+              onPageChange={followPreview}
+              onSelectField={selectField}
+              onInlineEdit={applyInlineEdit}
+              onDropImage={dropImage}
+            />
+          </section>
         </div>
 
-        <PanelResizer width={panelWidth} min={PANEL.min} max={PANEL.max} onChange={resizePanel} />
-
-        <section aria-label="Live preview" className={`min-w-0 flex-1 flex-col lg:flex ${phoneView === "preview" ? "flex" : "hidden"}`}>
-          <PreviewPane
-            websiteId={website.id}
-            content={content}
-            pageKey={previewPage}
-            device={device}
-            onDeviceChange={setDevice}
-            onPageChange={followPreview}
-            onSelectField={selectField}
-            onInlineEdit={applyInlineEdit}
-            onDropImage={dropImage}
-          />
-        </section>
-      </div>
-
-      {/* Phones: the same bar runs along the bottom of the screen, so it is
-          there in both the Edit and the Preview view. */}
-      <div className="lg:hidden">
-        <EditorActions unsaved={unsaved} busy={busy} onSave={() => void handleSave()} onPublish={() => setPublishOpen(true)} />
-      </div>
+        {/* Phones: the same bar runs along the bottom of the screen, so it is
+            there in both the Edit and the Preview view. */}
+        <div className="lg:hidden">
+          <EditorActions unsaved={unsaved} busy={busy} onSave={() => void handleSave()} onPublish={() => setPublishOpen(true)} />
+        </div>
+      </main>
 
       <UnsavedDialog
         open={leaveOpen}

@@ -34,3 +34,16 @@ export function formatTimeAgo(iso: string, now: Date = new Date()): string {
   if (days < 30) return relativeFormat.format(-days, "day");
   return formatDate(iso);
 }
+
+const moneyFormat = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+
+/** 35000 → "$350.00". Money is stored in whole cents. */
+export function formatMoney(cents: number): string {
+  return moneyFormat.format(cents / 100);
+}
+
+/** 245000 → "239 KB"; 3400000 → "3.2 MB". */
+export function formatFileSize(bytes: number): string {
+  if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}

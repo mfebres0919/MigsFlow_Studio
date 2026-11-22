@@ -17,7 +17,18 @@ export default function ThemeToggle() {
   function switchTheme() {
     const root = document.documentElement; // the <html> element
     const next = root.dataset.theme === "dark" ? "light" : "dark";
-    root.dataset.theme = next;
+    const apply = () => {
+      root.dataset.theme = next;
+    };
+
+    // A smooth change instead of a hard flip. startViewTransition takes a
+    // picture of the page, makes the change, then fades from the old picture
+    // to the new page. Browsers without it, and people who ask for reduced
+    // motion, get the plain instant switch.
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (document.startViewTransition && !calm) document.startViewTransition(apply);
+    else apply();
+
     try {
       localStorage.setItem("theme", next);
     } catch {

@@ -9,7 +9,7 @@ const eslintConfig = defineConfig([
     // Website templates are drawn with plain <img> tags, not next/image:
     // a customer's finished website runs without Next.js, and their photos
     // are uploads, not files in this project (CLAUDE.md, Section 3).
-    files: ["templates/**", "components/editor/fields/ImageField.tsx"],
+    files: ["templates/**", "components/editor/fields/ImageField.tsx", "components/dashboard/MediaContent.tsx"],
     rules: { "@next/next/no-img-element": "off" },
   },
   // Override default ignores of eslint-config-next.

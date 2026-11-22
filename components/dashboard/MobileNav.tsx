@@ -36,7 +36,16 @@ export default function MobileNav({ children }: { children: React.ReactNode }) {
           const target = event.target as HTMLElement;
           if (target === dialog.current || target.closest("a")) dialog.current?.close();
         }}
-        className="m-0 h-dvh max-h-none w-72 max-w-[85vw] border-r border-line bg-panel text-fg backdrop:bg-black/60"
+        // The slide in and out. Closed, the drawer sits just off the left edge
+        // (-translate-x-full); open, it slides to its place (open:translate-x-0).
+        // Three extras make that work for an element that appears and disappears:
+        // - "starting:" gives the position to slide in FROM on the first frame;
+        // - "transition-discrete" keeps the drawer drawn while it slides OUT,
+        //   instead of vanishing the instant it closes;
+        // - the same again for the dimmed background (backdrop:), which fades.
+        // People who ask for reduced motion get no animation. Older browsers
+        // that lack these features simply show and hide it at once.
+        className="m-0 h-dvh max-h-none w-72 max-w-[85vw] -translate-x-full border-r border-line bg-panel text-fg transition-[translate,overlay,display] transition-discrete duration-300 ease-out backdrop:bg-black/0 backdrop:transition-[background-color,overlay,display] backdrop:transition-discrete backdrop:duration-300 open:translate-x-0 open:backdrop:bg-black/60 motion-reduce:transition-none motion-reduce:backdrop:transition-none starting:open:-translate-x-full starting:open:backdrop:bg-black/0"
       >
         <div className="relative h-full">
           {children}

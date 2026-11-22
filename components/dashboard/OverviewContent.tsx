@@ -45,34 +45,37 @@ export default function OverviewContent() {
     <div className="grid gap-6">
       <NextStep websites={websites} />
 
+      {/* Left: the websites, then the shortcuts. Right: recent activity. Putting
+          the shortcuts under the websites keeps the two columns close to the
+          same height, so there is no empty gap beside the activity list. */}
       <SplitColumns
         main={
-          <Card
-            title="Your websites"
-            action={
-              <Button href="/dashboard/websites" variant="ghost" size="sm">
-                View all
-              </Button>
-            }
-          >
-            <ul role="list" className="-my-4 divide-y divide-line">
-              {websites.map((website) => (
-                <li key={website.id}>
-                  <WebsiteRow website={website} />
-                </li>
-              ))}
-            </ul>
-          </Card>
-        }
-        side={
           <>
+            <Card
+              title="Your websites"
+              action={
+                <Button href="/dashboard/websites" variant="ghost" size="sm">
+                  View all
+                </Button>
+              }
+            >
+              <ul role="list" className="-my-4 divide-y divide-line">
+                {websites.map((website) => (
+                  <li key={website.id}>
+                    <WebsiteRow website={website} />
+                  </li>
+                ))}
+              </ul>
+            </Card>
             <Card title="Quick actions">
               <QuickActions />
             </Card>
-            <Card title="Recent activity" action={<DemoLabel>Sample activity</DemoLabel>}>
-              <ActivityList items={activity} />
-            </Card>
           </>
+        }
+        side={
+          <Card title="Recent activity" action={<DemoLabel>Sample activity</DemoLabel>}>
+            <ActivityList items={activity} />
+          </Card>
         }
       />
     </div>

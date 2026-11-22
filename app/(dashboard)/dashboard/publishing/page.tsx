@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
-import PlannedPage from "@/components/dashboard/PlannedPage";
+import PublishingContent from "@/components/dashboard/PublishingContent";
+import DemoLabel from "@/components/ui/DemoLabel";
+import PageHeader from "@/components/ui/PageHeader";
 
+// "/dashboard/publishing": whether each website is live, and its publishing history.
 export const metadata: Metadata = { title: "Hosting & publishing" };
 
-export default function Page() {
+export default function PublishingPage() {
   return (
-    <PlannedPage
-      title="Hosting & publishing"
-      description="Whether your website is live, and a history of each time you published."
-      milestone={6}
-    />
+    <>
+      <PageHeader
+        title="Hosting & publishing"
+        description="Whether each website is live, where, and every time you published it."
+        actions={<DemoLabel>Simulated: nothing goes online</DemoLabel>}
+      />
+      <PublishingContent />
+    </>
   );
 }

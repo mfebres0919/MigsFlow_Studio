@@ -13,7 +13,11 @@ import { prepareImage } from "@/lib/media/prepare-image";
 const DATABASE = "migsflow-studio-media";
 const STORE = "images";
 
-type StoredImage = MediaItem & { blob: Blob };
+// What is kept for each picture: its details plus the picture's raw bytes.
+// The bytes are stored as an ArrayBuffer rather than as a Blob (a file-like
+// object), because Safari refuses to store Blobs in private windows.
+// "blob" is only there to read pictures saved by an earlier version.
+type StoredImage = MediaItem & { data?: ArrayBuffer; blob?: Blob };
 
 // IndexedDB's own functions report back through events. These two helpers
 // wrap them in promises so the rest of the file can use "await".
@@ -54,7 +58,8 @@ export async function uploadImage(file: File): Promise<MediaItem> {
     size: prepared.blob.size,
     createdAt: new Date().toISOString(),
   };
-  await run("readwrite", (store) => store.put({ ...item, blob: prepared.blob } satisfies StoredImage));
+  const data = await prepared.blob.arrayBuffer();
+  await run("readwrite", (store) => store.put({ ...item, data } satisfies StoredImage));
   return item;
 }
 
@@ -80,5 +85,32 @@ export async function listMedia(): Promise<MediaItem[]> {
 /** The picture data for one upload, or null if it no longer exists. */
 export async function getMediaBlob(id: string): Promise<Blob | null> {
   const stored = await run<StoredImage | undefined>("readonly", (store) => store.get(id));
-  return stored?.blob ?? null;
+  if (!stored) return null;
+  // Turn the stored bytes back into a picture the browser can show.
+  return stored.data ? new Blob([stored.data], { type: stored.type }) : (stored.blob ?? null);
+}
+
+/** Deletes an uploaded picture for good. Anywhere it was used will show an empty space. */
+export async function deleteMedia(id: string): Promise<void> {
+  await run("readwrite", (store) => store.delete(id));
+}
+
+/**
+ * Swaps an uploaded picture for a new file while keeping its id, so every
+ * website that uses the old picture shows the new one, with nothing to re-pick.
+ */
+export async function replaceImage(id: string, file: File): Promise<MediaItem> {
+  const prepared = await prepareImage(file);
+  const item: MediaItem = {
+    id,
+    name: file.name,
+    type: prepared.type,
+    width: prepared.width,
+    height: prepared.height,
+    size: prepared.blob.size,
+    createdAt: new Date().toISOString(),
+  };
+  const data = await prepared.blob.arrayBuffer();
+  await run("readwrite", (store) => store.put({ ...item, data } satisfies StoredImage));
+  return item;
 }

@@ -20,15 +20,15 @@ Project guide and change log for **MigsFlow Studio — Self-Service Website Plat
 ## 2. Current state
 
 ### Where things stand (2026-11-22) — read this first
-Phase 1 has 7 milestones; **1 to 5 are built, plus click-and-type editing on the preview. 6 and 7 are not started.**
+**Phase 1 (the dashboard prototype) is finished: all 7 milestones are built.** It runs entirely on sample data in the browser. The next roadmap step is Phase 2, the public template marketplace, which has not been started or planned in detail.
 
-- **Waiting on Miguelle:** a review of the editor additions built 2026-11-22 after the pause: click-and-type editing, photo upload, the resizable panel with the Fit preview size, smooth sections.
-- **Then:** Milestone 6 (Media Library, Domains, Hosting & Publishing, Billing, Account Settings; all mock and labeled), then Milestone 7 (lint, build, accessibility and responsive checks; remove `/dashboard/design-preview` and `PlannedPage`).
-- **Nothing is committed.** The local Git repository on `main` has no commits. Miguelle has not asked for a commit, a GitHub repository or a Netlify site.
-- **To run it:** in the VS Code terminal, inside this folder, `npm run dev`, then http://localhost:3000. The demo data lives in the browser (`localStorage`, key `migsflow-studio:demo:v4`); clearing site data resets it.
-- **A leftover outside this folder:** Claude's test copy of the project in a temporary folder (`…/scratchpad/devcheck`). It is not part of the project and disappears on a reboot. A new chat should make its own copy for production builds rather than building here while `npm run dev` is running.
+- **Waiting on Miguelle:** a review of Milestones 6 and 7, the by-hand checks listed under "Not verified" in the Milestone 7 log entry (VoiceOver, Firefox, real Safari, a real phone), and the "Decisions to make before selling" list below.
+- **Git:** private GitHub repository `mfebres0919/MigsFlow_Studio`, one commit (`933c1fc`) pushed by Miguelle from before Milestones 6 and 7. **Later work is uncommitted.** Commit and push only when Miguelle asks. No Netlify site yet; GitHub Pages cannot run this app.
+- **To run it:** in the VS Code terminal, inside this folder, `npm run dev`, then http://localhost:3000. The demo data lives in the browser (`localStorage` key `migsflow-studio:demo:v4`, plus uploaded pictures in IndexedDB `migsflow-studio-media`); clearing site data resets it.
+- **Commands:** `npm run lint`, `npm run typecheck` (regenerates Next.js's route types, then checks), `npm run build`.
+- **How Claude tested:** production builds were made in a separate copy of the project so Miguelle's running `npm run dev` was not disturbed, and pages were driven with Playwright (borrowed from the Courier Portal's install; Studio has no test tooling of its own). A new chat should make its own copy. axe-core was installed in that copy only.
 
-**Milestones 1–5 are done; Milestone 5 is waiting for Miguelle's review (2026-11-22).** Built so far: the design tokens with light (default) and dark themes, the dashboard shell, the shared UI components, the data doorway with sample data kept in the browser, the **Overview** and **My Websites** pages, the template system, the **Fresh Start** cleaning template (Home, Services, Contact), the preview page, and the **Website Editor** (`/dashboard/websites/[id]/edit`): schema-driven fields, live preview in an iframe, desktop/tablet/phone sizes, save draft, simulated publish with the publish checks. Media library, Domains, Hosting & publishing, Billing and Account settings are still labeled stand-ins (`components/dashboard/PlannedPage.tsx`). `/dashboard/design-preview` is a temporary page showing every shared component. Lint and the type check pass, and a production build passes in a separate copy. A local Git repository exists on branch `main` with **nothing committed yet** (commit only when Miguelle asks). No GitHub repository, no Netlify site.
+**Built so far:** the design tokens with light (default) and dark themes; the dashboard shell; shared UI components; the data doorway with sample data kept in the browser; all eight dashboard screens (**Overview, My Websites, Website Editor, Media Library, Domains, Hosting & Publishing, Billing, Account Settings**); the template system and the **Fresh Start** cleaning template (Home, Services, Contact); the preview page. Everything simulated is labeled on screen. Lint, the type check and a production build pass.
 
 ### What the platform is (short version of the brief)
 Small business owners buy a website template, edit its content through structured fields (not drag-and-drop) with a live preview, and later publish it on a subdomain or their own domain. First industries: cleaning, nonprofit, moving and logistics. Later phases: Supabase (passwordless login, data, uploads), Stripe (payments), Netlify API (publishing).
@@ -36,7 +36,7 @@ Small business owners buy a website template, edit its content through structure
 ### Roadmap
 | Phase | Work | Status |
 |---|---|---|
-| 1 | Dashboard prototype: all dashboard pages, the editor, one cleaning template, mock data saved in the browser | In progress (Milestones 1–5 of 7 done) |
+| 1 | Dashboard prototype: all dashboard pages, the editor, one cleaning template, mock data saved in the browser | **Done 2026-11-22** (all 7 milestones), awaiting Miguelle's review |
 | 2 | Public template marketplace, nonprofit and moving templates | |
 | 3 | Supabase: login, database, uploads, ownership rules | |
 | 4 | Stripe payments | |
@@ -50,9 +50,32 @@ Small business owners buy a website template, edit its content through structure
 | 2 | Design tokens (navy, black, blue), fonts, dashboard shell (sidebar, top bar), shared UI components | Done 2026-11-22 |
 | 3 | Data types, mock data layer, **Overview** and **My Websites** pages (plus the light/dark theme Miguelle asked for) | Done 2026-11-22 |
 | 4 | Template content schema and the sample cleaning template, with a full-page preview route | Done 2026-11-22 |
-| 5 | **Website Editor**: schema-driven fields, live preview in an iframe, desktop/tablet/mobile modes, save draft (browser storage), simulated publish | Done 2026-11-22, awaiting review |
-| 6 | **Media Library, Domains, Hosting & Publishing, Billing, Account Settings** (all mock, labeled) | |
-| 7 | Checks: lint, build, accessibility, responsive widths; update the checklist | |
+| 5 | **Website Editor**: schema-driven fields, live preview in an iframe, desktop/tablet/mobile modes, save draft (browser storage), simulated publish | Done 2026-11-22 (plus click-and-type editing, photo upload, resizable panel) |
+| 6 | **Media Library, Domains, Hosting & Publishing, Billing, Account Settings** (all mock, labeled) | Done 2026-11-22 |
+| 7 | Checks: lint, build, accessibility, responsive widths; update the checklist | Done 2026-11-22, awaiting review |
+
+### Decisions to make before selling (Miguelle's list; collected 2026-11-22)
+None of these block the prototype. All of them need an answer before a real customer pays.
+
+**Terms of sale and ownership** (to be written down and reviewed by a lawyer)
+- [ ] Does one template purchase cover one website, or more?
+- [ ] May a customer, or a developer they hire, edit the files they download?
+- [ ] Wording that the customer may not resell or give away the template itself.
+- [ ] When someone stops paying for hosting: is the site taken offline at once or after a grace period, can they still download it, and how long is their content kept?
+- [ ] A privacy policy and terms for Studio itself (it will hold customers' details and, if the form inbox is built, their visitors' messages).
+
+**Product**
+- [ ] The product's name ("MigsFlow Studio" is a working name) and its own domain.
+- [ ] The exact price of each template within $300–$500.
+- [ ] Where the templates' photos come from (own photos, licensed stock, or images made with ChatGPT), and confirmation of the right to sell them inside a template.
+- [ ] How quote and contact forms are delivered: the Studio form inbox, Netlify's own forms, or the customer's own service; and whether working forms are part of the $25 hosting plan.
+- [ ] How Studio relates to the existing MigsFlow plans (Starter $175/mo, Lump Sum, Enterprise) and to `../MigsFlow_Website`.
+
+**Netlify** (ask a person there, and get the answer in writing)
+- [ ] Is the Pro plan required to host customers' sites? (Not stated in the terms Claude could read.)
+- [ ] Is the limit really 500 projects per team, and can it be raised? (The docs say 500; the support assistant could not confirm it.)
+- [ ] Raise the publishing limit above 3 a minute and 100 a day.
+- [ ] Create the separate Studio team and turn on auto-recharge.
 
 ### Design decisions already settled for Phase 1
 - **Preview runs in an iframe** (a page inside the page). Tailwind's breakpoints follow the window width, so only an iframe gives the tablet and mobile previews a real narrow window.
@@ -72,7 +95,15 @@ Small business owners buy a website template, edit its content through structure
 - **Save draft and Publish live at the bottom of the editing panel**, not in the top bar (Miguelle, 2026-11-22). `components/editor/EditorActions.tsx` is pinned to the bottom of the panel on wide screens and runs along the bottom of the screen on phones (so it is there in both Edit and Preview). Claude pinned it rather than placing it after the last section, so it is reachable without scrolling a long form; Miguelle asked for "below the last thing being edited" and may still prefer that literally.
 - **Editing panel look** (Claude's choices, 2026-11-22, on Miguelle's invitation to improve it): the title and the page choices stay at the top while the form scrolls; pages and "Site-wide settings" are pill buttons (`components/editor/ScopePicker.tsx`), with a red dot on any that still has placeholder details that block publishing; each section shows "Must change" (red) or "Suggested" (yellow) from the same publish checks; the open section gets the dashboard menu's blue marker.
 - **Editor layout** (Miguelle, 2026-11-22). The editing panel has a title ("Edit your website"). A draggable divider (`components/editor/PanelResizer.tsx`; also arrow keys, Home and End) sets the panel's width between 320 and 720px, remembered in this browser. Preview sizes are **Fit** (the default: the website is exactly as wide as the space it has, at real size, so dragging the divider reflows it like a browser's inspect tool), Desktop, Tablet and Phone, with a "px wide" readout. Sections open and close with a 300ms slide (a grid-rows transition, skipped for reduced motion); they are buttons with `aria-expanded`, not `<details>`, and a closed section is `inert`.
-- **Layout trap, found the hard way (twice):** any scrolling panel, and any `overflow-hidden` wrapper, that contains visually hidden (`sr-only`) elements must be `relative`. Otherwise those absolutely positioned elements escape the panel, make the whole page scrollable, and focusing one scrolls the page (this was the "grey space" Miguelle saw under the editor).
+- **The Milestone 6 pages** (2026-11-22). Each is a server `page.tsx` plus a `"use client"` content component in `components/dashboard/` with the four states.
+  - **Media Library** runs on the real upload store: add several photos at once (button or drag and drop), see size and where each is used, **Replace** (keeps the picture's id, so every website using it shows the new file) and **Delete** (warns when the picture is in use; those spots then show empty).
+  - **Domains** (simulated): each website's free address; add your own domain (cleaned and validated by `lib/validation.ts`), the two DNS records to add, "Check again" (always succeeds, and says so on the page), connected and SSL status, remove. `192.0.2.1` is a reserved example address.
+  - **Hosting & Publishing** (simulated): status, live address, last published, a publishing history table, and a Publish button that runs the same publish checks as the editor ("Fix this" goes to the editor). Each publish adds a row to the history.
+  - **Billing** (sample): templates bought, "no subscription", payments and invoices. One sample price, $350, lives in `lib/mock/seed.ts`; Miguelle's range is $300–$500 and real prices are not set. Invoice download is simulated.
+  - **Account Settings:** personal and business forms with validation; saving is simulated and says the details are not stored (the sample customer is read on the server, so persisting edits would need the customer moved into the browser store; left for Phase 3). Sign-in is described as passwordless; Sign out is simulated.
+- **Transitions** (Miguelle, 2026-11-22): the dashboard's phone menu slides in and out and its backdrop fades; the template's phone menu fades; the light/dark switch cross-fades (View Transitions); editor sections slide. All are skipped for reduced motion, and older browsers fall back to an instant change.
+- **Overview layout** (Miguelle, 2026-11-22): "Your websites" then "Quick actions" (three tiles) on the left, "Recent activity" on the right, so the columns are close in height.
+- **Layout trap, found the hard way (three times):** any scrolling panel, any `overflow-hidden` wrapper, and any `overflow-x-auto` table box that contains visually hidden (`sr-only`) elements must be `relative`. Otherwise those absolutely positioned elements escape the panel, make the whole page scrollable, and focusing one scrolls the page (this was the "grey space" Miguelle saw under the editor).
 - **A template is a pure function of its content:** the same saved content always renders the same site. This keeps every Phase 5 publishing option open.
 - **Each website stores two copies of its content, `draft` and `published`.** The editor changes only the draft; Publish copies draft to published (simulated in Phase 1).
 - **Customer brand colors** are applied as CSS variables on the template's root (handbook Section 3, exception 2). **Fonts** are chosen from a fixed list, because `next/font` loads fonts at build time.
@@ -86,8 +117,22 @@ Small business owners buy a website template, edit its content through structure
 - Dashboard, editor and preview pages are `noindex` and stay out of the sitemap. The handbook's static-page and SEO rules apply to the public pages (Phase 2).
 
 ### Still open (ask Miguelle; do not assume)
+- **Forms and the hosting choice (Claude's suggestion, 2026-11-22, not decided):** make the Studio form inbox part of the $25 hosting plan. A hosted site's quote form then works with no setup, and a downloaded site's form would need the customer's own form service or fall back to "call or email us". It gives the subscription a clear benefit and keeps downloads free of support.
 - **Forms on customer sites (not decided; needed by Phase 3):** Miguelle wants the least possible involvement and no per-customer cost surprises. Their own sites use Netlify Forms plus Brevo for branded emails, and Brevo costs money. Claude's recommendation (2026-11-22): a **Studio form inbox**. Every template's form posts to one Studio endpoint, the submission is saved to the customer's dashboard ("Messages") and a plain notification email goes to the address the customer typed in the editor. It works on any host, needs no customer setup, and one email account serves the whole platform. Fallback with zero running cost: the customer pastes their own form-service key or a link to their own form. Either way the content schema gets a "send form submissions to" email field, and the form in Phase 1 is a labeled demo.
-- **Hosting (not decided; needed by Phase 5):** Miguelle leans toward **not hosting by default**: customers put the site on their own hosting, with MigsFlow hosting offered as an option. Claude's recommendation (2026-11-22): keep both paths. (1) **Download the website files** is included with the template. (2) **Studio hosting** is an optional subscription with one-click publish, a subdomain, a custom domain and the form inbox. Claude's caution: nontechnical owners are likely to struggle with uploading files themselves, and every later edit means downloading and uploading again, so expect most to want path 2. A third idea to check in Phase 5: the customer connects their **own Netlify account** and Studio deploys into it with one click (unverified).
+- **Hosting and downloads (decided by Miguelle, 2026-11-22).** (1) MigsFlow offers hosting through **Netlify under Miguelle's own account**, as an **optional extra at $25 a month** on top of the one-time template price ($300–$500). (2) Customers may instead **download their website files** and host them elsewhere; all setup there is **the customer's responsibility, not MigsFlow's**, and the product must say so plainly. (3) Miguelle will confirm with Netlify: whether hosting other businesses' sites under one account is allowed, limits and pricing as site numbers grow, the deploy API, and the real DNS values (the Domains page shows placeholders). **Studio customers' sites will live in their own Netlify team, separate from Miguelle's client projects** (decided by Miguelle, 2026-11-22), so Studio's API key cannot touch client sites and a credit shortfall cannot pause them. Turn auto-recharge on for that team.
+- **Netlify facts for Phase 5** (Miguelle's answer from Netlify, checked by Claude against netlify.com and docs.netlify.com on 2026-11-22; re-check before building, prices and limits change).
+  - **Allowed:** the Acceptable Use Policy permits using Netlify "to build, deploy, and host sites and applications for third parties". Reselling Netlify itself as a standalone hosting service is not allowed without a written agreement. Studio sells finished sites, so it is on the allowed side.
+  - **Plan and cost:** Pro is $20 a month flat (unlimited members) with 3,000 credits; more credits in steps up to 20,000 a month, or auto-recharge at $10 per 1,500. Rates: bandwidth 20 credits per GB, each production deploy 15 credits, web requests 2 credits per 10,000, **form submissions free and unlimited**. So one publish costs about 10 cents and a GB of traffic about 13 cents, against $25 a month per hosted customer.
+  - **The big risk:** when a team's credits run out, **every site on that team is paused** and shows "Site not available". Auto-recharge is **off by default**. Turn it on, and this is the strongest reason to keep Studio's sites in their own team, apart from client projects.
+  - **Project limit: 500 per team, per Netlify's docs.** The page "Credit-based pricing plans" (docs.netlify.com, last updated Oct 30, 2026) has the row "Project count limit | 500 projects | 500 projects | 500 projects" for Free, Personal and Pro, twice, with no note on raising it. Netlify's support assistant told Miguelle it could not find that figure; Claude re-read the page on 2026-11-22 and the row is there. Treat 500 as real until a person at Netlify says otherwise in writing.
+  - **Publishing rate limit: 3 deploys a minute and 100 a day, per API token** (so shared by every Studio customer), per Netlify's answer to Miguelle; Netlify's API docs say to contact them for higher limits. **Phase 5 must put publishes in a queue:** space them out, retry when Netlify answers "too many requests" (HTTP 429), and merge repeated publishes of the same site, which also saves credits (15 per publish). Show the customer "Publishing…" and then the result, not an instant answer. Ask Netlify for a higher limit once on Pro.
+  - **Miguelle will turn auto-recharge on** for the Studio team (already does so for client sites).
+  - **Deploy API:** base `https://api.netlify.com/api/v1/`; create a site with `POST /sites`; publish without Git by sending a ZIP or file digest to `POST /sites/{site_id}/deploys`; set `custom_domain` with `PATCH /sites/{site_id}`; sign in with a personal access token.
+  - **Real DNS values** (the Domains page still shows placeholders): `www` as a CNAME to the site's `…netlify.app` address (Netlify recommends the `www` form as primary); the bare domain as an A record to `75.2.60.5`, or ALIAS/ANAME to `apex-loadbalancer.netlify.com` where the registrar supports it.
+  - **Not confirmed:** that commercial or client hosting requires Pro (the Terms and AUP do not say so; the subscription agreement could not be read), and the "100 domains per site" figure (the docs only recommend no more than 50 aliases per site; irrelevant while each customer has their own site).
+- **Who owns what (asked by Miguelle 2026-11-22; Claude's explanation, terms not written yet).** Studio has **no GitHub repository per customer**. A template's code lives once, in Studio's own repository, and is sold to many customers, so it cannot be handed over the way a one-to-one client repo is. A customer's website is that template plus *their* content, stored as data. Proposed split: **MigsFlow owns** the template designs and the platform; **the customer owns** their content (words, photos, logo), their domain (always at their own registrar), and gets a **license** to use the template for their website; the **download** is their copy of the finished site's files, theirs to keep and host anywhere. Decisions for Miguelle before selling: one website per purchase or more; whether downloaded files may be edited and by whom; no reselling the template; what happens to a hosted site and its data when hosting is cancelled. These belong in written terms of sale, reviewed by a lawyer.
+- **What the download must be (Claude's design note for Phase 5, from Miguelle's worry that not every host accepts the files).** Export **plain static files**: one folder per page with an `index.html`, one CSS file, the pictures and the font files, with no Next.js, React or server needed. That is the one format essentially every web host accepts. The parts that do not travel by themselves: the **quote form** (it needs somewhere to send to; see "Forms"), and the **fonts** (they must be bundled into the download). Templates are already built for this: no state, plain `<a>` and `<img>`.
+- **Prices are data, not code:** $25 a month for hosting and the template prices belong in the pricing data (database and Stripe in Phase 4). The Billing page still says "no subscription" and "hosting plans are not part of this prototype"; update it when hosting is built.
 - **Consequence for Phase 1 either way:** a template must work as plain website files with no dependence on Studio, so it can be downloaded or hosted anywhere.
 - **Publishing method and Netlify limits** (the brief asks to confirm them before Phase 5).
 - The product name ("MigsFlow Studio" is tentative), the domain, the GitHub repository and the Netlify site.
@@ -125,11 +170,60 @@ Planned once the app exists (Milestone 1 onward): `app/` (routes, in two groups 
 
 **The handbook is guidance for this project, not a fixed rulebook** (Miguelle, 2026-11-22): where Studio needs something different, say so, record it in Section 3 and go ahead.
 
-Created so far: `app/` (root `layout.tsx`, `globals.css` with the design tokens, `not-found.tsx`, icons; `(public)/` with the placeholder landing page; `(dashboard)/layout.tsx` with the shell and `(dashboard)/dashboard/…` for the pages), `components/ui/` (Button, Card, Badge, DemoLabel, PageHeader, EmptyState, BackToTop), `components/dashboard/` (SidebarContent, NavList, ActiveNav, MobileNav, PlannedPage), `lib/` (`site.ts`, `types.ts`, `format.ts`, `navigation.ts`, `mock/`, `data/`, `server/`), `public/images/brand/`, `supabase/`, `next.config.ts`, `tsconfig.json`, `eslint.config.mjs`, `.nvmrc` (Node 24), `.gitignore`, `AGENTS.md`, `README.md`. Update this table when they are created. `create-next-app` refuses to run in a folder that already holds these files, so create the app in an empty temporary folder and move its files in (handbook Section 1).
+Folders now: `app/` (root layout, `globals.css`, `robots.ts`, `not-found.tsx`, `global-error.tsx`, icons; `(public)/` landing placeholder; `(dashboard)/` shell and the seven sidebar pages; `(editor)/` the editor; `preview/[websiteId]/`), `components/` (`ui/`, `dashboard/`, `editor/`, `preview/`), `templates/` (the system files plus `cleaning-fresh/`), `hooks/`, `lib/` (`data/`, `mock/`, `editor/`, `media/`, `server/`, and single files), `public/images/`, `supabase/`, plus `next.config.ts`, `postcss.config.mjs`, `tsconfig.json`, `eslint.config.mjs`, `.nvmrc` (Node 24), `.gitignore`, `AGENTS.md`, `README.md`.
 
 ## 5. Change log
 
 Newest first.
+
+### 2026-11-22: dark mode lightened to dark gray; GitHub and hosting notes; `netlify.toml`
+- Miguelle asked for dark mode to be a dark gray instead of near-black. Dark tokens in `app/globals.css` changed (`ink` #1a1c22, `panel` #23262e, `raised` #2e323c, lines and muted text adjusted). Contrast recalculated for every text and status color on all three backgrounds: lowest text pair is 6.3:1; the strong line is 3.6:1 or better. Not rescanned with axe and not yet seen by Miguelle.
+- **Git:** Miguelle created a private GitHub repository, `mfebres0919/MigsFlow_Studio`, and pushed one commit (`933c1fc`, "Update"). That commit is from **before Milestones 6 and 7**; everything since is uncommitted on Miguelle's Mac. Commit and push only when Miguelle asks.
+- **GitHub Pages cannot show this app**, private or public: Pages only serves ready-made files, and Studio is a Next.js app that has to be built and run. (Pages on a private repository also needs a paid GitHub plan.) The way to get a link is Netlify, connected to the private repository. `netlify.toml` added for that. Not deployed; Miguelle to connect it.
+- Claude explained VoiceOver and how to do a keyboard check by hand.
+
+### 2026-11-22: Milestone 7, final checks and cleanup. Phase 1 finished
+- Miguelle asked for the before-selling questions to be stored (now "Decisions to make before selling" in Section 2) and for Milestone 7.
+- **Cleanup:** `/dashboard/design-preview` removed. Added `app/robots.ts` (keeps search engines out of the whole prototype), `app/global-error.tsx`, security headers and `poweredByHeader: false` in `next.config.ts`, and an `npm run typecheck` command. `README.md` rewritten. `documentation/project-checklist.md` ticked, with the live-site sections marked N/A.
+- **Accessibility scan (axe-core, WCAG 2.0 to 2.2 A and AA plus best practices):** 54 scans covering every page, light and dark, desktop and phone, the phone menu open, the editor with a section open, the publish window, and the three template pages. First run: no contrast or WCAG failures, 14 scans with landmark notes. Fixed: the editor is now `<header>` + `<main>` with named regions inside, and the preview bar is a named `<aside>`. Final run: **0 issues**.
+- **Widths:** 10 pages at 320, 360, 390, 600, 768, 900, 1024, 1280, 1440 and 1920px, in Chromium and in WebKit (the Safari engine): no sideways scrolling, exactly one `h1` per page.
+- **Safari engine (WebKit 27.2):** theme switch, typing on the preview (end and start of text), section animation, panel resize, preview sizes, save, publish window, phone menu and template menu all work. **Two faults found and fixed:** photo upload failed because WebKit would not store a Blob in IndexedDB in a private session, so pictures are now stored as raw bytes (`ArrayBuffer`), which also covers Safari's Private Browsing; and the Domains page was 61px too wide at 320px.
+- **Keyboard:** the skip link is the first stop and works; every stop on the Overview has a name and a visible outline; a section opens with Enter and focus moves to its first field; closed sections cannot be tabbed into; the publish window takes focus, keeps it, closes on Escape and returns focus to Publish; the phone menu does the same; with "reduce motion" the menu appears with no animation.
+- **Regression:** the click-and-type, panel, Milestone 6 and menu tests were rerun on the production build and pass.
+- `npm audit`: 0 vulnerabilities. `npm run lint` and `npm run typecheck` pass; production build compiles.
+- **Not verified (needs a person or a deployed site):** VoiceOver; Firefox; Safari itself and a real iPhone or Android phone (camera and photo-library chooser, touch); a real drag from Finder; HEIC photos; the look of the light/dark fade; PageSpeed scores (need a deployed address). Lighthouse was not run.
+- Not done on purpose: website thumbnails are still the drawn stand-in, not a real miniature; no `netlify.toml` (Studio itself is not deployed); no automated tests live in the project (Claude's test scripts were temporary).
+- **Next:** Miguelle reviews. Then decide between a first Git commit and GitHub repository, and starting Phase 2 (the marketplace).
+
+### 2026-11-22: ownership model explained (no code)
+- Miguelle asked how customers own their site when there is no repo to hand over, as there is with one-to-one clients. Claude's explanation and the decisions it leaves are recorded under "Who owns what" in Section 2.
+
+### 2026-11-22: Netlify project limit rechecked; publish queue noted for Phase 5 (no code)
+- Miguelle relayed two more answers from Netlify's assistant: it could not confirm a 500-project limit, and the deploy rate limit is per token and can be raised on request. Claude re-read Netlify's docs page: the 500-project row is there. Both points recorded under "Netlify facts for Phase 5".
+
+### 2026-11-22: separate Netlify team decided (no code)
+- Miguelle: Studio sites will be handled by a separate Netlify team, not the one holding client projects.
+
+### 2026-11-22: Netlify answers recorded and checked (no code)
+- Miguelle pasted Netlify's answers on terms, pricing, the deploy API and DNS. Claude checked each claim against Netlify's own pages. Nearly all confirmed; differences and two new findings (the deploy rate limit, auto-recharge off by default) are recorded in Section 2 under "Netlify facts for Phase 5".
+
+### 2026-11-22: hosting price and download option decided (no code)
+- Miguelle: hosting is an **additional $25 a month**; a **download option** will exist; setting up a downloaded site elsewhere is the customer's job. Miguelle will confirm the Netlify questions themselves. Recorded in Section 2 with Claude's design note on what the download must contain.
+
+### 2026-11-22: hosting direction decided (no code)
+- Miguelle asked whether the A record on the Domains page is real (no: `192.0.2.1` and `.studio.example` are placeholders) and whether Studio would host customers' sites. Miguelle then decided: **hosting will be offered, through Netlify under their own account.** Recorded under "Still open" in Section 2 with the remaining questions and Claude's recommendation to use a separate Netlify team or account.
+
+### 2026-11-22: Milestone 6, the five remaining dashboard pages; transitions; Overview layout
+- Miguelle said "move onto phase 6"; Claude took that as **Milestone 6**.
+- **Pages built:** Media Library, Domains, Hosting & Publishing, Billing, Account Settings (details in Section 2). `components/dashboard/PlannedPage.tsx` deleted: no stand-in pages remain.
+- **New shared pieces:** `components/ui/ConfirmDialog.tsx`, `components/ui/DataTable.tsx`, `lib/validation.ts`; `lib/data/domains.ts`, `publishing.ts`, `billing.ts`; `deleteMedia` and `replaceImage` in `lib/data/media.ts`; `formatMoney` and `formatFileSize`.
+- **Data:** `Website.domainStatus`, `Deployment`, `Purchase`, `Customer.businessPhone` added. Saved demo data from before this change is filled in on read (`withNewerFields` in `lib/data/store.ts`), so the storage key did not change and earlier edits are kept. Publishing now adds a deployment.
+- **Transitions** (Miguelle): phone menu slide (`MobileNav.tsx`), template menu fade (`SiteHeader.tsx`), light/dark cross-fade (`ThemeToggle.tsx`, `globals.css`).
+- **Overview** (Miguelle did not like the gap under "Your websites"): Quick actions moved under it as three tiles.
+- Fixed on the way: a doubled full stop in activity lines for names ending in "." ("Brightside Cleaning Co.."); cards could not shrink below a wide table on phones; hidden text in a table's buttons widened the Billing page on phones.
+- Verified in a real browser against the dev server: Media: empty state, two photos added at once (3000x2000 stored as 2000x1333), thumbnails load, "Used on" after choosing one in the editor, Replace keeps it in use, Delete warns when in use and removes the card. Domains: a bad entry is refused; "https://WWW.BrightsideCleaning.com/" is saved as brightsidecleaning.com; the two DNS rows show; Check again gives Connected and SSL Active. Publishing: the connected domain shows as the live address; publishing adds a history row (3 to 4) and disables the button; the draft website is blocked by the checks. Billing: "2 bought, $700.00 in total", two invoices, the download message. Settings: a bad email is refused with a message, a good one accepted, Sign out message. The phone menu and the template menu are part-way through their animation 100ms after opening and closing. No page scrolls sideways at 390px or 320px. No console errors. A production build of a copy compiles.
+- Not verified: the theme cross-fade by eye (only that the theme still switches), Safari and Firefox, a real phone, screen reader, axe.
+- **Next:** Miguelle reviews, then Milestone 7.
 
 ### 2026-11-22: blank space under the editing panel's sections fixed
 - Miguelle reported, with a phone screenshot, a large empty grey area below the last section in the editing panel. Measured: up to 4,289px of blank scrolling under the sections, on desktop as well as phone. Cause: the same trap as the earlier grey band. A closed section's content is hidden by an `overflow-hidden` wrapper, but its visually hidden helpers are positioned absolutely and escaped it. Fixed by making that wrapper `relative` in `components/editor/SectionForm.tsx`.

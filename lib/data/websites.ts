@@ -50,6 +50,9 @@ function withActivity(activity: ActivityItem[], item: Omit<ActivityItem, "id">):
   return [{ ...item, id: `act_${Date.now()}` }, ...activity].slice(0, 20);
 }
 
+// Ends a sentence with a full stop, unless the name it ends with already has one ("Brightside Cleaning Co.").
+const sentence = (text: string) => (text.endsWith(".") ? text : `${text}.`);
+
 function changeWebsite(id: string, change: (website: Website, now: string) => { website: Website; activity: Omit<ActivityItem, "id" | "at"> }): Website {
   const data = readDemoData();
   const current = data.websites.find((website) => website.id === id);
@@ -58,9 +61,20 @@ function changeWebsite(id: string, change: (website: Website, now: string) => { 
   const now = new Date().toISOString();
   const { website, activity } = change(current, now);
   writeDemoData({
+    ...data, // everything else (deployments, purchases) is kept as it was
     websites: data.websites.map((item) => (item.id === id ? website : item)),
     activity: withActivity(data.activity, { ...activity, at: now }),
   });
+  return website;
+}
+
+/** Changes one website without adding a line to "Recent activity". Used by the Domains page. */
+export function updateStoredWebsite(id: string, change: (website: Website) => Website): Website {
+  const data = readDemoData();
+  const current = data.websites.find((website) => website.id === id);
+  if (!current) throw new Error("This website no longer exists.");
+  const website = change(current);
+  writeDemoData({ ...data, websites: data.websites.map((item) => (item.id === id ? website : item)) });
   return website;
 }
 
@@ -80,7 +94,7 @@ export async function saveDraft(id: string, draft: SiteContent): Promise<Website
         updatedAt: now,
         hasUnpublishedChanges: current.status === "published" && !same(draft, current.published),
       },
-      activity: { kind: "edited", message: `You edited ${summary.name}.`, websiteId: id },
+      activity: { kind: "edited", message: sentence(`You edited ${summary.name}`), websiteId: id },
     };
   });
 }
@@ -92,7 +106,7 @@ export async function saveDraft(id: string, draft: SiteContent): Promise<Website
  */
 export async function publishWebsite(id: string): Promise<Website> {
   await pause(600);
-  return changeWebsite(id, (current, now) => ({
+  const website = changeWebsite(id, (current, now) => ({
     website: {
       ...current,
       published: structuredClone(current.draft), // its own copy, so later draft edits cannot leak into it
@@ -100,6 +114,17 @@ export async function publishWebsite(id: string): Promise<Website> {
       hasUnpublishedChanges: false,
       publishedAt: now,
     },
-    activity: { kind: "published", message: `You published ${current.name}.`, websiteId: id },
+    activity: { kind: "published", message: sentence(`You published ${current.name}`), websiteId: id },
   }));
+
+  // Add this publish to the website's deployment history, newest first.
+  const data = readDemoData();
+  writeDemoData({
+    ...data,
+    deployments: [
+      { id: `dep_${Date.now()}`, websiteId: id, at: website.publishedAt ?? new Date().toISOString(), status: "success" },
+      ...data.deployments,
+    ],
+  });
+  return website;
 }

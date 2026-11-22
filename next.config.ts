@@ -10,6 +10,27 @@ const nextConfig: NextConfig = {
   // It sat on top of the editor's Save draft button. It never appears on a
   // built site; errors still show on screen while developing.
   devIndicators: false,
+  // Do not announce which software runs the site.
+  poweredByHeader: false,
+  // Basic safety instructions sent to the browser with every page.
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          // Do not guess a file's type from its contents.
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          // Share only the site's address, not the full page address, with other sites.
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          // Only this site may show its pages inside a frame. The editor's
+          // live preview is a frame of this same site, so it still works.
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          // The app never needs the camera, microphone or location.
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

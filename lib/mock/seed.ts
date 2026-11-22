@@ -1,4 +1,4 @@
-import type { ActivityItem, Website } from "@/lib/types";
+import type { ActivityItem, Deployment, Purchase, Website } from "@/lib/types";
 import type { SiteContent } from "@/templates/types";
 import { sampleContent, starterContent, type CleaningContent } from "@/templates/cleaning-fresh/content";
 
@@ -12,7 +12,15 @@ import { sampleContent, starterContent, type CleaningContent } from "@/templates
 export type DemoData = {
   websites: Website[];
   activity: ActivityItem[];
+  deployments: Deployment[];
+  purchases: Purchase[];
 };
+
+// SAMPLE PRICE. Miguelle's range for templates is $300 to $500; exact prices
+// are not set. This one figure exists so the Billing page has something to
+// show, and the page labels it as a sample. Real prices will come from the
+// database (and Stripe) in Phase 4, never from a component.
+const SAMPLE_TEMPLATE_PRICE_CENTS = 35000;
 
 const HOUR = 60 * 60 * 1000;
 const DAY = 24 * HOUR;
@@ -64,6 +72,7 @@ export function buildSeed(now: Date): DemoData {
         hasUnpublishedChanges: true,
         address: "brightside-cleaning.studio.example", // ".example" can never be a real address
         customDomain: null,
+        domainStatus: "none",
         brandColor: "#12806f",
         draft: brightsideDraft,
         published: brightsidePublished,
@@ -78,6 +87,7 @@ export function buildSeed(now: Date): DemoData {
         hasUnpublishedChanges: false,
         address: "brightside-commercial.studio.example",
         customDomain: null,
+        domainStatus: "none",
         brandColor: "#2f4fb8",
         draft: commercialDraft,
         published: null,
@@ -95,9 +105,9 @@ export function buildSeed(now: Date): DemoData {
       },
       {
         id: "act_4",
-        kind: "media",
-        message: "You uploaded 4 photos to the media library.",
-        websiteId: null,
+        kind: "edited",
+        message: "You changed the opening hours on Brightside Cleaning Co.",
+        websiteId: "site_brightside",
         at: ago(1 * DAY + 3 * HOUR),
       },
       {
@@ -120,6 +130,31 @@ export function buildSeed(now: Date): DemoData {
         message: "You bought the Fresh Start template.",
         websiteId: null,
         at: ago(12 * DAY),
+      },
+    ],
+    // Brightside has been published three times.
+    deployments: [
+      { id: "dep_3", websiteId: "site_brightside", at: ago(3 * DAY), status: "success" },
+      { id: "dep_2", websiteId: "site_brightside", at: ago(8 * DAY), status: "success" },
+      { id: "dep_1", websiteId: "site_brightside", at: ago(11 * DAY), status: "success" },
+    ],
+    // One purchase per website.
+    purchases: [
+      {
+        id: "pur_2",
+        templateId: "cleaning-fresh",
+        websiteId: "site_brightside_commercial",
+        amountCents: SAMPLE_TEMPLATE_PRICE_CENTS,
+        purchasedAt: ago(9 * DAY),
+        invoiceNumber: "INV-0002",
+      },
+      {
+        id: "pur_1",
+        templateId: "cleaning-fresh",
+        websiteId: "site_brightside",
+        amountCents: SAMPLE_TEMPLATE_PRICE_CENTS,
+        purchasedAt: ago(12 * DAY),
+        invoiceNumber: "INV-0001",
       },
     ],
   };

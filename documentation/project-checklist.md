@@ -17,6 +17,8 @@
 | **Target launch** | |
 | **Launched on** | |
 
+**Status (2026-11-22):** Phase 1 is a prototype that runs on sample data and is **not deployed**. Sections 2, 3, 4, 6, 7, 8, 9 and 10 below are about a live site and are **N/A until a launch is planned**. PageSpeed scores have not been measured (they need a deployed address).
+
 **How to use it:**
 - Tick items as they're done.
 - Items tagged *(Redesign)* only apply to redesigns and migrations. On a new build, write N/A instead of deleting them.
@@ -27,10 +29,10 @@
 
 ## 1. Discovery [§17]
 
-- [ ] Business name and main contact confirmed
-- [ ] The site's main job agreed (leads, bookings, information, sales)
-- [ ] Scope confirmed in writing: pages, features, integrations (matches the proposal)
-- [ ] Brand assets received: logo, colors, fonts, photos, written content
+- [x] Business name and main contact confirmed (MigsFlow, Miguelle; the product name is a working name)
+- [x] The site's main job agreed: sell website templates that customers edit and publish themselves
+- [x] Scope confirmed in writing: `documentation/project-brief.md`
+- [x] Brand assets: MigsFlow's own mark, colors and fonts reused. Template photos are placeholders (open decision)
 - [ ] Form destination email confirmed: ______________________
 - [ ] Legal and industry needs identified (privacy policy, disclaimers, license numbers, SMS consent)
 
@@ -72,22 +74,22 @@
 
 ## 5. Build and pre-launch QA [§19]
 
-- [ ] `npm run lint` and `npm run build` pass. Every content route shows `○ (Static)` in the build table.
+- [x] `npm run lint` and `npm run build` pass (2026-11-22). Every page is `○ (Static)` except the editor and preview, which are `◐` because their address contains a website id.
 - [ ] Built and reviewed on a Netlify preview. Client approved the preview.
 - [ ] Preview kept out of search. Canonicals and sitemap use the production domain.
 - [ ] All pages and content migrated, with no placeholders left
 - [ ] Menus, dropdowns and every link work. No broken links.
-- [ ] Responsive from 320px to 1920px, with no sideways scrolling
-- [ ] Accessibility: WCAG 2.2 AA, axe/WAVE zero errors, keyboard and VoiceOver pass
+- [x] Responsive from 320px to 1920px, with no sideways scrolling (10 pages at 10 widths, in Chromium and in the Safari engine, 2026-11-22)
+- [ ] Accessibility: WCAG 2.2 AA. axe: zero issues on 54 scans (every page, light and dark, desktop and phone). Keyboard: automated pass. **VoiceOver pass not done** (needs a person).
 - [ ] PageSpeed mobile on every page: Performance 98+, other categories 100 (scores saved)
-- [ ] Tested in Chrome, Safari, Firefox and on a real phone
+- [ ] Tested in Chrome, Safari, Firefox and on a real phone. Done by automated test: Chromium and the Safari engine (WebKit). **Not done: Firefox, real Safari, a real phone.**
 - [ ] SEO basics: every page exports its own title (≤50 characters with the brand), description and canonical; one `h1`; alt text; schema; icons (generated from the logo if none supplied); `opengraph-image` made from the homepage hero (1200×630); `manifest.js`; `robots.js`; `sitemap.js` listing every page; `not-found.js`
 - [ ] Every form submitted for real and received in the right inbox (spam folder checked)
 - [ ] Form validation, success and error messages, and any auto-reply emails work
 - [ ] Form events show up in GA4
 - [ ] Privacy policy, disclaimers and SMS consent in place where needed. No unnecessary sensitive data collected.
-- [ ] No secrets in the repo or in `NEXT_PUBLIC_` variables. Environment variables set in Netlify. Integrations documented.
-- [ ] Only approved dependencies installed. `npm audit` shows nothing high or critical.
+- [x] No secrets in the repo or in `NEXT_PUBLIC_` variables (Phase 1 has no secrets or environment variables at all).
+- [x] Only approved dependencies installed (plus TypeScript, a recorded exception). `npm audit`: 0 vulnerabilities (2026-11-22).
 
 ## 6. Google and integrations [§18]
 
@@ -171,5 +173,5 @@ Record anything significant: DNS edits, redirects, accounts connected, pages ret
 
 | Date | Change | By |
 |---|---|---|
-| | | |
+| 2026-11-22 | Phase 1 prototype finished: dashboard, editor, one template, all on sample data. Not deployed. | Claude with Miguelle |
 | | | |

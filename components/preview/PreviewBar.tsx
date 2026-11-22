@@ -13,7 +13,9 @@ type PreviewBarProps = {
 
 export default function PreviewBar({ websiteName, notice }: PreviewBarProps) {
   return (
-    <div className="border-b border-line bg-panel text-fg">
+    // <aside> with a name makes this a "landmark": screen-reader users can
+    // jump to it, and it is clearly separate from the customer's website below.
+    <aside aria-label="About this preview" className="border-b border-line bg-panel text-fg">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <div className="flex flex-wrap items-center gap-3">
           <p className="font-medium">
@@ -29,6 +31,6 @@ export default function PreviewBar({ websiteName, notice }: PreviewBarProps) {
       <p aria-live="polite" className="mx-auto max-w-6xl px-4 text-sm text-fg-muted sm:px-6">
         {notice && <span className="block pb-3">{notice}</span>}
       </p>
-    </div>
+    </aside>
   );
 }

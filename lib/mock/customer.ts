@@ -8,4 +8,5 @@ export const sampleCustomer: Customer = {
   name: "Dana Whitfield",
   email: "dana@brightside-cleaning.example", // ".example" addresses can never be real
   businessName: "Brightside Cleaning Co.",
+  businessPhone: "(555) 010-0142", // 555-01xx numbers are reserved for fiction
 };
