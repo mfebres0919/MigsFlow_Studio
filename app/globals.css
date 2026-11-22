@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+/* Design tokens: the named colors, fonts and corner sizes for the whole app.
+   In a plain CSS site these were variables on :root. Here, each token also
+   creates Tailwind classes automatically: --color-panel gives bg-panel,
+   text-panel and border-panel.
+
+   Tokens are named by their JOB, not their color. That is what makes light
+   and dark mode possible: components only ever say "bg-panel" or "text-fg",
+   and the two themes below give those names different values. No component
+   needs to know which theme is on. */
+
+/* LIGHT THEME (the default: what a first-time visitor sees) */
+@theme {
+  /* Backgrounds */
+  --color-ink: #f3f5fb;     /* the page itself */
+  --color-panel: #ffffff;   /* sidebar, cards */
+  --color-raised: #e8edf8;  /* things sitting on a panel: hovered rows, active links */
+
+  /* Lines */
+  --color-line: #d5dcec;         /* quiet dividers and card edges */
+  --color-line-strong: #6b7896;  /* edges that must be seen, e.g. inputs (3:1 contrast) */
+
+  /* Text (fg = foreground) */
+  --color-fg: #0b1020;        /* main text */
+  --color-fg-muted: #4a5573;  /* supporting text */
+
+  /* Brand blues */
+  --color-accent: #0b3cff;        /* filled buttons; white text on it is 6.8:1 in both themes */
+  --color-accent-hover: #0a31d6;
+  --color-signal: #0b3cff;        /* links, focus rings, "you are here" markers */
+
+  /* Status */
+  --color-success: #0f7a4d;
+  --color-warning: #8a5a00;
+  --color-danger: #b3261e;
+
+  /* Corners: bigger things get rounder corners */
+  --radius-control: 0.625rem;  /* buttons, inputs */
+  --radius-panel: 1rem;        /* cards, the sidebar's blocks */
+}
+
+/* DARK THEME (the MigsFlow brand look): the same token names with dark
+   values. It switches on when <html> has data-theme="dark" (set by the theme
+   button, see components/ui/ThemeToggle.tsx). On a dark background the
+   brand's bright cyan, green and yellow are readable, so they are used here;
+   on white they would not be, which is why the light theme has deeper ones.
+   Every text color in both themes keeps at least 4.5:1 contrast. */
+[data-theme="dark"] {
+  --color-ink: #05070f;
+  --color-panel: #0b1020;
+  --color-raised: #131b33;
+
+  --color-line: #232e4d;
+  --color-line-strong: #5a6a94;
+
+  --color-fg: #eef2ff;
+  --color-fg-muted: #a9b4d0;
+
+  --color-accent-hover: #2a5bff;
+  --color-signal: #18c9ff;
+
+  --color-success: #4ade9b;
+  --color-warning: #ffc857;
+  --color-danger: #ff8a8a;
+
+  color-scheme: dark;  /* tells the browser to draw scrollbars and form controls dark */
+}
+
+/* Fonts: the two MigsFlow brand families. "inline" is needed because these
+   point at variables that next/font creates in app/layout.tsx. */
+@theme inline {
+  --font-sans: var(--font-poppins);      /* Poppins: all body text, everything you read */
+  --font-display: var(--font-orbitron);  /* Orbitron: the brand name and page titles only */
+}
+
+/* A "dark:" prefix for the rare class that should apply only in dark mode,
+   e.g. "hidden dark:block". (Most things never need it: they use tokens.) */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Editing on the live preview (components/preview/InlineEditing.tsx).
+   These apply only inside the editor's preview, never on a finished website.
+   The colors are fixed, not tokens, because they sit on the customer's
+   website, which has its own colors and ignores Studio's light or dark mode. */
+@layer components {
+  .studio-editing [data-edit-kind] {
+    cursor: pointer;
+    border-radius: 4px;
+    outline: 2px dashed transparent;
+    outline-offset: 4px;
+  }
+
+  .studio-editing [data-edit-kind="text"] {
+    cursor: text;
+  }
+
+  /* Hovering shows what can be edited. The white ring keeps the blue outline
+     visible on dark and brand-colored backgrounds. */
+  .studio-editing [data-edit-kind]:hover {
+    outline-color: #2563eb;
+    box-shadow: 0 0 0 4px rgb(255 255 255 / 0.85);
+  }
+
+  .studio-editing [data-edit-kind="text"]:focus {
+    outline: 2px solid #2563eb;
+    box-shadow: 0 0 0 4px rgb(255 255 255 / 0.85);
+    white-space: pre-wrap; /* shows a space typed at the end of the text straight away */
+  }
+
+  /* A photo with a picture file being dragged over it: "drop it here". */
+  .studio-editing [data-drop-over] {
+    outline: 4px solid #2563eb;
+    outline-offset: 4px;
+    box-shadow: 0 0 0 8px rgb(255 255 255 / 0.85);
+    opacity: 0.7;
+  }
+
+  /* A field that has been emptied keeps some width, so it can still be clicked. */
+  .studio-editing [data-edit-kind="text"]:empty::before {
+    content: "Type here";
+    opacity: 0.55;
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;   /* keeps the phone top bar from covering a jumped-to heading */
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /* One visible keyboard-focus style for every link, button and input. */
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
