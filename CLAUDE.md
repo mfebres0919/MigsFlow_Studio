@@ -176,6 +176,10 @@ Folders now: `app/` (root layout, `globals.css`, `robots.ts`, `not-found.tsx`, `
 
 Newest first.
 
+### 2026-11-22: Miguelle's by-hand checks; font list question (no code)
+- **Miguelle did the keyboard check and the VoiceOver check by hand and reports both are good.** Still not done by a person: Firefox, Safari itself, a real phone.
+- Miguelle asked whether every font could be offered. Claude advised against all ~1,700 Google fonts (they must be built in ahead of time, most pairings look poor, some would break the layouts, and it overwhelms a non-designer) and suggested growing the curated list instead, to about 8 to 12 pairs. Awaiting Miguelle's choice; `templates/fonts.ts` still has 3 pairs.
+
 ### 2026-11-22: dark mode lightened to dark gray; GitHub and hosting notes; `netlify.toml`
 - Miguelle asked for dark mode to be a dark gray instead of near-black. Dark tokens in `app/globals.css` changed (`ink` #1a1c22, `panel` #23262e, `raised` #2e323c, lines and muted text adjusted). Contrast recalculated for every text and status color on all three backgrounds: lowest text pair is 6.3:1; the strong line is 3.6:1 or better. Not rescanned with axe and not yet seen by Miguelle.
 - **Git:** Miguelle created a private GitHub repository, `mfebres0919/MigsFlow_Studio`, and pushed one commit (`933c1fc`, "Update"). That commit is from **before Milestones 6 and 7**; everything since is uncommitted on Miguelle's Mac. Commit and push only when Miguelle asks.

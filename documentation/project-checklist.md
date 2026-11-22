@@ -80,7 +80,7 @@
 - [ ] All pages and content migrated, with no placeholders left
 - [ ] Menus, dropdowns and every link work. No broken links.
 - [x] Responsive from 320px to 1920px, with no sideways scrolling (10 pages at 10 widths, in Chromium and in the Safari engine, 2026-11-22)
-- [ ] Accessibility: WCAG 2.2 AA. axe: zero issues on 54 scans (every page, light and dark, desktop and phone). Keyboard: automated pass. **VoiceOver pass not done** (needs a person).
+- [ ] Accessibility: WCAG 2.2 AA. axe: zero issues on 54 scans (every page, light and dark, desktop and phone). Keyboard: automated pass, and checked by hand by Miguelle (2026-11-22). VoiceOver: checked by Miguelle (2026-11-22), sounds good.
 - [ ] PageSpeed mobile on every page: Performance 98+, other categories 100 (scores saved)
 - [ ] Tested in Chrome, Safari, Firefox and on a real phone. Done by automated test: Chromium and the Safari engine (WebKit). **Not done: Firefox, real Safari, a real phone.**
 - [ ] SEO basics: every page exports its own title (≤50 characters with the brand), description and canonical; one `h1`; alt text; schema; icons (generated from the logo if none supplied); `opengraph-image` made from the homepage hero (1200×630); `manifest.js`; `robots.js`; `sitemap.js` listing every page; `not-found.js`
