@@ -177,10 +177,15 @@ Folders now: `app/` (root layout, `globals.css`, `robots.ts`, `not-found.tsx`, `
 
 Newest first.
 
+### 2026-11-22: fonts approved and pushed; font source confirmed (no code)
+- Miguelle tested all twelve font pairs ("all of them look great") and pushed the work to GitHub.
+- Miguelle confirmed the font source: **https://gwfh.mranftl.com/fonts** (google-webfonts-helper). Use it for any font added later.
+- Miguelle asked what the next phase is. Claude outlined Phase 2 (the template marketplace); not started.
+
 ### 2026-11-22: twelve font pairs; all fonts now local files, nothing from Google
 - Miguelle chose twelve font pairs and stated a standing rule: **never use Google Fonts for anything; fonts are downloaded and self-hosted.**
 - `templates/fonts.ts` rewritten with `next/font/local` and twelve pairs; 38 `.woff2` files (about 700 KB) added in `templates/font-files/`. `app/layout.tsx` now loads Poppins and Orbitron from `app/fonts/`, copied from `../MigsFlow_Website/fonts`. No `next/font/google` remains.
-- **Where the files came from:** Claude downloaded them from google-webfonts-helper (gwfh.mranftl.com), which packages open-licensed font families as self-hostable files. Miguelle said they use "this site" for fonts but the link did not come through; the helper was a guess based on the file names in the MigsFlow website's fonts folder. Confirm with Miguelle, and swap the files if they prefer their own source.
+- **Where the files came from:** Claude downloaded them from google-webfonts-helper (gwfh.mranftl.com), which packages open-licensed font families as self-hostable files. Miguelle confirmed afterwards that this is the site they use.
 - Verified in a real browser against the dev server: all twelve choices appear in the editor; for each one the preview's heading and paragraph use the right font and the font file is loaded; no choice causes sideways scrolling; Studio's own text is Poppins and its titles Orbitron; **no request leaves the site**. A production build of a copy compiles.
 - Slip caught by the linter: the edit to `app/layout.tsx` briefly removed the `metadata` block (page titles); restored, and the page title was checked afterwards.
 - Not verified: how each pair looks by eye across all three template pages (only measured), and on the Services and Contact pages specifically.
