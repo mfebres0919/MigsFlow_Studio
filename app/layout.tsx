@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Orbitron, Poppins } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { site } from "@/lib/site";
 
@@ -7,17 +7,23 @@ import { site } from "@/lib/site";
 // In a plain HTML site this markup was repeated at the top of every file.
 // Here it is written once, and each page is dropped in where {children} is.
 
-// next/font downloads these font files when the site is built and serves them
-// from our own site, so the browser never contacts Google. Each one creates a
-// CSS variable that globals.css turns into the font-sans / font-display classes.
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"], // only the weights the design uses
+// The two MigsFlow brand fonts. The files live in app/fonts/ (the same ones
+// the MigsFlow website uses) and are served from our own site: nothing is
+// loaded from Google or anywhere else. This is the old @font-face block,
+// written as a function call. Each font creates a CSS variable that
+// globals.css turns into the font-sans / font-display classes.
+const poppins = localFont({
+  src: [
+    { path: "./fonts/poppins-v24-latin-regular.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/poppins-v24-latin-500.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/poppins-v24-latin-600.woff2", weight: "600", style: "normal" },
+  ],
   variable: "--font-poppins",
 });
 
-const orbitron = Orbitron({
-  subsets: ["latin"],
+// Only the brand name and page titles use Orbitron, always at weight 600.
+const orbitron = localFont({
+  src: [{ path: "./fonts/orbitron-v35-latin-600.woff2", weight: "600", style: "normal" }],
   variable: "--font-orbitron",
 });
 
