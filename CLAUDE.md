@@ -209,6 +209,13 @@ Newest first.
 - **Committed and pushed** at Miguelle's instruction.
 - **Next:** Phase 2 step 3, the full live preview of a template.
 
+### 2026-11-23: Landing hero in a dark panel, with floating tags
+- Miguelle shared the Framo HTML template's landing page as an example of a look they like. **Then clarified: an example only, not to copy.** Keep the laptop and phone on the right, keep the heading in **Orbitron**; the little floating tags ("Live editor no code", "Hosting optional") are fine.
+- A first attempt followed Framo too closely (fan of template cards, a "template switcher" panel, a hand-drawn underline, numbers row, chip strip). All of that was removed before committing.
+- What stayed: the migsflow.com-style hero (Orbitron headline with the gradient line, price box, gradient button, play-style second button, MigsFlow credit, Prototype label, laptop and phone showcase), now inside a **dark rounded panel** (`.hero-panel` in `globals.css`, `data-theme="dark"` on the section so it is dark in both themes), with three floating tags around the laptop (wide screens only).
+- **Rule:** when Miguelle shares another site as inspiration, take the general feel only; never reproduce its layout piece by piece. Ask if unsure.
+- Tested on a production build: axe 0 issues in light and dark; no sideways scrolling at 320–1920 px; slideshow works; WebKit fine.
+
 ### 2026-11-23: Next.js "instant navigation" warning; footer class names; commit
 - Next.js's dev tools flagged "URL data outside of Suspense" on `/preview/template/[templateId]`. Fixed the way its guide (`node_modules/next/dist/docs/01-app/02-guides/instant-navigation.md`) recommends: the part that reads the address moved into its own component inside `<Suspense>`. **Rule for new pages:** anything that awaits `params` goes inside `<Suspense>`.
 - Footer: three Tailwind class-name warnings fixed (`size-4.5`, `sm:hover:translate-y-[-60%]`).
