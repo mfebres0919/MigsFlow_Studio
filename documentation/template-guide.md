@@ -61,6 +61,9 @@ Three small files in `templates/<template-id>/`, modelled on Moving Day's (see t
 
 Then add it to `templates/registry.ts` and, with its price, to `lib/mock/templates.ts`. Claude can do this step from your marked-up page.
 
+### Optional: sections customers can hide
+For a section a business might not need (reviews, a gallery, an about section), add `hideable: true` to it in `schema.ts`, and put `data-edit-section="home/<section-key>"` on the section's outer element in your HTML. If the menu links to it, put the same marker on that link. The customer then gets a Show / Hide switch for it in the editor. Never make the header, the top of the page or the contact details hideable.
+
 ### 6. Make its pictures for the shop
 The shop shows each template as a picture of its hero section. Open the template's live preview, take two screenshots of the top of the page (1440 × 900 and 390 × 844 pixels), then run:
 

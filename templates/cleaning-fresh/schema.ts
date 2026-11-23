@@ -125,6 +125,7 @@ const home: PageSchema = {
     {
       key: "highlights",
       label: "Why choose you",
+      hideable: true,
       fields: [
         {
           key: "items",
@@ -142,11 +143,13 @@ const home: PageSchema = {
     {
       key: "servicesIntro",
       label: "Services introduction",
+      hideable: true,
       fields: [...headingAndText, { key: "button", label: "Button", type: "link" }],
     },
     {
       key: "gallery",
       label: "Before and after photos",
+      hideable: true,
       fields: [
         ...headingAndText,
         {
@@ -170,6 +173,7 @@ const home: PageSchema = {
     {
       key: "testimonials",
       label: "Customer reviews",
+      hideable: true,
       description: "Only use real reviews from your own customers.",
       fields: [
         { key: "heading", label: "Heading", type: "text" },

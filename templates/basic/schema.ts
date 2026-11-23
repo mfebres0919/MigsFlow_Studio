@@ -70,6 +70,7 @@ export function basicSchema(words: BasicWords): TemplateSchema {
           {
             key: "services",
             label: words.services,
+            hideable: true,
             fields: [
               { key: "heading", label: "Heading", type: "text" },
               { key: "text", label: "Text", type: "longText" },
@@ -90,6 +91,7 @@ export function basicSchema(words: BasicWords): TemplateSchema {
           {
             key: "about",
             label: "About",
+            hideable: true,
             fields: [
               { key: "heading", label: "Heading", type: "text" },
               { key: "text", label: "Text", type: "longText" },

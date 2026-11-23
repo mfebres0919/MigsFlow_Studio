@@ -22,6 +22,7 @@ import { editFieldType, editKind, parseEditPath, type EditTarget } from "@/lib/e
 import { mediaIdsIn, mediaSrc } from "@/lib/media/ref";
 import type { MediaItem, Website } from "@/lib/types";
 import { findPublishIssues, SITE_SCOPE, type PublishIssue } from "@/templates/publish-checks";
+import { isHidden, withSectionHidden } from "@/templates/visibility";
 import type { FieldValue, TemplateDefinition } from "@/templates/types";
 
 // The Website Editor: fields on the left, live preview on the right.
@@ -245,6 +246,12 @@ export default function EditorShell({ website: loaded, template }: EditorShellPr
     setMessage(null);
   }
 
+  // Switches a section off or on (only sections the template marks hideable).
+  function changeVisibility(sectionKey: string, hidden: boolean) {
+    setContent((current) => withSectionHidden(current, scope, sectionKey, hidden));
+    setMessage(null);
+  }
+
   // Returns true if the draft was saved, so callers can decide what happens next.
   async function handleSave(): Promise<boolean> {
     setBusy("saving");
@@ -393,6 +400,11 @@ export default function EditorShell({ website: loaded, template }: EditorShellPr
                       onFieldChange={(fieldKey, value) => changeField(section.key, fieldKey, value)}
                       context={context}
                       flag={flag}
+                      visibility={
+                        section.hideable && scope !== SITE_SCOPE
+                          ? { hidden: isHidden(content, scope, section.key), onChange: (hidden) => changeVisibility(section.key, hidden) }
+                          : undefined
+                      }
                     />
                   );
                 })}

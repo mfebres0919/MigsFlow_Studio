@@ -16,6 +16,9 @@
      data-edit-map="site/contact"         on a link: href becomes a map search for that section's address fields
      data-edit-href="site/social/facebook" on a link: href becomes the value; hidden if empty
      data-edit-content="home/seo/description" on a <meta>: its content attribute
+     data-edit-section="home/reviews"     on a section the customer may switch off
+                                          (schema: hideable); hidden while switched off.
+                                          Put the same marker on its menu link to hide that too.
 
    An address is  where/section/field , where "where" is "site" (shared
    settings) or a page such as "home". A field inside one entry of a list is
@@ -323,6 +326,17 @@
         document.querySelectorAll("[data-edit-content]").forEach(function (meta) {
             const value = lookUp(meta.getAttribute("data-edit-content"));
             if (value !== undefined) meta.setAttribute("content", wordsOf(value));
+        });
+
+        // Sections the customer has switched off (content.hidden lists them as "page/section").
+        const hidden = Array.isArray(content.hidden) ? content.hidden : [];
+        document.querySelectorAll("[data-edit-section]").forEach(function (element) {
+            const off = hidden.indexOf(element.getAttribute("data-edit-section")) !== -1;
+            // A menu link usually sits in a list item: hide the whole item.
+            const target = element.tagName === "A" ? element.closest("li") || element : element;
+            target.hidden = off;
+            // The page's own CSS (e.g. "display: grid") would beat "hidden", so set display as well.
+            target.style.display = off ? "none" : "";
         });
 
         applyColors();

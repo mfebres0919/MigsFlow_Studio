@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { LogOut } from "lucide-react";
 import mark from "@/public/images/brand/migsflow-mark.svg";
 import ActiveNav from "@/components/dashboard/ActiveNav";
 import NavList from "@/components/dashboard/NavList";
@@ -38,6 +39,15 @@ export default async function SidebarContent() {
       </nav>
 
       <ThemeToggle />
+
+      {/* The way back out of the demo to Studio's public website (Miguelle, 2026-11-23). */}
+      <Link
+        href="/"
+        className="flex min-h-11 items-center gap-3 rounded-control px-3 font-medium text-fg-muted transition-colors hover:bg-raised hover:text-fg"
+      >
+        <LogOut aria-hidden="true" className="size-5 shrink-0" />
+        Exit the demo
+      </Link>
 
       <div className="rounded-panel border border-line p-3">
         <div className="flex items-center gap-3">

@@ -1,4 +1,5 @@
 import type { Field, FieldValue, ListItem, SectionSchema, SiteContent, TemplateDefinition } from "@/templates/types";
+import { isHidden } from "@/templates/visibility";
 
 // The checks run when a customer presses Publish (decided by Miguelle,
 // 2026-11-22). A new website starts with placeholder content. This finds the
@@ -76,13 +77,23 @@ function checkSections(
   return issues;
 }
 
-/** Everything that should be changed before this content goes live. An empty list means it is ready. */
+/**
+ * Everything that should be changed before this content goes live. An empty
+ * list means it is ready. A section the customer has switched off is not
+ * checked: visitors will not see its placeholders.
+ */
 export function findPublishIssues(template: TemplateDefinition, content: SiteContent): PublishIssue[] {
   const { schema, starterContent } = template;
   return [
     ...checkSections(schema.site, SITE_SCOPE, "Site-wide settings", content.site, starterContent.site),
     ...schema.pages.flatMap((page) =>
-      checkSections(page.sections, page.key, `${page.label} page`, content.pages[page.key], starterContent.pages[page.key]),
+      checkSections(
+        page.sections.filter((section) => !isHidden(content, page.key, section.key)),
+        page.key,
+        `${page.label} page`,
+        content.pages[page.key],
+        starterContent.pages[page.key],
+      ),
     ),
   ];
 }

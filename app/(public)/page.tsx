@@ -65,7 +65,7 @@ export default async function Home() {
       <section
         data-pause-offscreen
         aria-labelledby="hero-title"
-        className="hero-panel relative isolate overflow-clip rounded-[2rem] border border-line pt-12 pb-14 text-fg sm:pt-16 lg:pb-20"
+        className="hero-panel relative isolate overflow-clip rounded-4xl border border-line pt-12 pb-14 text-fg sm:pt-16 lg:pb-20"
       >
         <HeroRings />
         <StarField shooting />

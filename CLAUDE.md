@@ -209,6 +209,22 @@ Newest first.
 - **Committed and pushed** at Miguelle's instruction.
 - **Next:** Phase 2 step 3, the full live preview of a template.
 
+### 2026-11-23: Show / Hide switch for template sections
+- A template marks sections customers may switch off with `hideable: true` in its schema (`SectionSchema`). The switched-off ones are stored in the content as `hidden: ["home/gallery", …]` (`SiteContent.hidden`); helpers in `templates/visibility.ts` (`isHidden`, `withSectionHidden`). Hiding deletes nothing.
+- Editor (`SectionForm`): hideable sections get a switch (`role="switch"`) beside their name; a hidden one shows "Hidden", a struck-through name and a note.
+- Templates leave hidden sections out, and their menu links. Fresh Start: Why choose you, Services introduction, Before and after photos, Customer reviews. Basic templates: Services/Programs and About. Header, top of page and contact are never hideable.
+- Publish checks skip hidden sections, so a business without reviews can hide them instead of being blocked.
+- HTML templates: marker `data-edit-section="home/<key>"` on the section (and its menu link); `studio-bridge.js` hides it (sets `hidden` and `display: none`). Documented in the bridge header and `documentation/template-guide.md`.
+- **Phase 5 note:** a published HTML template must drop hidden sections from the files it publishes (the bridge only runs inside Studio).
+- Tested in the dev server: Brightside Commercial's "must change" list went from 5 to 3 after hiding reviews and photos; the choice survives saving and reloading; switching back on restores the section; on Easy Move, hiding About removes the section and its menu link; axe finds nothing in the editor.
+
+### 2026-11-23: Exit link in the dashboard; uploads saved as WebP
+- Dashboard sidebar (and the phone drawer, which reuses it): "Exit the demo" link back to `/`.
+- Uploads (`lib/media/prepare-image.ts`): resized to at most 2000 px and saved as **WebP** (quality 0.82 photos, 0.9 PNGs), in one step. Miguelle asked about "compress, convert to WebP, compress again"; Claude explained that saving a lossy picture twice only loses detail, so it is one careful save. Falls back to JPEG (PNG stays PNG) where the browser cannot save WebP: Safari's engine in testing. Keeps the original when the result would not be smaller. File names follow the new type ("Photo.webp").
+- Tested by uploading in Chromium and WebKit: a 6 MB 4000×3000 JPEG became a 510 KB 2000×1500 WebP (Chromium) or a 1.3 MB JPEG (WebKit); a 5 KB PNG logo was kept as is.
+- **Phase 3 note:** convert on the server too, so Safari uploads also end up as WebP.
+- Miguelle asked whether templates should let customers remove sections. Claude recommended a show/hide switch; Miguelle said yes (see the next entry).
+
 ### 2026-11-23: Landing hero in a dark panel, with floating tags
 - Miguelle shared the Framo HTML template's landing page as an example of a look they like. **Then clarified: an example only, not to copy.** Keep the laptop and phone on the right, keep the heading in **Orbitron**; the little floating tags ("Live editor no code", "Hosting optional") are fine.
 - A first attempt followed Framo too closely (fan of template cards, a "template switcher" panel, a hand-drawn underline, numbers row, chip strip). All of that was removed before committing.

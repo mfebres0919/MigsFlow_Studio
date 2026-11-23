@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import type { TemplateRenderProps } from "@/templates/types";
 import { readableOnWhite, safeHex, textOn } from "@/templates/color";
 import { getFontPair } from "@/templates/fonts";
+import { isHidden } from "@/templates/visibility";
 import type { CleaningContent } from "@/templates/cleaning-fresh/content";
 import { schema } from "@/templates/cleaning-fresh/schema";
 import { container } from "@/templates/cleaning-fresh/styles";
@@ -50,18 +51,27 @@ export default function CleaningFreshTemplate({ content, pageKey, host }: Templa
   // The menu comes from the schema's page list, so a template's pages are named in one place.
   const menu = schema.pages.map(({ key, label, path }) => ({ key, label, path }));
 
+  // Has the customer switched this home page section off?
+  const hidden = (sectionKey: string) => isHidden(content, "home", sectionKey);
+
   return (
-    <div style={style} className="scheme-light flex min-h-dvh flex-col bg-white font-(family-name:--font-body) text-base text-slate-800">
+    <div
+      style={style}
+      className="scheme-light flex min-h-dvh flex-col bg-white font-(family-name:--font-body) text-base text-slate-800"
+    >
       <SiteHeader site={site} pages={menu} pageKey={pageKey} host={host} />
 
       <main className="flex-1">
         {pageKey === "home" && (
           <>
             <Hero hero={pages.home.hero} host={host} />
-            <Highlights highlights={pages.home.highlights} />
-            <ServicesPreview intro={pages.home.servicesIntro} services={site.services.items} host={host} />
-            <Gallery gallery={pages.home.gallery} />
-            <Testimonials testimonials={pages.home.testimonials} />
+            {/* Sections the customer can switch off in the editor (templates/visibility.ts). */}
+            {!hidden("highlights") && <Highlights highlights={pages.home.highlights} />}
+            {!hidden("servicesIntro") && (
+              <ServicesPreview intro={pages.home.servicesIntro} services={site.services.items} host={host} />
+            )}
+            {!hidden("gallery") && <Gallery gallery={pages.home.gallery} />}
+            {!hidden("testimonials") && <Testimonials testimonials={pages.home.testimonials} />}
             <CallToAction cta={pages.home.cta} pageKey="home" host={host} />
           </>
         )}

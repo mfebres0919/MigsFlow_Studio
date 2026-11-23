@@ -39,6 +39,8 @@ function sectionMatches(schema: SectionSchema, content: SectionContent | undefin
 /** True when the content has everything the schema asks for. */
 export function contentMatchesSchema(schema: TemplateSchema, content: SiteContent): boolean {
   if (!isRecord(content) || !isRecord(content.site) || !isRecord(content.pages)) return false;
+  // The list of switched-off sections is optional, but if it is there it must be a list of addresses.
+  if (content.hidden !== undefined && !(Array.isArray(content.hidden) && content.hidden.every((entry) => typeof entry === "string"))) return false;
 
   const siteOk = schema.site.every((section) => sectionMatches(section, content.site[section.key]));
   const pagesOk = schema.pages.every((page) => {

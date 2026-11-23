@@ -1,5 +1,5 @@
 import type { MediaItem } from "@/lib/types";
-import { prepareImage } from "@/lib/media/prepare-image";
+import { fileNameFor, prepareImage } from "@/lib/media/prepare-image";
 
 // The doorway for uploaded pictures (see lib/data/README.md).
 //
@@ -51,7 +51,7 @@ export async function uploadImage(file: File): Promise<MediaItem> {
   const prepared = await prepareImage(file);
   const item: MediaItem = {
     id: crypto.randomUUID(),
-    name: file.name,
+    name: fileNameFor(file.name, prepared.type),
     type: prepared.type,
     width: prepared.width,
     height: prepared.height,
@@ -103,7 +103,7 @@ export async function replaceImage(id: string, file: File): Promise<MediaItem> {
   const prepared = await prepareImage(file);
   const item: MediaItem = {
     id,
-    name: file.name,
+    name: fileNameFor(file.name, prepared.type),
     type: prepared.type,
     width: prepared.width,
     height: prepared.height,

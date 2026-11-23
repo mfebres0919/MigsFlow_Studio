@@ -34,6 +34,12 @@ export type SectionContent = Record<string, FieldValue>;
 export type SiteContent = {
   site: Record<string, SectionContent>;
   pages: Record<string, Record<string, SectionContent>>;
+  /**
+   * The sections the customer has switched off, as "page/section" addresses
+   * (e.g. "home/testimonials"). Only sections marked `hideable` in the schema
+   * can be here. Missing or empty: everything shows. See templates/visibility.ts.
+   */
+  hidden?: string[];
 };
 
 /* ---------- The schema: which fields exist ---------- */
@@ -85,6 +91,13 @@ export type SectionSchema = {
   label: string;
   description?: string;
   fields: Field[];
+  /**
+   * True when the customer may switch this section off (Miguelle, 2026-11-23),
+   * e.g. reviews or a photo gallery a new business does not have yet. Never
+   * for the header, the top of the page or the contact details. Hiding keeps
+   * what was typed, so switching it back on restores it.
+   */
+  hideable?: boolean;
 };
 
 /** One page of the website and the sections on it. */
