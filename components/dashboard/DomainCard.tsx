@@ -5,6 +5,7 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
+import WebsiteThumbnail from "@/components/dashboard/WebsiteThumbnail";
 import DataTable from "@/components/ui/DataTable";
 import { addCustomDomain, checkCustomDomain, removeCustomDomain } from "@/lib/data/domains";
 import type { Website } from "@/lib/types";
@@ -58,63 +59,70 @@ export default function DomainCard({ website, onChange }: DomainCardProps) {
 
   return (
     <Card title={website.name}>
-      {/* <dl> pairs each label (<dt>) with its value (<dd>). */}
-      {/* min-w-0 on each row lets it shrink to a narrow phone; without it Safari
+      {/* The website's hero picture beside its details, so it is easy to see
+          which website a domain belongs to (Miguelle, 2026-11-23). */}
+      <div className="grid gap-5 sm:grid-cols-[11rem_minmax(0,1fr)] sm:items-start">
+        <div className="max-w-xs">
+          <WebsiteThumbnail website={website} />
+        </div>
+        {/* <dl> pairs each label (<dt>) with its value (<dd>). */}
+        {/* min-w-0 on each row lets it shrink to a narrow phone; without it Safari
           keeps the row as wide as the text box inside it wants to be. */}
-      <dl className="grid gap-5">
-        <div className="min-w-0">
-          <dt className="text-sm text-fg-muted">Free address</dt>
-          <dd className="mt-1 flex flex-wrap items-center gap-3">
-            <span className="font-medium break-all">{website.address}</span>
-            <Badge>Included</Badge>
-          </dd>
-        </div>
+        <dl className="grid gap-5">
+          <div className="min-w-0">
+            <dt className="text-sm text-fg-muted">Free address</dt>
+            <dd className="mt-1 flex flex-wrap items-center gap-3">
+              <span className="font-medium break-all">{website.address}</span>
+              <Badge>Included</Badge>
+            </dd>
+          </div>
 
-        <div className="min-w-0">
-          <dt className="text-sm text-fg-muted">Your own domain</dt>
-          <dd className="mt-1">
-            {website.customDomain ? (
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="font-medium break-all">{website.customDomain}</span>
-                {website.domainStatus === "connected" ? (
-                  <Badge tone="success">Connected</Badge>
-                ) : (
-                  <Badge tone="warning">Waiting for DNS</Badge>
-                )}
-              </div>
-            ) : (
-              <form onSubmit={handleAdd} noValidate className="max-w-xl">
-                <label htmlFor={inputId} className="sr-only">
-                  Your domain for {website.name}
-                </label>
-                <div className="flex flex-wrap gap-3">
-                  <input
-                    id={inputId}
-                    type="text"
-                    inputMode="url"
-                    autoCapitalize="none"
-                    placeholder="yourbusiness.com"
-                    value={domain}
-                    onChange={(event) => setDomain(event.target.value)}
-                    aria-invalid={error ? "true" : undefined}
-                    aria-describedby={error ? `${inputId}-error` : undefined}
-                    // basis-48: the box asks for 12rem; when that does not fit beside the button, the button wraps below it.
-                    className="min-h-11 min-w-0 flex-1 basis-48 rounded-control border border-line-strong bg-ink px-3 py-2 text-fg"
-                  />
-                  <Button type="submit" disabled={busy !== null}>
-                    {busy === "adding" ? "Adding" : "Add domain"}
-                  </Button>
+          <div className="min-w-0">
+            <dt className="text-sm text-fg-muted">Your own domain</dt>
+            <dd className="mt-1">
+              {website.customDomain ? (
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="font-medium break-all">{website.customDomain}</span>
+                  {website.domainStatus === "connected" ? (
+                    <Badge tone="success">Connected</Badge>
+                  ) : (
+                    <Badge tone="warning">Waiting for DNS</Badge>
+                  )}
                 </div>
-              </form>
-            )}
-            {error && (
-              <p id={`${inputId}-error`} role="alert" className="mt-2 text-sm font-medium text-danger">
-                {error}
-              </p>
-            )}
-          </dd>
-        </div>
-      </dl>
+              ) : (
+                <form onSubmit={handleAdd} noValidate className="max-w-xl">
+                  <label htmlFor={inputId} className="sr-only">
+                    Your domain for {website.name}
+                  </label>
+                  <div className="flex flex-wrap gap-3">
+                    <input
+                      id={inputId}
+                      type="text"
+                      inputMode="url"
+                      autoCapitalize="none"
+                      placeholder="yourbusiness.com"
+                      value={domain}
+                      onChange={(event) => setDomain(event.target.value)}
+                      aria-invalid={error ? "true" : undefined}
+                      aria-describedby={error ? `${inputId}-error` : undefined}
+                      // basis-48: the box asks for 12rem; when that does not fit beside the button, the button wraps below it.
+                      className="min-h-11 min-w-0 flex-1 basis-48 rounded-control border border-line-strong bg-ink px-3 py-2 text-fg"
+                    />
+                    <Button type="submit" disabled={busy !== null}>
+                      {busy === "adding" ? "Adding" : "Add domain"}
+                    </Button>
+                  </div>
+                </form>
+              )}
+              {error && (
+                <p id={`${inputId}-error`} role="alert" className="mt-2 text-sm font-medium text-danger">
+                  {error}
+                </p>
+              )}
+            </dd>
+          </div>
+        </dl>
+      </div>
 
       {website.customDomain && website.domainStatus === "pending" && (
         <div className="mt-6 border-t border-line pt-6">
@@ -177,8 +185,8 @@ export default function DomainCard({ website, onChange }: DomainCardProps) {
         }}
       >
         <p>
-          {website.customDomain} will stop showing {website.name}. The website stays reachable at its free address, and
-          nothing changes at the company you bought the domain from.
+          {website.customDomain} will stop showing {website.name}. The website stays reachable at its free address, and nothing
+          changes at the company you bought the domain from.
         </p>
       </ConfirmDialog>
     </Card>

@@ -71,7 +71,7 @@ const linkClass =
 
 export default function SiteFooter() {
   return (
-    <footer data-pause-offscreen className="relative isolate overflow-clip px-4 pt-20 pb-8 sm:px-6 sm:pt-24">
+    <footer data-pause-offscreen suppressHydrationWarning className="relative isolate overflow-clip px-4 pt-20 pb-8 sm:px-6 sm:pt-24">
       <StarField count={18} />
       {/* A thin line of light across the top, fading out at both ends. */}
       <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-signal/40 to-transparent" />

@@ -23,14 +23,14 @@ Project guide and change log for **MigsFlow Studio — Self-Service Website Plat
 **Stopping point: Phase 2 step 3 (template live preview) is built, Moving Day is replaced by six basic templates, and both wait for review. The landing hero, footer and speed fixes from the same day are approved. Everything up to the Framo-style redesign is committed and pushed.** Phase 1 is finished; Phase 2 steps 1 and 2 are built.
 
 - **Design direction (Miguelle, 2026-11-23):** Studio's public pages should have "the same vibe and feeling" as Miguelle's main website (`../MigsFlow_Website`, live at migsflow.com): "professional, serious, but also tech, not overwhelming". The footer should feel like "an extension" of the main site's footer: similar, some differences allowed. So for any new public page, look at how the main site does the same thing first (its `styles.css`, `css/global.css`, `css/theme.css`), and reuse the pieces already brought over: `site-backdrop`, `StarField`, `HeroRings`, `text-brand-gradient`, `bg-brand-gradient`, `DeviceShowcase`.
-- **Next:** Miguelle reviews step 3 (the template live preview). Then step 4, the rest of the landing page. Keep chat replies short (Miguelle, 2026-11-23).
+- **Next:** Miguelle reviews step 4 (the landing page). Then step 5: Pricing, Log in and Create account pages (designs only). Keep chat replies short (Miguelle, 2026-11-23).
 - **Phase 2 steps** (Miguelle, 2026-11-22: "build things step by step how we've been doing"):
   | # | Step | Status |
   |---|---|---|
   | 1 | Moving Day template, from Miguelle's HTML site | Done 2026-11-22; **removed 2026-11-23** at Miguelle's request, replaced by Claude's basic templates (see Templates below) |
   | 2 | Public header and footer; marketplace `/templates` with industry filter; industry pages; a page per template | Done 2026-11-22, redesigned the same day after Miguelle's feedback; awaiting review of the redesign |
   | 3 | Full live preview of a template from its page (with phone, tablet and desktop sizes) | Built 2026-11-23, waiting for Miguelle's review |
-  | 4 | The real landing page | Top section built 2026-11-23 (migsflow.com style); the rest of the page is still to do |
+  | 4 | The real landing page | Built 2026-11-23: hero plus How it works, Built for your trade, What's included, FAQ; waiting for Miguelle's review |
   | 5 | Pricing, Log in and Create account pages (designs only; real accounts are Phase 3, payments Phase 4) | |
   | 6 | Checks: accessibility, widths, Safari, and the handbook's SEO rules (canonical addresses, sitemap, link preview image) | |
   **Templates now (Miguelle, 2026-11-23):** Claude's own basic templates, two per industry: Fresh Start and Clean Slate (cleaning), Easy Move and Steady Haul (moving), Open Door and Common Ground (nonprofit). "Make them as basic as possible"; they are placeholders until Miguelle says their own templates are ready. Miguelle's templates will be hand-written HTML (`kind: "html"`); the HTML engine (`public/studio-bridge.js`, `HtmlTemplateFrame`) stays for them. Each template appears in the marketplace by being added to `templates/registry.ts` and `lib/mock/templates.ts`, plus its pictures (`tools/make-template-pictures.py`).
@@ -79,7 +79,7 @@ None of these block the prototype. All of them need an answer before a real cust
 - [ ] The product's name ("MigsFlow Studio" is a working name) and its own domain.
 - [ ] The exact price of each template within $300–$500.
 - [ ] Where the templates' photos come from (own photos, licensed stock, or images made with ChatGPT), and confirmation of the right to sell them inside a template.
-- [ ] How quote and contact forms are delivered: the Studio form inbox, Netlify's own forms, or the customer's own service; and whether working forms are part of the $25 hosting plan.
+- [x] How quote and contact forms are delivered: **decided 2026-11-23: the Studio form inbox, and working forms only with the $25 hosting plan** (see the change log entry of that date). Notification emails go through **Brevo** (Miguelle, 2026-11-23; on a paid plan).
 - [ ] How Studio relates to the existing MigsFlow plans (Starter $175/mo, Lump Sum, Enterprise) and to `../MigsFlow_Website`.
 
 **Netlify** (ask a person there, and get the answer in writing)
@@ -208,6 +208,34 @@ Newest first.
 - Not verified: the industry page was not rescanned after its heading fix; how the circular reveal looks in real Safari and Firefox; the redesign by Miguelle's eye.
 - **Committed and pushed** at Miguelle's instruction.
 - **Next:** Phase 2 step 3, the full live preview of a template.
+
+### 2026-11-23: Publishing walkthrough; "Restore this version" planned
+- Publishing walkthrough given: draft vs published copy; Publish = checks (built), then build plain files (hidden sections left out, form pointed at the Studio inbox), upload to the website's own Netlify site (created on first publish), "Publishing…" then "Live" plus a history line; a failed upload leaves the previous version live and offers a retry. Only websites with active hosting can publish; others get Download. About 10 cents of Netlify credit per publish, nothing for Miguelle to do.
+- **Decided (Miguelle): plan a "Restore this version" button** in each website's publishing history (Phase 5). Netlify keeps every earlier deploy; restoring republishes that deploy through the API (`POST /sites/{site_id}/deploys/{deploy_id}/restore`; check the current API docs before building), goes through the same publish queue, and adds its own line to the history ("Restored the version from Nov 20"). It changes only the live site; the draft in the editor stays as it is, and the dashboard says so. Ask for confirmation first.
+
+### 2026-11-23: Hosting walkthrough; forms decided; pictures on the publishing page
+- Hosting walkthrough given (Netlify Studio team, publish = Studio uploads plain files through the API, about 10 cents a publish and 13 cents a GB against $25 a month, credits auto-recharge, 500 sites per team, publish queue for 3 a minute / 100 a day, downloads are the customer's responsibility).
+- **Forms, decided by Miguelle:** the **Studio form inbox** (each message saved in the customer's dashboard under "Messages" and emailed to the address they set in the editor), and **working forms come only with hosting**.
+- **Downloaded sites (Claude's design, Miguelle asked how customers without code would do it):** the download step asks once: paste a form-service link (e.g. Formspree), and Studio writes it into the downloaded files; or choose "no form", and Studio swaps the form for a "Call or email us" block with their phone and email. No code editing either way.
+- **Sending the notification emails (to choose):** from an address on Miguelle's domain, with Reply-To set to the visitor so the business owner can reply directly. Option 1, Brevo: already used and set up for migsflow.com on Miguelle's website (backup sender there); free 300 emails a day; best for automatic emails. Option 2, Outlook (Microsoft 365) through Microsoft Graph, like the website's lead emails: a free shared mailbox (e.g. notifications@) plus its own Entra app registration for Studio; fine at small scale, but Microsoft limits automated sending (about 30 a minute, 10,000 recipients a day). **Decided 2026-11-23: Brevo** (Miguelle upgraded from the free plan). Miguelle first leaned to Outlook because Brevo emails have landed in Gmail's Promotions tab; to keep these in the inbox: send through Brevo's transactional API (not campaigns), authenticate the domain (SPF, DKIM, DMARC), keep the email plain (no images, no tracking pixels or tracked links, short subject like "New quote request from your website"). Either way the key lives only on Studio's server (`lib/server/`), and the sending domain needs SPF/DKIM records. Built in Phase 3.
+- Hosting & publishing page: each website's card shows its hero picture (`WebsiteThumbnail`), as on the Domains page. Checked: axe clean, no sideways scrolling at 375 px.
+
+### 2026-11-23: Domains page shows each website's picture; domain walkthrough
+- Miguelle's idea: each website's card on the Domains page shows its hero picture (`WebsiteThumbnail`) beside the name and addresses, so it is clear which website a domain goes to. Checked: axe clean, no sideways scrolling at 375 px.
+- Miguelle asked to go through domains, hosting and publishing again, one at a time, starting with domains. Claude confirmed: the customer keeps the domain where they bought it and points two DNS records at Netlify (`www` CNAME to the site's netlify.app address; the bare domain A record 75.2.60.5, or ALIAS/ANAME to apex-loadbalancer.netlify.com); Studio adds the domain to the customer's Netlify site through the Netlify API (Phase 5) and Netlify issues the free HTTPS certificate. Changing nameservers to Netlify DNS is not offered (it moves email settings). **Next:** hosting, then publishing.
+
+### 2026-11-23: Landing page touches from migsflow.com
+- "What's included" now carries the main site's services-section look: its line art (`images/vectors/vectors.svg` copied to `public/images/decor/flow-lines.svg`, `.flow-lines-bg`), four floating neon rings (`NeonRings.tsx`, `.neon-ring`; float uses transform only), and the items became tinted cards (`.tint-card`, mist blue / sky cyan / periwinkle in light mode, lifted gray in dark) with blue icon squares and Orbitron titles.
+- `ArcDivider` between the hero and How it works. Twinkling stars (`StarField`, 8–10 each) in every landing section, each section with `data-pause-offscreen`.
+- Fixed a Next.js "1 Issue" (hydration mismatch): `PauseOffscreen` can add `data-offscreen` before React takes over a section. Every `data-pause-offscreen` element now also has `suppressHydrationWarning` (**rule for new ones**).
+- Checked: axe 0 issues in light and dark, no sideways scrolling at 320–1920 px, WebKit fine, the issue no longer appears.
+
+### 2026-11-23: Phase 2 step 4, the rest of the landing page
+- Below the hero (`components/marketing/landing/`): **How it works** (three steps), **Built for your trade** (one template per industry, picked from the data, same cards as the shop, "See all 6 templates"), **What's included** (six things the editor really does, on a light band), **Good to know** FAQ (two columns: heading, "Ask us something else" link to migsflow.com/contact, Prototype label; questions on the right). No separate closing banner: the footer's "Let's build yours" bubble does that job.
+- FAQ answers use only decided facts (no code needed, prices from the data, edit after publishing, hosting optional, phone-ready, hide sections). **Ownership, refunds and terms are left out until Miguelle decides them.**
+- FAQ opens and closes smoothly (Miguelle asked): `FaqList.tsx`, buttons with `aria-expanded` and the grid-rows 0fr→1fr slide, `inert` when closed, several can be open, the first starts open. Not `<details>`, which snaps shut in most browsers.
+- SVG dividers (Miguelle's idea): `Dividers.tsx`, a `WaveDivider` into and out of the "What's included" band and a `FlowDivider` (thin brand-blue line with a dot) between How it works and the templates.
+- Tested: axe 0 issues in light and dark, no sideways scrolling at 320–1920 px, WebKit fine, FAQ slide measured (0 → 30 → 47 → 68 px over about 300 ms) and keyboard opening works. Fixed during testing: the faint step numbers failed contrast.
 
 ### 2026-11-23: Show / Hide switch for template sections
 - A template marks sections customers may switch off with `hideable: true` in its schema (`SectionSchema`). The switched-off ones are stored in the content as `hidden: ["home/gallery", …]` (`SiteContent.hidden`); helpers in `templates/visibility.ts` (`isHidden`, `withSectionHidden`). Hiding deletes nothing.

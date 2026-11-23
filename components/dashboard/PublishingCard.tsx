@@ -7,6 +7,7 @@ import Card from "@/components/ui/Card";
 import DataTable from "@/components/ui/DataTable";
 import Badge from "@/components/ui/Badge";
 import WebsiteStatusBadge from "@/components/dashboard/WebsiteStatusBadge";
+import WebsiteThumbnail from "@/components/dashboard/WebsiteThumbnail";
 import PublishDialog from "@/components/editor/PublishDialog";
 import { publishWebsite } from "@/lib/data/websites";
 import { formatDate, formatTimeAgo } from "@/lib/format";
@@ -55,20 +56,29 @@ export default function PublishingCard({ website, deployments, onChange }: Publi
 
   return (
     <Card title={website.name} action={<WebsiteStatusBadge website={website} />}>
-      <dl className="grid gap-2 text-sm">
-        <div className="flex justify-between gap-4">
-          <dt className="text-fg-muted">Live address</dt>
-          <dd className="text-right break-all">{live ? liveAddress : "Not live yet"}</dd>
+      {/* The website's hero picture beside its details, so it is clear which
+          website is being published (Miguelle, 2026-11-23). */}
+      <div className="grid gap-5 sm:grid-cols-[11rem_minmax(0,1fr)] sm:items-start">
+        <div className="max-w-xs">
+          <WebsiteThumbnail website={website} />
         </div>
-        <div className="flex justify-between gap-4">
-          <dt className="text-fg-muted">Last published</dt>
-          <dd>{website.publishedAt ? `${formatDate(website.publishedAt)} (${formatTimeAgo(website.publishedAt)})` : "Never"}</dd>
-        </div>
-        <div className="flex justify-between gap-4">
-          <dt className="text-fg-muted">Hosting</dt>
-          <dd className="text-right">MigsFlow Studio hosting (simulated in this prototype)</dd>
-        </div>
-      </dl>
+        <dl className="grid gap-2 text-sm">
+          <div className="flex justify-between gap-4">
+            <dt className="text-fg-muted">Live address</dt>
+            <dd className="text-right break-all">{live ? liveAddress : "Not live yet"}</dd>
+          </div>
+          <div className="flex justify-between gap-4">
+            <dt className="text-fg-muted">Last published</dt>
+            <dd>
+              {website.publishedAt ? `${formatDate(website.publishedAt)} (${formatTimeAgo(website.publishedAt)})` : "Never"}
+            </dd>
+          </div>
+          <div className="flex justify-between gap-4">
+            <dt className="text-fg-muted">Hosting</dt>
+            <dd className="text-right">MigsFlow Studio hosting (simulated in this prototype)</dd>
+          </div>
+        </dl>
+      </div>
 
       <div className="mt-5 flex flex-wrap items-center gap-3">
         <Button onClick={() => setDialogOpen(true)} disabled={!template || nothingNew}>

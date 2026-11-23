@@ -13,6 +13,10 @@ import { usePathname } from "next/navigation";
 // whole page, so the stars, floating devices and flowing lines don't each
 // need their own watcher.
 //
+// Every marked element also carries suppressHydrationWarning: this script may
+// add data-offscreen before React has finished taking over that part of the
+// page, and that attribute is expected to differ from the built HTML.
+//
 // IntersectionObserver is the browser's built-in "tell me when this enters
 // or leaves the screen". It is far cheaper than checking on every scroll.
 
