@@ -69,6 +69,11 @@ export type ListField = FieldBase & {
   itemLabel: string;
   /** The most entries the design can hold without breaking. */
   maxItems: number;
+  /**
+   * True when the design has a set number of places for these (for example
+   * exactly four steps). The entries can be edited but not added, removed or reordered.
+   */
+  fixed?: boolean;
   fields: SimpleField[];
 };
 
@@ -121,8 +126,32 @@ export type TemplateRenderProps = {
   host: TemplateHost;
 };
 
-/** Everything Studio needs to know about one template. */
-export type TemplateDefinition = {
+/**
+ * Everything Studio needs to know about one template.
+ *
+ * A template's design can be supplied in two ways ("kind"):
+ * - "html": a hand-written HTML, CSS and JavaScript website kept in
+ *   public/site-templates/<id>/. Studio shows the real page and fills it in through
+ *   public/studio-bridge.js. This is how Miguelle builds templates.
+ * - "react": a React component in templates/<id>/ (the first template,
+ *   Fresh Start, was built this way).
+ * The schema, the content and the editor work the same for both.
+ */
+export type TemplateDefinition = TemplateBasics & TemplateDesign;
+
+type TemplateDesign =
+  | {
+      kind: "react";
+      /** A function that turns content into a web page. */
+      Component: ComponentType<TemplateRenderProps>;
+    }
+  | {
+      kind: "html";
+      /** The address of the template's page, e.g. "/site-templates/moving-bayou/index.html". */
+      entry: string;
+    };
+
+type TemplateBasics = {
   id: string;
   schema: TemplateSchema;
   /** Realistic example content, used for previews. Fictional, and labeled as sample on screen. */
@@ -135,6 +164,10 @@ export type TemplateDefinition = {
   starterContent: SiteContent;
   /** Pictures that come with the template, offered in the editor's image fields. */
   stockImages: ImageValue[];
-  /** The design: a function that turns content into a web page. */
-  Component: ComponentType<TemplateRenderProps>;
+  /**
+   * The address of the template's hero image: the big photo at the top of its
+   * home page, e.g. "home/hero/image". Studio shows it as the website's
+   * picture in "My websites" and on the Overview. Every template must name one.
+   */
+  heroImage: string;
 };

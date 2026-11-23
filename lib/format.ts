@@ -42,6 +42,12 @@ export function formatMoney(cents: number): string {
   return moneyFormat.format(cents / 100);
 }
 
+/** A price for a tag: 45000 → "$450", 34950 → "$349.50". Whole dollars drop the ".00". */
+export function formatPrice(cents: number): string {
+  if (cents % 100 !== 0) return formatMoney(cents);
+  return "$" + (cents / 100).toLocaleString("en-US");
+}
+
 /** 245000 → "239 KB"; 3400000 → "3.2 MB". */
 export function formatFileSize(bytes: number): string {
   if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;

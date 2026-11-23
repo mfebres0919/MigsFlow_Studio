@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   // Do not announce which software runs the site.
   poweredByHeader: false,
+  // The year the site was built, for the footer (see components/marketing/CurrentYear.tsx).
+  env: { NEXT_PUBLIC_BUILD_YEAR: String(new Date().getFullYear()) },
   // Basic safety instructions sent to the browser with every page.
   async headers() {
     return [

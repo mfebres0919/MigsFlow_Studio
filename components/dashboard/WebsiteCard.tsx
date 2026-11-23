@@ -16,7 +16,7 @@ type WebsiteCardProps = {
 export default function WebsiteCard({ website, template }: WebsiteCardProps) {
   return (
     <article className="flex flex-col gap-5 rounded-panel border border-line bg-panel p-5">
-      <WebsiteThumbnail brandColor={website.brandColor} />
+      <WebsiteThumbnail website={website} />
 
       <div className="flex flex-wrap items-start justify-between gap-2">
         <h2 className="text-lg font-semibold">{website.name}</h2>

@@ -7,6 +7,7 @@ import Button from "@/components/ui/Button";
 import EmptyState from "@/components/ui/EmptyState";
 import ErrorState from "@/components/ui/ErrorState";
 import LoadingState from "@/components/ui/LoadingState";
+import HtmlTemplateFrame from "@/components/preview/HtmlTemplateFrame";
 import PreviewBar from "@/components/preview/PreviewBar";
 import TemplateView from "@/components/preview/TemplateView";
 import { useLoad } from "@/hooks/useLoad";
@@ -120,6 +121,19 @@ export default function PreviewContent() {
           action={backButton}
         />
       </main>
+    );
+  }
+
+  // A hand-written HTML template is a whole page of its own, shown in a frame
+  // that fills the screen below Studio's bar.
+  if (template.kind === "html") {
+    return (
+      <div className="flex h-dvh flex-col">
+        {!embedded && <PreviewBar websiteName={website.name} notice={notice} />}
+        <div id="main" className="flex min-h-0 flex-1 flex-col">
+          <HtmlTemplateFrame entry={template.entry} content={content} onNotice={setNotice} />
+        </div>
+      </div>
     );
   }
 

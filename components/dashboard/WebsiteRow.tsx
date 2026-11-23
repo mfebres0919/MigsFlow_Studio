@@ -10,7 +10,7 @@ export default function WebsiteRow({ website }: { website: Website }) {
   return (
     <div className="flex flex-wrap items-center gap-4 py-4">
       <div className="w-24 shrink-0">
-        <WebsiteThumbnail brandColor={website.brandColor} />
+        <WebsiteThumbnail website={website} />
       </div>
       <div className="min-w-40 flex-1">
         <h3 className="font-semibold">{website.name}</h3>

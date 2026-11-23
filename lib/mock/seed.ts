@@ -1,6 +1,8 @@
 import type { ActivityItem, Deployment, Purchase, Website } from "@/lib/types";
 import type { SiteContent } from "@/templates/types";
 import { sampleContent, starterContent, type CleaningContent } from "@/templates/cleaning-fresh/content";
+import { sampleContent as movingSample } from "@/templates/moving-bayou/content";
+import { templates } from "@/lib/mock/templates";
 
 // SAMPLE DATA. Everything here is made up for the prototype: the websites,
 // the addresses and the activity. Phase 3 replaces it with real rows from
@@ -16,11 +18,8 @@ export type DemoData = {
   purchases: Purchase[];
 };
 
-// SAMPLE PRICE. Miguelle's range for templates is $300 to $500; exact prices
-// are not set. This one figure exists so the Billing page has something to
-// show, and the page labels it as a sample. Real prices will come from the
-// database (and Stripe) in Phase 4, never from a component.
-const SAMPLE_TEMPLATE_PRICE_CENTS = 35000;
+// What each sample purchase cost: the template's price from the catalog.
+const priceOf = (templateId: string) => templates.find((template) => template.id === templateId)?.priceCents ?? 0;
 
 const HOUR = 60 * 60 * 1000;
 const DAY = 24 * HOUR;
@@ -94,8 +93,33 @@ export function buildSeed(now: Date): DemoData {
         updatedAt: ago(9 * DAY),
         publishedAt: null,
       },
+      // A website on the Moving Day template, filled in with its sample
+      // business so the template can be tried in the editor.
+      {
+        id: "site_bayou",
+        name: "Bayou City Movers",
+        templateId: "moving-bayou",
+        status: "draft",
+        hasUnpublishedChanges: false,
+        address: "bayou-city-movers.studio.example",
+        customDomain: null,
+        domainStatus: "none",
+        brandColor: "#C8102E",
+        draft: structuredClone(movingSample),
+        published: null,
+        updatedAt: ago(40 * 60 * 1000),
+        publishedAt: null,
+      },
     ],
+    // (The third website, on the Moving Day template, is added just below.)
     activity: [
+      {
+        id: "act_6",
+        kind: "purchased",
+        message: "You bought the Moving Day template.",
+        websiteId: "site_bayou",
+        at: ago(40 * 60 * 1000),
+      },
       {
         id: "act_5",
         kind: "edited",
@@ -141,10 +165,18 @@ export function buildSeed(now: Date): DemoData {
     // One purchase per website.
     purchases: [
       {
+        id: "pur_3",
+        templateId: "moving-bayou",
+        websiteId: "site_bayou",
+        amountCents: priceOf("moving-bayou"),
+        purchasedAt: ago(40 * 60 * 1000),
+        invoiceNumber: "INV-0003",
+      },
+      {
         id: "pur_2",
         templateId: "cleaning-fresh",
         websiteId: "site_brightside_commercial",
-        amountCents: SAMPLE_TEMPLATE_PRICE_CENTS,
+        amountCents: priceOf("cleaning-fresh"),
         purchasedAt: ago(9 * DAY),
         invoiceNumber: "INV-0002",
       },
@@ -152,7 +184,7 @@ export function buildSeed(now: Date): DemoData {
         id: "pur_1",
         templateId: "cleaning-fresh",
         websiteId: "site_brightside",
-        amountCents: SAMPLE_TEMPLATE_PRICE_CENTS,
+        amountCents: priceOf("cleaning-fresh"),
         purchasedAt: ago(12 * DAY),
         invoiceNumber: "INV-0001",
       },

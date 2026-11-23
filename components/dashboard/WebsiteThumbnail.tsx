@@ -1,20 +1,45 @@
-// A small drawing of a web page, tinted with the website's brand color.
-// It is a stand-in: a real miniature of the customer's site replaces it when
-// the editor's live preview exists (Milestone 5).
+"use client"; // it may need to read an uploaded picture from the browser's storage
+
+import { useMediaUrls } from "@/hooks/useMediaUrls";
+import { mediaIdFrom } from "@/lib/media/ref";
+import type { Website } from "@/lib/types";
+import { heroImageOf } from "@/lib/website-preview";
+
+// The small picture that stands for a website in lists. It shows the
+// website's own hero image, so it changes when the customer changes that
+// photo. A website with no hero image gets a simple drawing of a page instead.
 
 type WebsiteThumbnailProps = {
-  brandColor: string;
+  website: Website;
 };
 
-export default function WebsiteThumbnail({ brandColor }: WebsiteThumbnailProps) {
+const frame = "aspect-16/10 overflow-hidden rounded-control border border-line";
+
+export default function WebsiteThumbnail({ website }: WebsiteThumbnailProps) {
+  const hero = heroImageOf(website);
+  // An uploaded picture is stored as "media:<id>" and needs turning into an address.
+  const uploadId = hero ? mediaIdFrom(hero.src) : null;
+  const resolve = useMediaUrls(uploadId ? [uploadId] : []);
+  const src = hero ? resolve(hero.src) : "";
+
+  if (hero) {
+    return (
+      // aria-hidden: decoration, because the website's name is always written beside it.
+      <div aria-hidden="true" className={`${frame} bg-raised`}>
+        {/* The customer's own picture, so a plain <img> (see CLAUDE.md, handbook exceptions). */}
+        {src && <img src={src} alt="" loading="lazy" className="size-full object-cover" />}
+      </div>
+    );
+  }
+
   return (
     <div
-      aria-hidden="true" // decoration: the website's name is always written beside it
+      aria-hidden="true"
       // The brand color is data, not a design choice, so it cannot be a class.
       // It is passed in as a CSS variable (the handbook's "dynamic value"
       // exception) and used below as bg-(--brand).
-      style={{ "--brand": brandColor } as React.CSSProperties}
-      className="aspect-16/10 overflow-hidden rounded-control border border-line bg-white"
+      style={{ "--brand": website.brandColor } as React.CSSProperties}
+      className={`${frame} bg-white`}
     >
       <div className="flex h-[14%] items-center gap-[3%] bg-(--brand) px-[6%]">
         <span className="h-[30%] w-[18%] rounded-full bg-white/90" />

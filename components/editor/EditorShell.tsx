@@ -409,7 +409,9 @@ export default function EditorShell({ website: loaded, template }: EditorShellPr
 
           <section aria-label="Live preview" className={`min-w-0 flex-1 flex-col lg:flex ${phoneView === "preview" ? "flex" : "hidden"}`}>
             <PreviewPane
-              websiteId={website.id}
+              // A hand-written HTML template is shown directly, in editing mode.
+              // A React template is shown through Studio's own preview page.
+              src={template.kind === "html" ? `${template.entry}?studio=edit` : `/preview/${website.id}?embed=1`}
               content={content}
               pageKey={previewPage}
               device={device}

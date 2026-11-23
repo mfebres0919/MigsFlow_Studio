@@ -16,7 +16,8 @@ import type { SiteContent } from "@/templates/types";
 // postMessage (see lib/preview-messages.ts). Nothing is saved by doing so.
 
 type PreviewPaneProps = {
-  websiteId: string;
+  /** The page to show in the preview frame. */
+  src: string;
   content: SiteContent;
   pageKey: string;
   device: Device;
@@ -32,7 +33,7 @@ type PreviewPaneProps = {
 };
 
 export default function PreviewPane({
-  websiteId,
+  src,
   content,
   pageKey,
   device,
@@ -122,7 +123,7 @@ export default function PreviewPane({
         <div style={holderStyle} className="mx-auto overflow-hidden bg-white shadow-lg">
           <iframe
             ref={frame}
-            src={`/preview/${websiteId}?embed=1`}
+            src={src}
             title="Live preview of your website"
             style={frameStyle}
             className="origin-top-left border-0"

@@ -24,7 +24,14 @@ export type Template = {
   id: string;
   name: string;
   industry: Industry;
+  /** One line for the template's card in the marketplace. */
+  summary: string;
+  /** A fuller paragraph for the template's own page. */
   description: string;
+  /** What a buyer gets, as short points. */
+  features: string[];
+  /** Whole cents: 45000 = $450.00. */
+  priceCents: number;
 };
 
 /**

@@ -62,7 +62,8 @@ export default function ListField({ field, value, onChange, context }: ListField
               <p className="font-medium">
                 {Name} {index + 1}
               </p>
-              <div className="flex">
+              {/* A list the design fixes in number has no move or remove buttons. */}
+              <div className={field.fixed ? "hidden" : "flex"}>
                 <button type="button" onClick={() => move(index, -1)} disabled={index === 0} className={iconButton}>
                   <ArrowUp aria-hidden="true" className="size-4" />
                   <span className="sr-only">Move {name} {index + 1} up</span>
@@ -93,7 +94,7 @@ export default function ListField({ field, value, onChange, context }: ListField
         ))}
       </ol>
 
-      <div className="mt-3">
+      <div className={field.fixed ? "hidden" : "mt-3"}>
         <Button variant="secondary" size="sm" onClick={add} disabled={full}>
           <Plus aria-hidden="true" className="size-4" />
           Add {name}

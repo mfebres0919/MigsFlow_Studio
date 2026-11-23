@@ -1,0 +1,45 @@
+/* ==========================================================================
+   MigsFlow Studio bridge: editing outlines
+
+   Loaded by studio-bridge.js only while a template is open in Studio's
+   editor. It never loads on a finished website. The colors are fixed because
+   they sit on top of the customer's website, whatever its own colors are.
+   ========================================================================== */
+
+/* Anything that can be edited shows a pointer and, on hover, a dashed outline.
+   The white ring keeps the blue visible on dark and colored backgrounds. */
+.studio-editing [data-edit-kind] {
+    cursor: pointer;
+    border-radius: 4px;
+    outline: 2px dashed transparent;
+    outline-offset: 4px;
+}
+
+.studio-editing [data-edit-kind="text"] {
+    cursor: text;
+}
+
+.studio-editing [data-edit-kind]:hover {
+    outline-color: #2563eb;
+    box-shadow: 0 0 0 4px rgb(255 255 255 / 0.85);
+}
+
+/* The text being typed in. */
+.studio-editing [data-edit-kind="text"]:focus {
+    outline: 2px solid #2563eb;
+    box-shadow: 0 0 0 4px rgb(255 255 255 / 0.85);
+}
+
+/* A photo with a picture file being dragged over it: "drop it here". */
+.studio-editing [data-drop-over] {
+    outline: 4px solid #2563eb;
+    outline-offset: 4px;
+    box-shadow: 0 0 0 8px rgb(255 255 255 / 0.85);
+    opacity: 0.7;
+}
+
+/* A text that has been emptied keeps some width, so it can still be clicked. */
+.studio-editing [data-edit-kind="text"]:empty::before {
+    content: "Type here";
+    opacity: 0.55;
+}

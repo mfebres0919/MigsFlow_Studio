@@ -22,6 +22,8 @@ export async function getWebsite(id: string): Promise<Website | null> {
   return websites.find((website) => website.id === id) ?? null;
 }
 
+// The catalog itself lives in lib/data/templates.ts; this is the same list,
+// kept here so the dashboard's pages can ask for websites and templates together.
 export async function getTemplates(): Promise<Template[]> {
   return templates;
 }
@@ -33,10 +35,14 @@ const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b)
 // The website's name and thumbnail color follow its content. Every template
 // keeps these two values in the same place: site.business.name and site.brand.color.
 function summaryFrom(content: SiteContent, fallback: Website): Pick<Website, "name" | "brandColor"> {
-  const name = content.site.business?.name;
+  const business = content.site.business;
   const color = content.site.brand?.color;
+  // Some templates split the name in two so the last word can be highlighted.
+  const name = [business?.name, business?.nameAccent]
+    .filter((part): part is string => typeof part === "string" && part.trim() !== "")
+    .join(" ");
   return {
-    name: typeof name === "string" && name.trim() ? name : fallback.name,
+    name: name || fallback.name,
     brandColor: typeof color === "string" ? color : fallback.brandColor,
   };
 }

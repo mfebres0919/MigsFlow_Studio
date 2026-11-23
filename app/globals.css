@@ -124,12 +124,59 @@
   }
 }
 
-/* The fade between light and dark mode (see components/ui/ThemeToggle.tsx).
-   These two names are the "before" and "after" pictures of the page. */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 350ms;
-  animation-timing-function: ease-in-out;
+/* Switching between light and dark mode (see lib/theme.ts).
+   ::view-transition-old and -new are the "before" and "after" pictures of the
+   page. Normally the browser cross-fades them. During a theme switch that
+   fade is turned off, and the "after" picture is laid on top and revealed
+   through a growing circle, which lib/theme.ts animates from the button. */
+html[data-theme-wipe]::view-transition-old(root),
+html[data-theme-wipe]::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html[data-theme-wipe]::view-transition-new(root) {
+  z-index: 1;
+}
+
+/* An entrance used once, on the marketplace's showcase: rise up into place. */
+@theme {
+  --animate-rise: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-flow: flow 14s linear infinite;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 2rem;
+  }
+}
+
+/* The flowing lines behind the hero: their dashes slide along the curve. */
+@keyframes flow {
+  to {
+    stroke-dashoffset: -1640; /* one full lap: the bright stretch plus its gap */
+  }
+}
+
+@layer components {
+  /* The soft blue glow behind a public page's top section. It is built from
+     the color tokens, so it changes with light and dark mode by itself. */
+  .brand-backdrop {
+    position: relative;
+    isolation: isolate; /* keeps the glow behind this section only */
+    overflow: clip;
+  }
+
+  .brand-backdrop::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(55% 60% at 88% 8%, color-mix(in srgb, var(--color-signal) 20%, transparent), transparent 70%),
+      radial-gradient(45% 55% at 4% 100%, color-mix(in srgb, var(--color-accent) 14%, transparent), transparent 70%);
+  }
 }
 
 @layer base {
