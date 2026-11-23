@@ -25,8 +25,9 @@ export default function SiteHeader() {
   return (
     // "sticky" keeps the bar at the top while the page scrolls under it.
     <header className="sticky top-0 z-30 px-3 pt-3 sm:px-6">
-      {/* The bar itself: see-through with the page blurred behind it. */}
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 rounded-full border border-line bg-panel/80 py-2 pr-2 pl-4 shadow-lg shadow-accent/5 backdrop-blur-md">
+      {/* The bar itself: nearly solid. No blur behind it: blurring the page on
+          every frame of a scroll is what made the page lag (2026-11-23). */}
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 rounded-full border border-line bg-panel/90 py-2 pr-2 pl-4 shadow-lg shadow-accent/5">
         <Link href="/" className="flex items-center gap-2.5 rounded-full pr-2">
           <Image src={mark} alt="" width={30} height={30} />
           <span className="font-display text-sm font-semibold tracking-wide sm:text-base">{site.name}</span>

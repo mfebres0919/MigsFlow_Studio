@@ -1,7 +1,7 @@
 import type { ActivityItem, Deployment, Purchase, Website } from "@/lib/types";
 import type { SiteContent } from "@/templates/types";
 import { sampleContent, starterContent, type CleaningContent } from "@/templates/cleaning-fresh/content";
-import { sampleContent as movingSample } from "@/templates/moving-bayou/content";
+import { movingEasy } from "@/templates/moving-easy";
 import { templates } from "@/lib/mock/templates";
 
 // SAMPLE DATA. Everything here is made up for the prototype: the websites,
@@ -93,31 +93,30 @@ export function buildSeed(now: Date): DemoData {
         updatedAt: ago(9 * DAY),
         publishedAt: null,
       },
-      // A website on the Moving Day template, filled in with its sample
-      // business so the template can be tried in the editor.
+      // A website on the Easy Move template, filled in with its sample
+      // business so a second template can be tried in the editor.
       {
-        id: "site_bayou",
-        name: "Bayou City Movers",
-        templateId: "moving-bayou",
+        id: "site_northgate",
+        name: "Northgate Moving Co.",
+        templateId: "moving-easy",
         status: "draft",
         hasUnpublishedChanges: false,
-        address: "bayou-city-movers.studio.example",
+        address: "northgate-moving.studio.example",
         customDomain: null,
         domainStatus: "none",
-        brandColor: "#C8102E",
-        draft: structuredClone(movingSample),
+        brandColor: "#c2410c",
+        draft: structuredClone(movingEasy.sampleContent),
         published: null,
         updatedAt: ago(40 * 60 * 1000),
         publishedAt: null,
       },
     ],
-    // (The third website, on the Moving Day template, is added just below.)
     activity: [
       {
         id: "act_6",
         kind: "purchased",
-        message: "You bought the Moving Day template.",
-        websiteId: "site_bayou",
+        message: "You bought the Easy Move template.",
+        websiteId: "site_northgate",
         at: ago(40 * 60 * 1000),
       },
       {
@@ -166,9 +165,9 @@ export function buildSeed(now: Date): DemoData {
     purchases: [
       {
         id: "pur_3",
-        templateId: "moving-bayou",
-        websiteId: "site_bayou",
-        amountCents: priceOf("moving-bayou"),
+        templateId: "moving-easy",
+        websiteId: "site_northgate",
+        amountCents: priceOf("moving-easy"),
         purchasedAt: ago(40 * 60 * 1000),
         invoiceNumber: "INV-0003",
       },

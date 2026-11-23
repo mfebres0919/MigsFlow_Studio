@@ -142,20 +142,12 @@ html[data-theme-wipe]::view-transition-new(root) {
 /* An entrance used once, on the marketplace's showcase: rise up into place. */
 @theme {
   --animate-rise: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  --animate-flow: flow 14s linear infinite;
 }
 
 @keyframes rise {
   from {
     opacity: 0;
-    translate: 0 2rem;
-  }
-}
-
-/* The flowing lines behind the hero: their dashes slide along the curve. */
-@keyframes flow {
-  to {
-    stroke-dashoffset: -1640; /* one full lap: the bright stretch plus its gap */
+    transform: translateY(2rem);
   }
 }
 
@@ -177,6 +169,217 @@ html[data-theme-wipe]::view-transition-new(root) {
       radial-gradient(55% 60% at 88% 8%, color-mix(in srgb, var(--color-signal) 20%, transparent), transparent 70%),
       radial-gradient(45% 55% at 4% 100%, color-mix(in srgb, var(--color-accent) 14%, transparent), transparent 70%);
   }
+}
+
+/* ==========================================================================
+   The migsflow.com look on Studio's public pages (Miguelle, 2026-11-23:
+   "the same vibe and feeling as my main website"). Taken from the main
+   site's css/global.css, styles.css and css/theme.css, and adapted to
+   Studio's light and dark themes.
+   ========================================================================== */
+
+/* Gentle floating, for the laptop and phone in the landing page's hero.
+   Two speeds so the devices drift past each other instead of bobbing together.
+
+   Speed rule for every looping animation on the public pages (2026-11-23,
+   after the pages lagged in Firefox): animate only "transform" and
+   "opacity". The graphics chip can move and fade a finished picture by
+   itself, every frame, without redrawing it. Animating anything else (a
+   shadow's blur, a filter, an SVG line) makes the browser repaint it on
+   every frame, which is what made scrolling stutter. Also no box-shadow or
+   filter on something that moves. */
+@theme {
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float-slow 7s ease-in-out -2s infinite;
+  --animate-caption: caption 0.5s ease both;
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-2.5%);
+  }
+}
+
+@keyframes float-slow {
+  50% {
+    transform: translateY(-1.6%);
+  }
+}
+
+@keyframes caption {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@layer components {
+  /* The page background behind every public page: soft brand-colored light
+     glowing in from both sides, all the way down (the main site's body). */
+  .site-backdrop {
+    background:
+      radial-gradient(520px 760px at 108% 2%, rgb(0 119 255 / 0.26), transparent 64%),
+      radial-gradient(520px 760px at -4% 12%, rgb(24 201 255 / 0.22), transparent 64%),
+      radial-gradient(520px 520px at 104% 38%, rgb(124 108 255 / 0.16), transparent 70%),
+      radial-gradient(520px 520px at 0% 62%, rgb(0 119 255 / 0.16), transparent 70%),
+      radial-gradient(520px 520px at 100% 82%, rgb(24 201 255 / 0.2), transparent 70%),
+      radial-gradient(520px 520px at 6% 98%, rgb(124 108 255 / 0.16), transparent 70%),
+      linear-gradient(180deg, #f8fbff 0%, #eef4ff 50%, #e8f0ff 100%);
+  }
+
+  [data-theme="dark"] .site-backdrop {
+    background:
+      radial-gradient(520px 760px at 108% 2%, rgb(0 104 231 / 0.42), transparent 62%),
+      radial-gradient(520px 760px at -4% 12%, rgb(0 169 231 / 0.2), transparent 62%),
+      radial-gradient(520px 520px at 104% 38%, rgb(0 143 225 / 0.22), transparent 70%),
+      radial-gradient(520px 520px at 0% 62%, rgb(7 189 255 / 0.14), transparent 70%),
+      radial-gradient(520px 520px at 100% 82%, rgb(0 104 231 / 0.22), transparent 70%),
+      radial-gradient(520px 520px at 6% 98%, rgb(124 108 255 / 0.14), transparent 70%),
+      var(--color-ink);
+  }
+
+  /* Words in the brand gradient, like "Wins More Customers" on the main site.
+     Both ends of each gradient pass 4.5:1 on that theme's background. */
+  .text-brand-gradient {
+    background: linear-gradient(90deg, #1d63ed 20%, #0b3cff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  [data-theme="dark"] .text-brand-gradient {
+    background-image: linear-gradient(90deg, #18c9ff 20%, #5b85ff 100%);
+  }
+
+  /* The fill of the main buttons and the footer's round "bubble": starts at a
+     deeper cyan than the logo so white text stays above 4.5:1 all the way across. */
+  .bg-brand-gradient {
+    background-image: linear-gradient(90deg, #0077c2 0%, #0b3cff 100%);
+  }
+
+  /* The soft round glow behind the laptop and phone. */
+  .devices-glow {
+    background: radial-gradient(closest-side at 58% 42%, rgb(24 201 255 / 0.18), rgb(11 60 255 / 0.06) 60%, transparent);
+  }
+
+  /* Stars (components/marketing/StarField.tsx). Dark mode: small white
+     glows. Light mode: blue sparkles, so they still show on the pale page.
+     The glow is painted INSIDE each star as a soft round gradient, not as
+     box-shadows around it: the star is drawn once, and the twinkle only
+     fades and scales that finished picture. (The main site uses three
+     box-shadows, which Firefox redraws on every frame of the twinkle.) */
+  .star-field {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    contain: layout style paint;
+  }
+
+  .star {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    margin: -13px 0 0 -13px; /* so top/left mark the star's centre */
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      #3d8bff 0 2px,
+      rgb(61 139 255 / 0.6) 3px,
+      rgb(24 201 255 / 0.28) 6px,
+      rgb(124 108 255 / 0.12) 9px,
+      transparent 13px
+    );
+    opacity: 0.45;
+    will-change: transform, opacity; /* keep each star on the graphics chip */
+    animation: star-twinkle-light 4s ease-in-out infinite;
+  }
+
+  [data-theme="dark"] .star {
+    background: radial-gradient(
+      circle,
+      #fff 0 1.5px,
+      rgb(255 255 255 / 0.6) 2.5px,
+      rgb(190 220 255 / 0.28) 5px,
+      rgb(170 200 255 / 0.12) 8px,
+      transparent 12px
+    );
+    opacity: 0.25;
+    animation-name: star-twinkle;
+  }
+
+  .star:nth-child(1)  { top: 10%; left: 15%; animation-delay: 0.2s; }
+  .star:nth-child(2)  { top: 18%; left: 60%; animation-delay: 1.1s; }
+  .star:nth-child(3)  { top: 25%; left: 35%; animation-delay: 2.4s; }
+  .star:nth-child(4)  { top: 30%; left: 80%; animation-delay: 0.7s; }
+  .star:nth-child(5)  { top: 38%; left: 20%; animation-delay: 3.2s; }
+  .star:nth-child(6)  { top: 45%; left: 50%; animation-delay: 1.8s; }
+  .star:nth-child(7)  { top: 52%; left: 72%; animation-delay: 0.4s; }
+  .star:nth-child(8)  { top: 58%; left: 28%; animation-delay: 2.7s; }
+  .star:nth-child(9)  { top: 65%; left: 10%; animation-delay: 1.3s; }
+  .star:nth-child(10) { top: 68%; left: 90%; animation-delay: 3.6s; }
+  .star:nth-child(11) { top: 75%; left: 42%; animation-delay: 0.9s; }
+  .star:nth-child(12) { top: 82%; left: 65%; animation-delay: 2.1s; }
+  .star:nth-child(13) { top: 85%; left: 18%; animation-delay: 3.9s; }
+  .star:nth-child(14) { top: 88%; left: 78%; animation-delay: 1.6s; }
+  .star:nth-child(15) { top: 92%; left: 33%; animation-delay: 0.3s; }
+  .star:nth-child(16) { top: 12%; left: 90%; animation-delay: 2.9s; }
+  .star:nth-child(17) { top: 22%; left: 5%;  animation-delay: 1.5s; }
+  .star:nth-child(18) { top: 40%; left: 95%; animation-delay: 3.1s; }
+  .star:nth-child(19) { top: 55%; left: 5%;  animation-delay: 0.6s; }
+  .star:nth-child(20) { top: 70%; left: 85%; animation-delay: 2s; }
+
+  /* A streak of light that crosses the hero now and then. */
+  .shooting-star {
+    position: absolute;
+    width: 140px;
+    height: 2px;
+    border-radius: 999px;
+    opacity: 0;
+    background: linear-gradient(90deg, transparent, #3d8bff, transparent);
+    transform: rotate(-20deg);
+    will-change: transform, opacity;
+    animation: shoot 5s linear infinite;
+  }
+
+  [data-theme="dark"] .shooting-star {
+    background: linear-gradient(90deg, transparent, #fff, transparent);
+  }
+
+  .shooting-star--one { top: 20%; left: -30%; animation-delay: 14s; }
+  .shooting-star--two { top: 55%; left: -40%; animation-delay: 10s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .star,
+    .shooting-star {
+      animation: none;
+    }
+  }
+}
+
+/* Animations inside a section scrolled out of view stand still
+   (components/marketing/PauseOffscreen.tsx). Nobody can see them, so the
+   computer should not spend effort drawing them. */
+[data-offscreen],
+[data-offscreen] * {
+  animation-play-state: paused !important;
+}
+
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.25); }
+}
+
+@keyframes star-twinkle-light {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+@keyframes shoot {
+  0% { transform: translate(0, 0) rotate(-20deg); opacity: 0; }
+  10%, 35% { opacity: 1; }
+  60% { transform: translate(140vw, 35vh) rotate(-20deg); opacity: 0; }
+  100% { opacity: 0; }
 }
 
 @layer base {

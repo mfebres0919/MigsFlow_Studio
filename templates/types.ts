@@ -147,7 +147,7 @@ type TemplateDesign =
     }
   | {
       kind: "html";
-      /** The address of the template's page, e.g. "/site-templates/moving-bayou/index.html". */
+      /** The address of the template's page, e.g. "/site-templates/your-template/index.html". */
       entry: string;
     };
 

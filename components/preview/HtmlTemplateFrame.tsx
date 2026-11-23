@@ -14,7 +14,7 @@ import type { SiteContent } from "@/templates/types";
 // words and pictures in place.
 
 type HtmlTemplateFrameProps = {
-  /** The template's page, e.g. "/site-templates/moving-bayou/index.html". */
+  /** The template's page, e.g. "/site-templates/your-template/index.html". */
   entry: string;
   content: SiteContent;
   /** Something the page wants the customer told, e.g. "the form did not send". */

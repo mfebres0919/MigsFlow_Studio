@@ -1,13 +1,16 @@
 // The flowing lines along the bottom of the hero: MigsFlow's "flow", drawn as
-// three curves in the brand's cyan-to-blue. Each curve is drawn twice: once
-// as a faint, unbroken line, and once as a single brighter stretch that
-// travels slowly along it. Purely decoration, so it is hidden from screen
-// readers, and the travelling stretch is skipped for reduced motion.
+// three curves in the brand's cyan-to-blue. Purely decoration, so it is
+// hidden from screen readers.
+//
+// They used to have a bright stretch sliding along each curve. That was
+// dropped (2026-11-23): animating a line's dashes makes the browser redraw
+// the whole drawing on every frame, and the pages lagged in Firefox. Now the
+// lines are still, so they are drawn once.
 
 const curves = [
-  { d: "M-40 150 C 220 70, 380 230, 640 130 S 1020 -30, 1240 40", width: 2, seconds: 14 },
-  { d: "M-40 205 C 260 145, 420 285, 700 185 S 1040 25, 1240 95", width: 1.5, seconds: 19 },
-  { d: "M-40 100 C 180 20, 360 190, 600 80 S 980 -90, 1240 -30", width: 1, seconds: 24 },
+  { d: "M-40 150 C 220 70, 380 230, 640 130 S 1020 -30, 1240 40", width: 2 },
+  { d: "M-40 205 C 260 145, 420 285, 700 185 S 1040 25, 1240 95", width: 1.5 },
+  { d: "M-40 100 C 180 20, 360 190, 600 80 S 980 -90, 1240 -30", width: 1 },
 ];
 
 export default function FlowLines() {
@@ -30,19 +33,7 @@ export default function FlowLines() {
       </defs>
       <g fill="none" stroke="url(#flow-stroke)" strokeLinecap="round">
         {curves.map((curve) => (
-          <g key={curve.d}>
-            <path d={curve.d} strokeWidth={curve.width} opacity="0.22" />
-            {/* One bright stretch (180 long) with a long gap after it, sliding along the curve.
-                The duration is data, so it is set with a style (the handbook's dynamic-value exception). */}
-            <path
-              d={curve.d}
-              strokeWidth={curve.width}
-              strokeDasharray="180 1460"
-              opacity="0.9"
-              style={{ animationDuration: `${curve.seconds}s` }}
-              className="motion-safe:animate-flow"
-            />
-          </g>
+          <path key={curve.d} d={curve.d} strokeWidth={curve.width} opacity="0.5" />
         ))}
       </g>
     </svg>

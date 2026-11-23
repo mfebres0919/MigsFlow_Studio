@@ -1,13 +1,13 @@
 # Making a website into a Studio template
 
-*For Miguelle. How to take a site you built in HTML, CSS and JavaScript and make it editable in MigsFlow Studio. The Moving Day template (`public/site-templates/moving-bayou/`) is the worked example.*
+*For Miguelle. How to take a site you built in HTML, CSS and JavaScript and make it editable in MigsFlow Studio. The worked example was the Moving Day template, removed on 2026-11-23; its files are still in Git history (commit `cb84252`): ask Claude to show them, or run `git show cb84252:templates/moving-bayou/index.ts`.*
 
 You do not rewrite anything. Studio shows your real page and fills in the customer's words and pictures. Your layout, CSS, sliders and animations stay exactly as you built them.
 
 ## The five steps
 
 ### 1. Put the site in Studio
-Copy the finished site into `public/site-templates/<template-id>/` (for example `public/site-templates/moving-bayou/`). Keep `index.html`, your `css/`, `javascript/`, `fonts/` and `images/` folders. Leave out source images the page does not use.
+Copy the finished site into `public/site-templates/<template-id>/` (for example `public/site-templates/my-movers/`). Keep `index.html`, your `css/`, `javascript/`, `fonts/` and `images/` folders. Leave out source images the page does not use.
 
 ### 2. Add one script to `index.html`
 In the `<head>`, after your own scripts:
@@ -53,13 +53,22 @@ python3 tools/sample-content-from-html.py <template-id>
 This reads the text and pictures already in your page and writes `templates/<template-id>/sample-content.json`. Run it again whenever you change the page's default wording.
 
 ### 5. Describe the fields
-Three small files in `templates/<template-id>/`, copied from `templates/moving-bayou/` and adjusted:
+Three small files in `templates/<template-id>/`, modelled on Moving Day's (see the note at the top) and adjusted:
 
 - `schema.ts`: every address from step 3, with the label the customer sees and the kind of input (text, long text, phone, email, image, color). Mark what must be changed before publishing with `publishCheck: "required"`.
 - `content.ts`: the placeholder text a new customer starts with, and the list of pictures that come with the template.
 - `index.ts`: the template's id, the address of its page, and `heroImage`: the address of the big photo at the top (for example `home/hero/slides/h1/image`). Studio uses that photo as the website's picture in My Websites.
 
 Then add it to `templates/registry.ts` and, with its price, to `lib/mock/templates.ts`. Claude can do this step from your marked-up page.
+
+### 6. Make its pictures for the shop
+The shop shows each template as a picture of its hero section. Open the template's live preview, take two screenshots of the top of the page (1440 × 900 and 390 × 844 pixels), then run:
+
+```
+python3 tools/make-template-pictures.py <template-id> laptop.png phone.png
+```
+
+It writes the shop card picture and the landing page's laptop and phone pictures. To show it on the landing page's laptop too, add its id to `lib/showcase.ts`.
 
 ## Check it
 

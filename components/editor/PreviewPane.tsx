@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
-import DeviceToggle, { deviceWidths, type Device } from "@/components/editor/DeviceToggle";
+import { useEffect, useRef, useState } from "react";
+import DeviceToggle, { type Device } from "@/components/editor/DeviceToggle";
+import { useDeviceFrame } from "@/hooks/useDeviceFrame";
 import { isStudioMessage, type EditorMessage } from "@/lib/preview-messages";
 import type { SiteContent } from "@/templates/types";
 
@@ -44,10 +45,8 @@ export default function PreviewPane({
   onDropImage,
 }: PreviewPaneProps) {
   const frame = useRef<HTMLIFrameElement>(null);
-  const area = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
-  const [space, setSpace] = useState({ width: 0, height: 0 });
 
   // Listen for messages coming back from the preview page.
   useEffect(() => {
@@ -75,35 +74,8 @@ export default function PreviewPane({
     frame.current?.contentWindow?.postMessage(message, window.location.origin);
   }, [ready, content, pageKey]);
 
-  // Measure the space available, and keep measuring as the window is resized.
-  useEffect(() => {
-    const element = area.current;
-    if (!element) return;
-    const observer = new ResizeObserver(([entry]) => {
-      setSpace({ width: entry.contentRect.width, height: entry.contentRect.height });
-    });
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
-
-  // "Fit": the website is exactly as wide as this pane, at real size. Drag
-  // the editing panel wider or thinner and the website's layout changes with it.
-  //
-  // Desktop, Tablet, Phone: the website is drawn at that device's real width
-  // (1280px for desktop) and then shrunk to fit, like a photo of a screen. So
-  // "Desktop" shows the true desktop layout even when this pane is only 700px wide.
-  const pageWidth =
-    device === "fit" ? space.width : device === "desktop" ? Math.max(deviceWidths.desktop, space.width) : deviceWidths[device];
-  const scale = space.width > 0 && pageWidth > 0 ? Math.min(1, space.width / pageWidth) : 1;
-
-  // Sizes worked out at run time cannot be classes, so they are styles (the
-  // handbook's dynamic-value exception).
-  const holderStyle: CSSProperties = { width: pageWidth * scale, height: space.height };
-  const frameStyle: CSSProperties = {
-    width: pageWidth,
-    height: scale > 0 ? space.height / scale : space.height,
-    transform: `scale(${scale})`,
-  };
+  // How wide the website is drawn, and how much it is shrunk (hooks/useDeviceFrame.ts).
+  const { area, pageWidth, holderStyle, frameStyle } = useDeviceFrame(device);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">

@@ -7,7 +7,7 @@ import { buildSeed, type DemoData } from "@/lib/mock/seed";
 // Only the files in lib/data/ use this. In Phase 3 this file is deleted and
 // those files talk to Supabase instead.
 
-const STORAGE_KEY = "migsflow-studio:demo:v7"; // bump the number if the data shape changes
+const STORAGE_KEY = "migsflow-studio:demo:v8"; // bump the number if the data shape changes
 
 // Data saved by an earlier version of the prototype may lack things that
 // were added later. This fills those in, so nobody's saved edits are lost

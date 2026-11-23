@@ -5,9 +5,10 @@ import Badge from "@/components/ui/Badge";
 import { formatPrice } from "@/lib/format";
 import { getIndustry } from "@/lib/industries";
 import type { Template } from "@/lib/types";
-import { templateHeroImage } from "@/lib/website-preview";
+import { templateCardImage } from "@/lib/showcase";
 
-// One template in the marketplace grid: its hero image in a browser frame,
+// One template in the marketplace grid: a picture of its hero section (the
+// top of its home page) in a browser frame,
 // then its name, industry, one-line summary and price. The whole card leads
 // to the template's page, and lifts slightly when pointed at.
 
@@ -18,7 +19,6 @@ type TemplateCardProps = {
 };
 
 export default function TemplateCard({ template, first = false }: TemplateCardProps) {
-  const hero = templateHeroImage(template.id);
   const industry = getIndustry(template.industry);
 
   return (
@@ -30,14 +30,12 @@ export default function TemplateCard({ template, first = false }: TemplateCardPr
         <span className="sr-only">Price: </span>
         {formatPrice(template.priceCents)}
       </p>
-      {hero && (
-        <BrowserFrame
-          src={hero.src}
-          address={`${template.name.toLowerCase().replace(/\s+/g, "")}.template`}
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-          preload={first}
-        />
-      )}
+      <BrowserFrame
+        src={templateCardImage(template.id)}
+        address={`${template.name.toLowerCase().replace(/\s+/g, "")}.template`}
+        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+        preload={first}
+      />
 
       <div className="flex flex-1 flex-col gap-2 px-1">
         <div className="flex flex-wrap items-start justify-between gap-2">

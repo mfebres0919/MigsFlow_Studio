@@ -8,7 +8,7 @@ matching sample-content.json, so the page and its content can never disagree.
 
 Run it again whenever the page's default wording or pictures change:
 
-    python3 tools/sample-content-from-html.py moving-bayou
+    python3 tools/sample-content-from-html.py your-template-id
 
 Sections that are not text on the page (colors, social links) are kept from
 the existing sample-content.json if there is one.

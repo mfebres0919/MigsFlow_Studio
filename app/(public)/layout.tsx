@@ -1,3 +1,4 @@
+import PauseOffscreen from "@/components/marketing/PauseOffscreen";
 import SiteFooter from "@/components/marketing/SiteFooter";
 import SiteHeader from "@/components/marketing/SiteHeader";
 import BackToTop from "@/components/ui/BackToTop";
@@ -9,7 +10,8 @@ import BackToTop from "@/components/ui/BackToTop";
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     // A column as tall as the screen, so a short page still has its footer at the bottom.
-    <div className="flex min-h-dvh flex-col">
+    // "site-backdrop" (app/globals.css) is the soft brand glow from migsflow.com, down the whole page.
+    <div className="site-backdrop flex min-h-dvh flex-col">
       <SiteHeader />
       {/* pt-4: a little air under the floating header. Pages that open with a
           PageHero pull themselves up beneath the header instead. */}
@@ -17,6 +19,8 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         {children}
       </main>
       <SiteFooter />
+      {/* Freezes the stars and other animations while they are scrolled out of view. */}
+      <PauseOffscreen />
       <BackToTop />
     </div>
   );

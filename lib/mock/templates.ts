@@ -4,26 +4,14 @@ import type { Template } from "@/lib/types";
 // live; no page or component has a price written into it. In Phase 4 this
 // list comes from the database and Stripe.
 //
-// Prices are whole cents (45000 = $450.00). Miguelle set Moving Day at $450
-// (2026-11-22) and asked Claude to pick the others within $300 to $500.
+// Prices are whole cents (35000 = $350.00), between $300 and $500
+// (Miguelle's range). The five basic templates added 2026-11-23 are Claude's
+// placeholders (Miguelle: "make them as basic as possible"), priced by Claude.
+
+/** Optional hosting through MigsFlow, per month (Miguelle, 2026-11-22: $25/mo). */
+export const hostingMonthlyCents = 2500;
+
 export const templates: Template[] = [
-  {
-    id: "moving-bayou",
-    name: "Moving Day",
-    industry: "moving",
-    summary: "A bold one-page site with a photo slideshow and a step-by-step quote form.",
-    description:
-      "Built for moving companies that win work on trust and speed. Visitors see your crew in action, get a quote in four short steps, and find your services, areas and process on one page.",
-    features: [
-      "Photo slideshow at the top of the page",
-      "Step-by-step quote form",
-      "Nine services with photos and prices",
-      "Areas you serve",
-      "Four-step process and your numbers at a glance",
-      "Contact section with tap-to-call",
-    ],
-    priceCents: 45000,
-  },
   {
     id: "cleaning-fresh",
     name: "Fresh Start",
@@ -39,6 +27,56 @@ export const templates: Template[] = [
       "Quote request form",
       "Twelve font pairs to choose from",
     ],
+    priceCents: 35000,
+  },
+  {
+    id: "cleaning-slate",
+    name: "Clean Slate",
+    industry: "cleaning",
+    summary: "A simple one-page site with a big photo across the top.",
+    description:
+      "A plain, dependable one-page site for cleaning companies: a full-width photo with your main message, your services, a short about section and a contact form.",
+    features: ["One page: top section, services, About and Contact", "Contact form and tap-to-call phone number", "Your brand color and twelve font pairs", "Looks right on phones"],
+    priceCents: 30000,
+  },
+  {
+    id: "moving-easy",
+    name: "Easy Move",
+    industry: "moving",
+    summary: "A simple one-page site with your message beside a photo.",
+    description:
+      "A straightforward one-page site for movers: your message and a photo side by side, your services, a short about section and a quote form.",
+    features: ["One page: top section, services, About and Contact", "Contact form and tap-to-call phone number", "Your brand color and twelve font pairs", "Looks right on phones"],
+    priceCents: 35000,
+  },
+  {
+    id: "moving-haul",
+    name: "Steady Haul",
+    industry: "moving",
+    summary: "A simple one-page site with a big photo across the top.",
+    description:
+      "A bold but simple one-page site for moving and hauling companies: a full-width photo with your main message, your services, an about section and a contact form.",
+    features: ["One page: top section, services, About and Contact", "Contact form and tap-to-call phone number", "Your brand color and twelve font pairs", "Looks right on phones"],
+    priceCents: 40000,
+  },
+  {
+    id: "nonprofit-door",
+    name: "Open Door",
+    industry: "nonprofit",
+    summary: "A simple one-page site with your mission beside a photo.",
+    description:
+      "A warm one-page site for community organizations: your mission and a photo side by side, your programs, an about section and a contact form for volunteers and donors.",
+    features: ["One page: top section, programs, About and Contact", "Contact form and tap-to-call phone number", "Your brand color and twelve font pairs", "Looks right on phones"],
+    priceCents: 30000,
+  },
+  {
+    id: "nonprofit-ground",
+    name: "Common Ground",
+    industry: "nonprofit",
+    summary: "A simple one-page site with a big photo across the top.",
+    description:
+      "A one-page site for nonprofits: a full-width photo with your mission, your programs, why your work matters, and a way to get in touch.",
+    features: ["One page: top section, programs, About and Contact", "Contact form and tap-to-call phone number", "Your brand color and twelve font pairs", "Looks right on phones"],
     priceCents: 35000,
   },
 ];

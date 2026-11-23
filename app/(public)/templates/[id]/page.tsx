@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Check, ChevronLeft } from "lucide-react";
+import { Check, ChevronLeft, Eye } from "lucide-react";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import DemoLabel from "@/components/ui/DemoLabel";
 import { getTemplate, getTemplates } from "@/lib/data/templates";
 import { formatMoney } from "@/lib/format";
 import { getIndustry } from "@/lib/industries";
-import { templateHeroImage } from "@/lib/website-preview";
+import { templateCardImage } from "@/lib/showcase";
 import { getTemplateDefinition } from "@/templates/registry";
 
 // "/templates/<template id>": one template's own page.
@@ -30,7 +30,6 @@ export default async function TemplatePage({ params }: PageProps<"/templates/[id
   if (!template) notFound();
 
   const industry = getIndustry(template.industry);
-  const hero = templateHeroImage(template.id);
   // The list of what a buyer can change comes straight from the template's
   // schema, so it can never promise something the editor does not offer.
   const definition = getTemplateDefinition(template.id);
@@ -52,11 +51,21 @@ export default async function TemplatePage({ params }: PageProps<"/templates/[id
       <div className="mt-4 grid gap-10 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:gap-14">
         {/* The picture, and under it the longer lists. */}
         <div className="grid content-start gap-10">
-          <div className="relative aspect-16/10 overflow-hidden rounded-panel border border-line bg-raised">
-            {hero && (
-              <Image src={hero.src} alt="" fill sizes="(min-width: 1024px) 60vw, 100vw" preload className="object-cover" />
-            )}
-          </div>
+          {/* The picture opens the live preview too. The words in the link are
+              for screen readers; sighted visitors see "Live preview" on hover. */}
+          <Link
+            href={`/preview/template/${template.id}`}
+            className="group relative block aspect-16/10 overflow-hidden rounded-panel border border-line bg-raised"
+          >
+            {/* A picture of the template's hero section, like its card in the shop. */}
+            <Image src={templateCardImage(template.id)} alt="" fill sizes="(min-width: 1024px) 60vw, 100vw" preload className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:transition-none" />
+            <span className="absolute inset-0 grid place-items-center bg-black/0 transition-colors group-hover:bg-black/35">
+              <span className="flex items-center gap-2 rounded-full bg-white px-4 py-2 font-medium text-black opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                <Eye aria-hidden="true" className="size-4" />
+                Live preview<span className="sr-only"> of {template.name}</span>
+              </span>
+            </span>
+          </Link>
 
           <section aria-labelledby="included-title">
             <h2 id="included-title" className="text-xl font-semibold">
@@ -113,6 +122,11 @@ export default async function TemplatePage({ params }: PageProps<"/templates/[id
           </dl>
 
           <div className="mt-6 grid gap-3">
+            {/* The live preview: the whole template, full screen, with phone and tablet sizes. */}
+            <Button href={`/preview/template/${template.id}`}>
+              <Eye aria-hidden="true" className="size-5" />
+              Live preview
+            </Button>
             <Button disabled>Buy this template</Button>
             <Button href="/dashboard/websites" variant="secondary">
               Try it in the demo dashboard

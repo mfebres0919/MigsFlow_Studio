@@ -1,5 +1,5 @@
 import type { Template } from "@/lib/types";
-import { templates } from "@/lib/mock/templates";
+import { hostingMonthlyCents, templates } from "@/lib/mock/templates";
 
 // The doorway for the templates on sale (see lib/data/README.md).
 // Unlike a customer's websites, the catalog is the same for everyone and does
@@ -14,4 +14,9 @@ export async function getTemplates(): Promise<Template[]> {
 /** One template by its id, or null if there is no such template. */
 export async function getTemplate(id: string): Promise<Template | null> {
   return templates.find((template) => template.id === id) ?? null;
+}
+
+/** The monthly price of optional hosting through MigsFlow, in whole cents. */
+export async function getHostingPrice(): Promise<number> {
+  return hostingMonthlyCents;
 }
