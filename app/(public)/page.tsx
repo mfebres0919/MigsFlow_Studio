@@ -59,14 +59,13 @@ export default async function Home() {
 
   return (
     <div className="px-3 sm:px-4">
-      {/* The dark rounded panel. data-theme="dark" gives everything inside it
-          the dark colors in both of Studio's themes, so it looks the same in
-          light and dark mode (white stars, light text, dark caption bar). */}
+      {/* The rounded panel. It follows Studio's light and dark mode like the
+          rest of the page: soft blues in light mode, deep navy in dark mode
+          (".hero-panel" in app/globals.css). */}
       <section
-        data-theme="dark"
         data-pause-offscreen
         aria-labelledby="hero-title"
-        className="hero-panel relative isolate overflow-clip rounded-[2rem] border border-white/10 pt-12 pb-14 text-fg sm:pt-16 lg:pb-20"
+        className="hero-panel relative isolate overflow-clip rounded-[2rem] border border-line pt-12 pb-14 text-fg sm:pt-16 lg:pb-20"
       >
         <HeroRings />
         <StarField shooting />
@@ -161,13 +160,13 @@ export default async function Home() {
             {tags.map(({ icon: Icon, strong, rest, place }) => (
               <p
                 key={strong}
-                className={`absolute ${place} z-10 hidden items-center gap-2.5 rounded-full border border-white/15 bg-[#151a33]/90 py-1.5 pr-4 pl-1.5 text-sm text-white shadow-xl shadow-black/30 lg:flex`}
+                className={`absolute ${place} z-10 hidden items-center gap-2.5 rounded-full border border-line bg-panel/90 py-1.5 pr-4 pl-1.5 text-sm text-fg shadow-xl shadow-accent/10 lg:flex dark:shadow-black/30`}
               >
-                <span className="grid size-8 place-items-center rounded-full bg-white/10">
+                <span className="grid size-8 place-items-center rounded-full bg-raised text-signal">
                   <Icon aria-hidden="true" className="size-4" />
                 </span>
                 <span>
-                  <strong className="font-semibold">{strong}</strong> <span className="text-white/70">{rest}</span>
+                  <strong className="font-semibold">{strong}</strong> <span className="text-fg-muted">{rest}</span>
                 </span>
               </p>
             ))}

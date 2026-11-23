@@ -212,7 +212,7 @@ Newest first.
 ### 2026-11-23: Landing hero in a dark panel, with floating tags
 - Miguelle shared the Framo HTML template's landing page as an example of a look they like. **Then clarified: an example only, not to copy.** Keep the laptop and phone on the right, keep the heading in **Orbitron**; the little floating tags ("Live editor no code", "Hosting optional") are fine.
 - A first attempt followed Framo too closely (fan of template cards, a "template switcher" panel, a hand-drawn underline, numbers row, chip strip). All of that was removed before committing.
-- What stayed: the migsflow.com-style hero (Orbitron headline with the gradient line, price box, gradient button, play-style second button, MigsFlow credit, Prototype label, laptop and phone showcase), now inside a **dark rounded panel** (`.hero-panel` in `globals.css`, `data-theme="dark"` on the section so it is dark in both themes), with three floating tags around the laptop (wide screens only).
+- What stayed: the migsflow.com-style hero (Orbitron headline with the gradient line, price box, gradient button, play-style second button, MigsFlow credit, Prototype label, laptop and phone showcase), now inside a **rounded panel** (`.hero-panel` in `globals.css`) that follows light and dark mode (Miguelle asked for that right after: pale blues in light mode, deep navy in dark mode; the tags use theme colors too), with three floating tags around the laptop (wide screens only).
 - **Rule:** when Miguelle shares another site as inspiration, take the general feel only; never reproduce its layout piece by piece. Ask if unsure.
 - Tested on a production build: axe 0 issues in light and dark; no sideways scrolling at 320–1920 px; slideshow works; WebKit fine.
 

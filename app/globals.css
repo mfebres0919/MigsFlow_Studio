@@ -257,10 +257,18 @@ html[data-theme-wipe]::view-transition-new(root) {
     background-image: linear-gradient(90deg, #0077c2 0%, #0b3cff 100%);
   }
 
-  /* The landing page's dark hero panel (after the Framo template Miguelle
-     liked, 2026-11-23): deep navy, with brand-blue light from the top right
-     and a little cyan from the bottom left. Dark in both of Studio's themes. */
+  /* The landing page's hero panel. Light mode: pale blue, with brand-blue
+     light from the top right and a little cyan from the bottom left. Dark
+     mode: the same light on deep navy. (Miguelle, 2026-11-23: the hero must
+     switch with light and dark mode too.) */
   .hero-panel {
+    background:
+      radial-gradient(60% 75% at 100% 0%, rgb(11 60 255 / 0.16), transparent 62%),
+      radial-gradient(45% 60% at 0% 100%, rgb(24 201 255 / 0.16), transparent 70%),
+      linear-gradient(160deg, #ffffff 0%, #f1f5ff 55%, #e7efff 100%);
+  }
+
+  [data-theme="dark"] .hero-panel {
     background:
       radial-gradient(60% 75% at 100% 0%, rgb(11 60 255 / 0.55), transparent 62%),
       radial-gradient(45% 60% at 0% 100%, rgb(24 201 255 / 0.16), transparent 70%),
