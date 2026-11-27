@@ -23,7 +23,7 @@ Project guide and change log for **MigsFlow Studio — Self-Service Website Plat
 **Stopping point: Phase 2 step 3 (template live preview) is built, Moving Day is replaced by six basic templates, and both wait for review. The landing hero, footer and speed fixes from the same day are approved. Everything up to the Framo-style redesign is committed and pushed.** Phase 1 is finished; Phase 2 steps 1 and 2 are built.
 
 - **Design direction (Miguelle, 2026-11-23):** Studio's public pages should have "the same vibe and feeling" as Miguelle's main website (`../MigsFlow_Website`, live at migsflow.com): "professional, serious, but also tech, not overwhelming". The footer should feel like "an extension" of the main site's footer: similar, some differences allowed. So for any new public page, look at how the main site does the same thing first (its `styles.css`, `css/global.css`, `css/theme.css`), and reuse the pieces already brought over: `site-backdrop`, `StarField`, `HeroRings`, `text-brand-gradient`, `bg-brand-gradient`, `DeviceShowcase`.
-- **Next:** Miguelle reviews step 4 (the landing page). Then step 5: Pricing, Log in and Create account pages (designs only). Keep chat replies short (Miguelle, 2026-11-23).
+- **Next:** Miguelle reviews step 5 (Pricing, Log in, Create account). Then step 6: the checks (accessibility, widths, Safari, SEO rules: canonical addresses, sitemap, link preview image, and the 404-status gap). Keep chat replies short (Miguelle, 2026-11-23).
 - **Phase 2 steps** (Miguelle, 2026-11-22: "build things step by step how we've been doing"):
   | # | Step | Status |
   |---|---|---|
@@ -31,7 +31,7 @@ Project guide and change log for **MigsFlow Studio — Self-Service Website Plat
   | 2 | Public header and footer; marketplace `/templates` with industry filter; industry pages; a page per template | Done 2026-11-22, redesigned the same day after Miguelle's feedback; awaiting review of the redesign |
   | 3 | Full live preview of a template from its page (with phone, tablet and desktop sizes) | Built 2026-11-23, waiting for Miguelle's review |
   | 4 | The real landing page | Built 2026-11-23: hero plus How it works, Built for your trade, What's included, FAQ; waiting for Miguelle's review |
-  | 5 | Pricing, Log in and Create account pages (designs only; real accounts are Phase 3, payments Phase 4) | |
+  | 5 | Pricing, Log in and Create account pages (designs only; real accounts are Phase 3, payments Phase 4) | Built 2026-11-23, waiting for Miguelle's review |
   | 6 | Checks: accessibility, widths, Safari, and the handbook's SEO rules (canonical addresses, sitemap, link preview image) | |
   **Templates now (Miguelle, 2026-11-23):** Claude's own basic templates, two per industry: Fresh Start and Clean Slate (cleaning), Easy Move and Steady Haul (moving), Open Door and Common Ground (nonprofit). "Make them as basic as possible"; they are placeholders until Miguelle says their own templates are ready. Miguelle's templates will be hand-written HTML (`kind: "html"`); the HTML engine (`public/studio-bridge.js`, `HtmlTemplateFrame`) stays for them. Each template appears in the marketplace by being added to `templates/registry.ts` and `lib/mock/templates.ts`, plus its pictures (`tools/make-template-pictures.py`).
 - **Git:** private GitHub repository `mfebres0919/MigsFlow_Studio`, branch `main`. On 2026-11-22 Miguelle told Claude to commit and push all changes at the end of that session, which Claude did. **That was permission for that one time**: in a new session, commit and push only when Miguelle asks.
@@ -77,7 +77,7 @@ None of these block the prototype. All of them need an answer before a real cust
 
 **Product**
 - [ ] The product's name ("MigsFlow Studio" is a working name) and its own domain.
-- [ ] The exact price of each template within $300–$500.
+- [ ] The exact price of each template (templates start at $450, Miguelle 2026-11-27).
 - [ ] Where the templates' photos come from (own photos, licensed stock, or images made with ChatGPT), and confirmation of the right to sell them inside a template.
 - [x] How quote and contact forms are delivered: **decided 2026-11-23: the Studio form inbox, and working forms only with the $25 hosting plan** (see the change log entry of that date). Notification emails go through **Brevo** (Miguelle, 2026-11-23; on a paid plan).
 - [ ] How Studio relates to the existing MigsFlow plans (Starter $175/mo, Lump Sum, Enterprise) and to `../MigsFlow_Website`.
@@ -125,7 +125,7 @@ None of these block the prototype. All of them need an answer before a real cust
 - **Next.js keeps the page you just left in the document, hidden**, after moving between pages. Tests must look at visible elements only.
 - **Public page look** (2026-11-22, after Miguelle said the marketplace looked plain). Header: a floating, see-through rounded bar (`components/marketing/SiteHeader.tsx`) with the brand, the industry links with the current one marked, a round sun/moon theme button, and "Open the demo". Top sections use `components/marketing/PageHero.tsx`: a large Orbitron heading over `.brand-backdrop` (a glow made from the color tokens) and `FlowLines` (three curves in the brand blues with a bright stretch travelling along each). The marketplace shows two real templates in tilted browser frames (`TemplateShowcase`, `BrowserFrame`) that rise into place once on load. Template cards are browser frames that lift on hover, with **the price on a green tag over the picture** (Miguelle's request). All motion is skipped for reduced motion.
 - **Theme switch** (`lib/theme.ts`): the new theme spreads out in a growing circle from the button that was pressed, using View Transitions; the sun and moon spin into each other. Browsers without View Transitions, and reduced motion, switch instantly. A 400ms safety net applies the theme anyway if the browser is slow to start the transition (seen once in WebKit). The public header has the round icon button; the dashboard sidebar keeps the icon-and-words row.
-- **Template prices** live in `lib/mock/templates.ts` only, all Claude's picks within Miguelle's $300–$500: Fresh Start $350, Clean Slate $300, Easy Move $350, Steady Haul $400, Open Door $300, Common Ground $350.
+- **Template prices** live in `lib/mock/templates.ts` only, **starting at $450** (Miguelle, 2026-11-27). Each one is Claude's pick: Fresh Start $500, Clean Slate $450, Easy Move $450, Steady Haul $500, Open Door $450, Common Ground $500.
 - **Shop pictures** (Miguelle, 2026-11-23): in the shop, the template page and the marketplace showcase, a template is shown by a **picture of its hero section** (`public/images/templates/<id>/card.webp`, via `templateCardImage()` in `lib/showcase.ts`), not just its hero photo. In the dashboard a customer's website is still shown by its hero photo, so it follows their edits.
 - **A template is a pure function of its content:** the same saved content always renders the same site. This keeps every Phase 5 publishing option open.
 - **Each website stores two copies of its content, `draft` and `published`.** The editor changes only the draft; Publish copies draft to published (simulated in Phase 1).
@@ -136,7 +136,7 @@ None of these block the prototype. All of them need an answer before a real cust
 - **No blank space beside a longer column** (Miguelle, 2026-11-22). Every side-by-side layout uses `components/ui/SplitColumns.tsx`: the shorter column stays in view (sticky) while the longer one scrolls. Applies to all future pages.
 - **Body text is Poppins everywhere** (Miguelle, 2026-11-22). Orbitron is only for the brand name and page titles.
 - **Verification builds run in a separate copy of the project**, not in this folder, so Miguelle's running `npm run dev` is not disturbed.
-- **Prices live in one data file**, never in components. **Template price range: $300–$500** (Miguelle, 2026-11-22: these are informational static sites, and this range lets the product scale). This replaces the brief's "$15–$20". Exact prices per template are not set.
+- **Prices live in one data file**, never in components. **Templates start at $450** (Miguelle, 2026-11-27; it was $300–$500 from 2026-11-22). This replaces the brief's "$15–$20". Exact prices per template are not set.
 - Dashboard, editor and preview pages are `noindex` and stay out of the sitemap. The handbook's static-page and SEO rules apply to the public pages (Phase 2).
 
 ### Still open (ask Miguelle; do not assume)
@@ -208,6 +208,12 @@ Newest first.
 - Not verified: the industry page was not rescanned after its heading fix; how the circular reveal looks in real Safari and Firefox; the redesign by Miguelle's eye.
 - **Committed and pushed** at Miguelle's instruction.
 - **Next:** Phase 2 step 3, the full live preview of a template.
+
+### 2026-11-23: Phase 2 step 5, Pricing, Log in and Create account
+- `/pricing`: PageHero, two ways to buy side by side ("Website": from the lowest template price, one-time, download, you set up hosting/domain/forms; "Website + Hosting": plus $25/mo, hosting, one-click publish and restore, own domain with HTTPS, working forms), every template's price as a list, four pricing questions (`FaqList`), and a "Need something custom?" card linking to migsflow.com. All prices from `lib/data/templates.ts`. Nothing is promised about cancelling (stop-paying policy is still open).
+- `/login` and `/signup` (noindex): `AuthLayout` (card over stars, rings and glow) + `EmailLinkForm`, **passwordless** (email link, Supabase magic link in Phase 3). Sign-up asks name, business name, email. Our own validation messages (`noValidate`), focus moves to the first problem, then a "Check your email" message (`role="status"`) labeled "Demo: no email was sent" with a way into the demo dashboard. Nothing is stored. A line agreeing to terms goes on sign-up once the terms exist.
+- Header: "Pricing" link and a "Log in" text link. **The bar's links show from 1280px (xl) up; below that they live in the Menu**, because at 1024–1279px they wrapped onto two lines. Footer Studio column: Pricing, Log in, Create an account.
+- Tested on a production build: axe 0 issues on all three pages in light and dark; no sideways scrolling at 320, 390 and 768px; sign-up and log-in error and success states; header one line at 390, 1024, 1279, 1280 and 1440px.
 
 ### 2026-11-23: Publishing walkthrough; "Restore this version" planned
 - Publishing walkthrough given: draft vs published copy; Publish = checks (built), then build plain files (hidden sections left out, form pointed at the Studio inbox), upload to the website's own Netlify site (created on first publish), "Publishing…" then "Live" plus a history line; a failed upload leaves the previous version live and offers a retry. Only websites with active hosting can publish; others get Download. About 10 cents of Netlify credit per publish, nothing for Miguelle to do.
@@ -542,3 +548,14 @@ Newest first.
 ### 2026-11-21: project folder created
 - Folder created by Claude at Miguelle's request, with `handbook/CLAUDE.md` (handbook v3.1), `documentation/project-checklist.md` (blank template) and this file. No code, no Git repository.
 - The handbook was updated to v3.1 the same day: the link preview image is always a picture of the homepage hero, and icons are generated from the logo when none are supplied (handbook Section 23).
+
+**2026-11-27: pricing page redesign, header, new wording, FAQ tabs** (not committed)
+- **Prices start at $450** (Miguelle). `lib/mock/templates.ts`: $450 or $500 each (Claude's picks). Every page reads them from there.
+- **Pricing page** (`app/(public)/pricing/page.tsx`), from Miguelle's example screenshots (feel only): centered hero (`PageHero` got a `centered` option); two plan cards, the featured one with a gradient band across its top and a big "$450"; three short facts under them; a new "Compare plans" table (a real `<table>`, the hosting column tinted) on a band between two waves; the pricing FAQ; the custom-website card. SVG dividers between every section. The "Template prices" list was removed (Miguelle).
+- **Header consolidated** (Miguelle): brand, "All templates" (a button that opens a menu of template types: all, then each industry), Pricing, then Log in, Open the demo and the theme switch. Menu closes on Escape (focus back on the button), an outside click, Tab past it, or choosing a link. The links are in the bar from 1024px; below that, the Menu shows them with the types indented. Code: `components/marketing/MarketingNavLinks.tsx`.
+- **Wording: templates fit any business** (Miguelle): Studio's templates are not tied to one trade, since most websites need the same sections; only basic, informational websites (no online stores, booking or custom features). Hero headline is now "Start With A Template, Make It Anything You Need"; the eyebrow says "for any small business"; the templates section is "Made to fit any business"; "your trade" removed elsewhere on the home page. New FAQ: "What if I need something more custom?" says plainly Studio isn't for that and points to migsflow.com. The shop's industry categories are unchanged.
+- **Home FAQ in tabs** (`components/marketing/landing/FaqTabs.tsx`): Basics, Customizing, Pricing, Hosting, using the standard tabs pattern (arrow keys, Home/End). Three new answers, all from decided facts: try before you buy, no subscription, forms and own domain with hosting.
+- **Hero wider on large screens**: from 1280px the hero is `max-w-7xl` with an 80px gap between the words and the laptop (112px from 1536px).
+- Verified on a production build of a copy: axe finds no issues on `/`, `/pricing` and `/templates` in light and dark mode; no sideways scrolling from 320 to 1920px; the header is one line at every width; the templates menu and the FAQ tabs work by mouse and keyboard. Known, not new: axe's best-practice "region" note on the back-to-top button (it sits outside the page's landmarks).
+- **Next:** Miguelle reviews; then commit and push when asked. Then step 6 (the checks).
+

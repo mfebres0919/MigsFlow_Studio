@@ -53,7 +53,7 @@ export default function Included() {
             id="included-title"
             eyebrow="What's included"
             title="Everything you need to launch"
-            text="Every template comes with the same editor and the same care, whatever your trade."
+            text="Every template comes with the same editor and the same care, whatever your business."
           />
           {/* Cards like the services cards on migsflow.com: soft tinted
               backgrounds (".tint-card" in globals.css), a blue icon square and

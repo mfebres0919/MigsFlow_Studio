@@ -14,7 +14,7 @@ export default function HowItWorks({ hostingPrice }: HowItWorksProps) {
     {
       icon: LayoutTemplate,
       title: "Pick a template",
-      text: "Browse designs made for your kind of business, and try each one live on phone, tablet and desktop before you buy.",
+      text: "Browse the designs, and try each one live on phone, tablet and desktop before you buy.",
     },
     {
       icon: PenLine,

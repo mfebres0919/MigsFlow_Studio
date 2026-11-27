@@ -4,9 +4,10 @@ import type { Template } from "@/lib/types";
 // live; no page or component has a price written into it. In Phase 4 this
 // list comes from the database and Stripe.
 //
-// Prices are whole cents (35000 = $350.00), between $300 and $500
-// (Miguelle's range). The five basic templates added 2026-11-23 are Claude's
-// placeholders (Miguelle: "make them as basic as possible"), priced by Claude.
+// Prices are whole cents (45000 = $450.00). Templates start at $450
+// (Miguelle, 2026-11-27; it was $300–$500 before). The exact price of each
+// one is Claude's pick, $450 or $500. The five basic templates added
+// 2026-11-23 are Claude's placeholders (Miguelle: "make them as basic as possible").
 
 /** Optional hosting through MigsFlow, per month (Miguelle, 2026-11-22: $25/mo). */
 export const hostingMonthlyCents = 2500;
@@ -27,7 +28,7 @@ export const templates: Template[] = [
       "Quote request form",
       "Twelve font pairs to choose from",
     ],
-    priceCents: 35000,
+    priceCents: 50000,
   },
   {
     id: "cleaning-slate",
@@ -37,7 +38,7 @@ export const templates: Template[] = [
     description:
       "A plain, dependable one-page site for cleaning companies: a full-width photo with your main message, your services, a short about section and a contact form.",
     features: ["One page: top section, services, About and Contact", "Contact form and tap-to-call phone number", "Your brand color and twelve font pairs", "Looks right on phones"],
-    priceCents: 30000,
+    priceCents: 45000,
   },
   {
     id: "moving-easy",
@@ -47,7 +48,7 @@ export const templates: Template[] = [
     description:
       "A straightforward one-page site for movers: your message and a photo side by side, your services, a short about section and a quote form.",
     features: ["One page: top section, services, About and Contact", "Contact form and tap-to-call phone number", "Your brand color and twelve font pairs", "Looks right on phones"],
-    priceCents: 35000,
+    priceCents: 45000,
   },
   {
     id: "moving-haul",
@@ -57,7 +58,7 @@ export const templates: Template[] = [
     description:
       "A bold but simple one-page site for moving and hauling companies: a full-width photo with your main message, your services, an about section and a contact form.",
     features: ["One page: top section, services, About and Contact", "Contact form and tap-to-call phone number", "Your brand color and twelve font pairs", "Looks right on phones"],
-    priceCents: 40000,
+    priceCents: 50000,
   },
   {
     id: "nonprofit-door",
@@ -67,7 +68,7 @@ export const templates: Template[] = [
     description:
       "A warm one-page site for community organizations: your mission and a photo side by side, your programs, an about section and a contact form for volunteers and donors.",
     features: ["One page: top section, programs, About and Contact", "Contact form and tap-to-call phone number", "Your brand color and twelve font pairs", "Looks right on phones"],
-    priceCents: 30000,
+    priceCents: 45000,
   },
   {
     id: "nonprofit-ground",
@@ -77,6 +78,6 @@ export const templates: Template[] = [
     description:
       "A one-page site for nonprofits: a full-width photo with your mission, your programs, why your work matters, and a way to get in touch.",
     features: ["One page: top section, programs, About and Contact", "Contact form and tap-to-call phone number", "Your brand color and twelve font pairs", "Looks right on phones"],
-    priceCents: 35000,
+    priceCents: 50000,
   },
 ];

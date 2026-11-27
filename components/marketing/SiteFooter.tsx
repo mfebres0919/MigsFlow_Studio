@@ -28,6 +28,9 @@ const columns: { title: string; links: FooterLink[] }[] = [
     title: "Studio",
     links: [
       { href: "/", label: "Home" },
+      { href: "/pricing", label: "Pricing" },
+      { href: "/login", label: "Log in" },
+      { href: "/signup", label: "Create an account" },
       { href: "/dashboard", label: "Demo dashboard" },
       { href: "/dashboard/websites", label: "Try the editor" },
     ],

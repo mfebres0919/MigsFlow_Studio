@@ -5,8 +5,12 @@ import TemplateGrid from "@/components/marketing/TemplateGrid";
 import type { Template } from "@/lib/types";
 import StarField from "@/components/marketing/StarField";
 
-// "Templates for your trade": one template from each industry, the same
+// "Made to fit any business": one template from each industry, the same
 // cards as the shop, and a link to all of them.
+//
+// Wording (Miguelle, 2026-11-27): templates are made to fit anyone, not one
+// trade, because most websites need the same sections. Only complex sites
+// such as online stores are out of scope.
 
 type FeaturedTemplatesProps = {
   /** The templates to show (the page picks one per industry). */
@@ -29,8 +33,8 @@ export default function FeaturedTemplates({ featured, total }: FeaturedTemplates
         <SectionHeading
           id="featured-title"
           eyebrow="Templates"
-          title="Built for your trade"
-          text="Each template is designed around how customers find and choose a business like yours."
+          title="Made to fit any business"
+          text="Every template comes with the sections most websites need, like services, about and contact. Change the words, photos and colors, and hide what you don't need, until it fits yours."
           align="left"
         />
         <Link

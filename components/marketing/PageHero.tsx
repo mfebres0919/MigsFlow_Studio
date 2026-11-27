@@ -12,9 +12,12 @@ type PageHeroProps = {
   children?: React.ReactNode;
   /** Something to show on the right on wide screens. */
   aside?: React.ReactNode;
+  /** Center the heading and text (the Pricing page). Ignored when there is an aside. */
+  centered?: boolean;
 };
 
-export default function PageHero({ title, text, children, aside }: PageHeroProps) {
+export default function PageHero({ title, text, children, aside, centered = false }: PageHeroProps) {
+  const center = centered && !aside;
   return (
     // -mt-20 slides this section up underneath the floating header, so the
     // glow reaches the very top of the page; pt-* then makes room for the header.
@@ -22,11 +25,11 @@ export default function PageHero({ title, text, children, aside }: PageHeroProps
       <StarField count={14} />
       <FlowLines />
       <div className={`mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 ${aside ? "lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)]" : ""}`}>
-        <div className="max-w-2xl">
+        <div className={center ? "mx-auto max-w-3xl text-center" : "max-w-2xl"}>
           <h1 className="font-display text-4xl leading-[1.08] font-semibold tracking-wide text-balance sm:text-5xl lg:text-6xl">
             {title}
           </h1>
-          <p className="mt-5 max-w-xl text-lg text-fg-muted sm:text-xl">{text}</p>
+          <p className={`mt-5 max-w-xl text-lg ${center ? "mx-auto" : ""} text-fg-muted sm:text-xl`}>{text}</p>
           {children}
         </div>
         {aside}

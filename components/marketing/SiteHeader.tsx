@@ -3,18 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import mark from "@/public/images/brand/migsflow-mark.svg";
-import MarketingNavLinks, { NavLinkList, type NavLink } from "@/components/marketing/MarketingNavLinks";
+import MarketingNavLinks, { NavLinkList } from "@/components/marketing/MarketingNavLinks";
 import ThemeToggle from "@/components/ui/ThemeToggle";
-import { industries } from "@/lib/industries";
 import { site } from "@/lib/site";
 
-// The header on every public page: a floating bar holding the brand, the
-// links, the light/dark switch and the way into the dashboard.
-
-const links: NavLink[] = [
-  { href: "/templates", label: "All templates" },
-  ...industries.map((industry) => ({ href: `/templates/industry/${industry.slug}`, label: industry.label })),
-];
+// The header on every public page: a floating bar holding the brand, two
+// links ("All templates", which opens a menu of template types, and
+// "Pricing"), then Log in, the way into the demo and the light/dark switch
+// (Miguelle, 2026-11-27: "consolidate it"). The links live in MarketingNavLinks.tsx.
 
 // The main call to action: solid brand blue with a soft glow, and an arrow
 // that slides forward on hover.
@@ -33,24 +29,37 @@ export default function SiteHeader() {
           <span className="font-display text-sm font-semibold tracking-wide sm:text-base">{site.name}</span>
         </Link>
 
-        {/* Wide screens: links in the bar. Suspense shows the plain list for
-            the instant before the current address is known. */}
+        {/* Screens 1024px and up (below that the bar wraps onto two lines): the links in the bar. Suspense shows the same links,
+            unmarked, for the instant before the current address is known. */}
         <nav aria-label="Main" className="hidden lg:block">
-          <Suspense fallback={<NavLinkList links={links} layout="bar" />}>
-            <MarketingNavLinks links={links} layout="bar" />
+          <Suspense fallback={<NavLinkList layout="bar" />}>
+            <MarketingNavLinks layout="bar" />
           </Suspense>
         </nav>
 
         <div className="flex items-center gap-2">
-          <ThemeToggle variant="icon" />
+          {/* Log in: a quiet text link beside the main button on wide screens; in the menu on narrower ones. */}
+          <div className="hidden lg:block">
+            <Link
+              href="/login"
+              className="flex h-10 items-center rounded-full px-3 text-sm font-medium text-fg-muted transition-colors hover:text-fg"
+            >
+              Log in
+            </Link>
+          </div>
 
           {/* The wrapper does the hiding on phones, so the button's own classes are never contradicted. */}
           <div className="hidden sm:block">
             <Link href="/dashboard" className={cta}>
               Open the demo
-              <ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
+              <ArrowRight
+                aria-hidden="true"
+                className="size-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none"
+              />
             </Link>
           </div>
+
+          <ThemeToggle variant="icon" />
 
           {/* Narrower screens: <details> is the browser's own open/close
               element, so the menu works with no JavaScript. It fades in and out. */}
@@ -58,10 +67,19 @@ export default function SiteHeader() {
             <summary className="flex h-10 cursor-pointer list-none items-center rounded-full border border-line px-4 text-sm font-medium [&::-webkit-details-marker]:hidden">
               Menu
             </summary>
-            <nav aria-label="Main" className="absolute top-full right-0 z-10 mt-3 w-64 rounded-panel border border-line bg-panel p-3 shadow-xl">
-              <Suspense fallback={<NavLinkList links={links} layout="list" />}>
-                <MarketingNavLinks links={links} layout="list" />
+            <nav
+              aria-label="Main"
+              className="absolute top-full right-0 z-10 mt-3 w-64 rounded-panel border border-line bg-panel p-3 shadow-xl"
+            >
+              <Suspense fallback={<NavLinkList layout="list" />}>
+                <MarketingNavLinks layout="list" />
               </Suspense>
+              <Link
+                href="/login"
+                className="mt-1 block rounded-full px-3.5 py-2 text-sm font-medium text-fg-muted transition-colors hover:text-fg"
+              >
+                Log in
+              </Link>
               <div className="mt-3 grid sm:hidden">
                 <Link href="/dashboard" className={cta}>
                   Open the demo

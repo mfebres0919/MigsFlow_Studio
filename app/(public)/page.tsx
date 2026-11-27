@@ -62,7 +62,7 @@ export default async function Home() {
     ];
   });
 
-  // One template from each industry for "Built for your trade", picked from the data, not by name.
+  // One template from each industry for "Made to fit any business", picked from the data, not by name.
   const featured = industries.flatMap((industry) => templates.find((template) => template.industry === industry.slug) ?? []);
   const hosting = formatPrice(hostingCents);
 
@@ -81,7 +81,7 @@ export default async function Home() {
           <HeroRings />
           <StarField shooting />
 
-          <div className="mx-auto grid max-w-6xl items-center gap-x-10 gap-y-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
+          <div className="mx-auto grid max-w-6xl items-center gap-x-10 gap-y-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] xl:max-w-7xl xl:gap-x-20 2xl:gap-x-28">
             <div className="motion-safe:animate-rise">
               <p className="inline-flex items-center gap-2 rounded-full border border-line bg-panel/85 px-3.5 py-1.5 text-sm font-medium text-fg-muted shadow-sm">
                 {/* A small pulsing light, like a "live" indicator. */}
@@ -89,14 +89,14 @@ export default async function Home() {
                   <span className="absolute inset-0 rounded-full bg-signal opacity-60 motion-safe:animate-ping" />
                   <span className="relative size-2 rounded-full bg-signal" />
                 </span>
-                Website templates for small businesses
+                Website templates for any small business
               </p>
 
               <h1
                 id="hero-title"
                 className="mt-6 font-display text-[2.35rem] leading-[1.18] font-medium tracking-tight text-balance sm:text-5xl lg:text-[3.4rem]"
               >
-                Websites Built For Your Trade, <span className="text-brand-gradient">Ready To Make Yours</span>
+                Start With A Template, <span className="text-brand-gradient">Make It Anything You Need</span>
               </h1>
 
               <p className="mt-6 max-w-xl text-lg text-fg-muted">
