@@ -1,13 +1,17 @@
 import type { MetadataRoute } from "next";
+import { site } from "@/lib/site";
 
 // Builds /robots.txt, the file that tells search engines what they may read.
 // (In a plain HTML site this was a robots.txt file written by hand.)
 //
-// MigsFlow Studio is a prototype, so search engines are asked to stay out of
-// all of it. When the public marketplace is built (Phase 2) this changes to
-// allow the public pages and keep the dashboard, editor and previews out.
+// While Studio is a prototype (site.indexable is false), search engines are
+// asked to stay out of all of it. At launch they may read the public pages,
+// but never the dashboard, the editor or the previews.
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", disallow: "/" },
+    rules: site.indexable
+      ? { userAgent: "*", allow: "/", disallow: ["/dashboard", "/preview"] }
+      : { userAgent: "*", disallow: "/" },
+    sitemap: `${site.url}/sitemap.xml`,
   };
 }

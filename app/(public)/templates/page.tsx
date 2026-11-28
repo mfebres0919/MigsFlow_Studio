@@ -13,6 +13,7 @@ import { getTemplates } from "@/lib/data/templates";
 // engines, which matters for public pages in a way it did not for the dashboard.
 export const metadata: Metadata = {
   title: "Website Templates",
+  alternates: { canonical: "/templates" },
   description:
     "Professionally designed website templates for cleaning companies, movers and nonprofits. Buy once, edit it yourself, no coding needed.",
 };
@@ -30,8 +31,8 @@ export default async function TemplatesPage() {
   return (
     <>
       <PageHero
-        title="Websites built for your trade"
-        text="Pick a design made for your kind of business, then make it yours. Change the words, photos and colors yourself. No code."
+        title="Templates made to fit any business"
+        text="Every template has the sections most websites need. Make it yours: change the words, photos, colors and sections yourself. No code."
         aside={<TemplateShowcase templates={templates} />}
       >
         <div className="mt-8 flex flex-wrap items-center gap-3">

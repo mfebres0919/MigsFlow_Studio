@@ -89,10 +89,11 @@ export default function LandingFaq({ hostingPrice, lowestPrice }: { hostingPrice
 
   return (
     <section
+      id="faq" // the header's "FAQ" link jumps here (/#faq)
       aria-labelledby="faq-title"
       data-pause-offscreen
       suppressHydrationWarning
-      className="relative isolate mx-auto grid max-w-6xl gap-10 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-16"
+      className="relative isolate mx-auto grid max-w-6xl scroll-mt-20 gap-10 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-16"
     >
       {/* Twinkling stars, as in every section (Miguelle, 2026-11-23). */}
       <StarField count={8} />

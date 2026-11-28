@@ -14,15 +14,22 @@ import { getTemplateDefinition } from "@/templates/registry";
 
 // "/templates/<template id>": one template's own page.
 
+// "navigation": Next.js finishes the whole page before answering. For an
+// address with no such template, that means notFound() below can answer
+// with a real 404 status, not 200 (handbook Section 12; Next.js guide
+// "ensureStatic"). Every template page is still built ahead of time.
+export const ensureStatic = "navigation";
+
 // Tells Next.js which templates exist, so it can build each page ahead of time.
 export async function generateStaticParams() {
   return (await getTemplates()).map((template) => ({ id: template.id }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/templates/[id]">): Promise<Metadata> {
-  const template = await getTemplate((await params).id);
+  const { id } = await params;
+  const template = await getTemplate(id);
   if (!template) return {};
-  return { title: `${template.name} Template`, description: template.summary };
+  return { title: `${template.name} Template`, description: template.summary, alternates: { canonical: `/templates/${id}` } };
 }
 
 export default async function TemplatePage({ params }: PageProps<"/templates/[id]">) {

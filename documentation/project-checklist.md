@@ -8,7 +8,7 @@
 | **Main contact** | Miguelle |
 | **Project type** | ☑ New build ☐ Redesign / migration |
 | **Plan** | N/A (internal product) |
-| **Live domain** | Not decided |
+| **Live domain** | migsflow.studio (bought 2026-11-28; not pointed at Netlify yet) |
 | **Preview URL** | |
 | **GitHub repo** | Not created yet |
 | **Stack** | Next.js + TypeScript + Tailwind CSS (TypeScript is a handbook exception, see root `CLAUDE.md` Section 3) |

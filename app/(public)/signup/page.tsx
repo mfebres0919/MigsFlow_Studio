@@ -9,7 +9,7 @@ import EmailLinkForm from "@/components/marketing/auth/EmailLinkForm";
 // still to be written (CLAUDE.md, "Decisions to make before selling"); a
 // line agreeing to them goes here before launch.
 
-export const metadata: Metadata = { title: "Create an account", robots: { index: false } };
+export const metadata: Metadata = { title: "Create an account", alternates: { canonical: "/signup" }, robots: { index: false } };
 
 export default function SignupPage() {
   return (

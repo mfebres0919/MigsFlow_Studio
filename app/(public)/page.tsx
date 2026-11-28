@@ -31,6 +31,7 @@ import { showcasePictures, showcaseTemplateIds } from "@/lib/showcase";
 // Like the marketplace, this runs on the server and is built ahead of time.
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/" },
   description:
     "Professionally designed website templates for small businesses. Pick one, make it yours with a live preview, and publish it. No code.",
 };

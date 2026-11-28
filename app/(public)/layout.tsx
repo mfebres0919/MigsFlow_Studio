@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import PauseOffscreen from "@/components/marketing/PauseOffscreen";
 import SiteFooter from "@/components/marketing/SiteFooter";
 import SiteHeader from "@/components/marketing/SiteHeader";
 import BackToTop from "@/components/ui/BackToTop";
+import { site } from "@/lib/site";
+
+// Search engines may list the public pages only once Studio launches
+// (site.indexable in lib/site.ts). Until then the root layout's "noindex" applies.
+export const metadata: Metadata = site.indexable ? { robots: { index: true, follow: true } } : {};
 
 // Layout for the PUBLIC pages: the landing page and the template marketplace.
 // The folder name "(public)" is in parentheses, which makes it a "route

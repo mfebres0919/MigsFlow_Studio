@@ -30,12 +30,19 @@ const orbitron = localFont({
 // "metadata" becomes the tags inside <head>. In plain HTML you typed <title>
 // and <meta> into every page; here Next.js writes them for you.
 export const metadata: Metadata = {
+  // The full address every link below (canonical, preview image) is built from.
+  metadataBase: new URL(site.url),
   title: {
     default: site.name,
     template: `%s | ${site.name}`, // a page titled "Billing" becomes "Billing | MigsFlow Studio"
   },
   description: "Prototype of the MigsFlow Studio customer dashboard.",
-  // This is a prototype, so search engines are told to stay out.
+  // For link previews in texts, Slack and social media (handbook Section 12).
+  // The picture itself is app/opengraph-image.jpg.
+  openGraph: { type: "website", siteName: site.name },
+  twitter: { card: "summary_large_image" },
+  // Private by default: the dashboard, editor and previews are never listed
+  // by search engines. The public pages' layout overrides this at launch.
   robots: { index: false, follow: false },
 };
 

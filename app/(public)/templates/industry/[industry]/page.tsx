@@ -9,6 +9,10 @@ import { getIndustry, industries } from "@/lib/industries";
 // "/templates/industry/<industry>": the templates for one kind of business.
 // The square brackets in the folder name mean "any value goes here".
 
+// "navigation": the whole page is finished before Next.js answers, so an
+// industry that does not exist gets a real 404 status (see the template page).
+export const ensureStatic = "navigation";
+
 // Tells Next.js which industries exist, so it can build each page ahead of time.
 export function generateStaticParams() {
   return industries.map((industry) => ({ industry: industry.slug }));
@@ -19,7 +23,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/templates/industry/[industry]">): Promise<Metadata> {
   const industry = getIndustry((await params).industry);
   if (!industry) return {};
-  return { title: `${industry.label} Website Templates`, description: industry.description };
+  // "Moving & logistics Templates | MigsFlow Studio": under 50 characters (handbook title rule).
+  return {
+    title: `${industry.label} Templates`,
+    description: industry.description,
+    alternates: { canonical: `/templates/industry/${industry.slug}` },
+  };
 }
 
 export default async function IndustryPage({ params }: PageProps<"/templates/industry/[industry]">) {

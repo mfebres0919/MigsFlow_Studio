@@ -19,11 +19,11 @@ Project guide and change log for **MigsFlow Studio — Self-Service Website Plat
 
 ## 2. Current state
 
-### Where things stand (2026-11-23) — read this first
-**Stopping point: Phase 2 step 3 (template live preview) is built, Moving Day is replaced by six basic templates, and both wait for review. The landing hero, footer and speed fixes from the same day are approved. Everything up to the Framo-style redesign is committed and pushed.** Phase 1 is finished; Phase 2 steps 1 and 2 are built.
+### Where things stand (2026-11-27) — read this first
+**Stopping point: all six Phase 2 steps are built. Step 5 and the pricing redesign are committed and pushed (`e32a806`); step 6 (the checks and SEO files) is built and waiting for Miguelle's review, not committed.** Phase 1 is finished.
 
 - **Design direction (Miguelle, 2026-11-23):** Studio's public pages should have "the same vibe and feeling" as Miguelle's main website (`../MigsFlow_Website`, live at migsflow.com): "professional, serious, but also tech, not overwhelming". The footer should feel like "an extension" of the main site's footer: similar, some differences allowed. So for any new public page, look at how the main site does the same thing first (its `styles.css`, `css/global.css`, `css/theme.css`), and reuse the pieces already brought over: `site-backdrop`, `StarField`, `HeroRings`, `text-brand-gradient`, `bg-brand-gradient`, `DeviceShowcase`.
-- **Next:** Miguelle reviews step 5 (Pricing, Log in, Create account). Then step 6: the checks (accessibility, widths, Safari, SEO rules: canonical addresses, sitemap, link preview image, and the 404-status gap). Keep chat replies short (Miguelle, 2026-11-23).
+- **Next:** Miguelle reviews step 6, then commit and push when asked. Then Phase 3 (real accounts). Keep chat replies short (Miguelle, 2026-11-23).
 - **Phase 2 steps** (Miguelle, 2026-11-22: "build things step by step how we've been doing"):
   | # | Step | Status |
   |---|---|---|
@@ -31,8 +31,8 @@ Project guide and change log for **MigsFlow Studio — Self-Service Website Plat
   | 2 | Public header and footer; marketplace `/templates` with industry filter; industry pages; a page per template | Done 2026-11-22, redesigned the same day after Miguelle's feedback; awaiting review of the redesign |
   | 3 | Full live preview of a template from its page (with phone, tablet and desktop sizes) | Built 2026-11-23, waiting for Miguelle's review |
   | 4 | The real landing page | Built 2026-11-23: hero plus How it works, Built for your trade, What's included, FAQ; waiting for Miguelle's review |
-  | 5 | Pricing, Log in and Create account pages (designs only; real accounts are Phase 3, payments Phase 4) | Built 2026-11-23, waiting for Miguelle's review |
-  | 6 | Checks: accessibility, widths, Safari, and the handbook's SEO rules (canonical addresses, sitemap, link preview image) | |
+  | 5 | Pricing, Log in and Create account pages (designs only; real accounts are Phase 3, payments Phase 4) | Done; pricing redesigned 2026-11-27; pushed (`e32a806`) |
+  | 6 | Checks: accessibility, widths, Safari, and the handbook's SEO rules (canonical addresses, sitemap, link preview image) | Built 2026-11-27, waiting for Miguelle's review |
   **Templates now (Miguelle, 2026-11-23):** Claude's own basic templates, two per industry: Fresh Start and Clean Slate (cleaning), Easy Move and Steady Haul (moving), Open Door and Common Ground (nonprofit). "Make them as basic as possible"; they are placeholders until Miguelle says their own templates are ready. Miguelle's templates will be hand-written HTML (`kind: "html"`); the HTML engine (`public/studio-bridge.js`, `HtmlTemplateFrame`) stays for them. Each template appears in the marketplace by being added to `templates/registry.ts` and `lib/mock/templates.ts`, plus its pictures (`tools/make-template-pictures.py`).
 - **Git:** private GitHub repository `mfebres0919/MigsFlow_Studio`, branch `main`. On 2026-11-22 Miguelle told Claude to commit and push all changes at the end of that session, which Claude did. **That was permission for that one time**: in a new session, commit and push only when Miguelle asks.
 - **To run it:** in the VS Code terminal, inside this folder, `npm run dev`, then http://localhost:3000. The demo data lives in the browser (`localStorage` key `migsflow-studio:demo:v7`, plus uploaded pictures in IndexedDB `migsflow-studio-media`); clearing site data resets it.
@@ -121,7 +121,7 @@ None of these block the prototype. All of them need an answer before a real cust
 - **A website's picture in lists is its hero image** (Miguelle, 2026-11-22, for this and every future template). Each template names it with `heroImage` in its `index.ts`; `lib/website-preview.ts` reads it from the draft and `components/dashboard/WebsiteThumbnail.tsx` shows it in My Websites and the Overview, so it changes when the customer changes that photo.
 - **Addresses.** The marketplace owns `/templates` (`/templates`, `/templates/industry/<industry>`, `/templates/<id>`). The hand-written template files therefore live at **`/site-templates/<id>/`** (`public/site-templates/`), moved from `public/templates/` on 2026-11-22.
 - **Public pages are Server Components built ahead of time** (`app/(public)/`, components in `components/marketing/`). They read the catalog through `lib/data/templates.ts`, which works on the server because the catalog does not live in the browser. Industry filtering is done with links to industry pages, not JavaScript. Industries are listed in `lib/industries.ts`. A template's page lists "what you can change" straight from its schema.
-- **Known gap:** an address for a template or industry that does not exist shows the "Page not found" page with a `noindex` tag, but answers with status 200, not 404. Under Cache Components the `dynamicParams` setting that would force a 404 is not available. Settle this in the checks step.
+- **404 status (fixed 2026-11-27):** the template and industry pages export `ensureStatic = "navigation"`, so Next.js finishes the page before answering and `notFound()` sends a real 404 for an address that does not exist (it used to answer 200, because Partial Prefetching sent the page shell first).
 - **Next.js keeps the page you just left in the document, hidden**, after moving between pages. Tests must look at visible elements only.
 - **Public page look** (2026-11-22, after Miguelle said the marketplace looked plain). Header: a floating, see-through rounded bar (`components/marketing/SiteHeader.tsx`) with the brand, the industry links with the current one marked, a round sun/moon theme button, and "Open the demo". Top sections use `components/marketing/PageHero.tsx`: a large Orbitron heading over `.brand-backdrop` (a glow made from the color tokens) and `FlowLines` (three curves in the brand blues with a bright stretch travelling along each). The marketplace shows two real templates in tilted browser frames (`TemplateShowcase`, `BrowserFrame`) that rise into place once on load. Template cards are browser frames that lift on hover, with **the price on a green tag over the picture** (Miguelle's request). All motion is skipped for reduced motion.
 - **Theme switch** (`lib/theme.ts`): the new theme spreads out in a growing circle from the button that was pressed, using View Transitions; the sun and moon spin into each other. Browsers without View Transitions, and reduced motion, switch instantly. A 400ms safety net applies the theme anyway if the browser is slow to start the transition (seen once in WebKit). The public header has the round icon button; the dashboard sidebar keeps the icon-and-words row.
@@ -158,7 +158,7 @@ None of these block the prototype. All of them need an answer before a real cust
 - **Prices are data, not code:** $25 a month for hosting and the template prices belong in the pricing data (database and Stripe in Phase 4). The Billing page still says "no subscription" and "hosting plans are not part of this prototype"; update it when hosting is built.
 - **Consequence for Phase 1 either way:** a template must work as plain website files with no dependence on Studio, so it can be downloaded or hosted anywhere.
 - **Publishing method and Netlify limits** (the brief asks to confirm them before Phase 5).
-- The product name ("MigsFlow Studio" is tentative), the domain, the GitHub repository and the Netlify site.
+- The product name ("MigsFlow Studio" is tentative), the GitHub repository and the Netlify site. **Domain: `migsflow.studio`** (bought by Miguelle, 2026-11-28).
 - How Studio relates to the existing MigsFlow plans (Starter $175/mo, Lump Sum, Enterprise) and to `../MigsFlow_Website`.
 - **Template photos.** Fresh Start's photos are drawn placeholders that say "Sample photo" (`public/images/templates/cleaning-fresh/`). Real photos are needed before the template is sold. Miguelle is considering images generated with ChatGPT (asked 2026-11-22); Claude's view: workable for marketing-preview and placeholder pictures, as long as they are never presented as real results, and Miguelle should check OpenAI's current terms for commercial use. Not decided.
 - **Published sites and fonts/icons.** How the chosen fonts travel with a downloaded or published site is a Phase 5 question.
@@ -559,3 +559,26 @@ Newest first.
 - Verified on a production build of a copy: axe finds no issues on `/`, `/pricing` and `/templates` in light and dark mode; no sideways scrolling from 320 to 1920px; the header is one line at every width; the templates menu and the FAQ tabs work by mouse and keyboard. Known, not new: axe's best-practice "region" note on the back-to-top button (it sits outside the page's landmarks).
 - **Next:** Miguelle reviews; then commit and push when asked. Then step 6 (the checks).
 
+**2026-11-27: Phase 2 step 6, the checks and SEO files; hover menu and FAQ link** (not committed)
+- **Header:** the "All templates" menu also opens when the mouse hovers over it, and closes 0.2 seconds after the mouse leaves (touch and keyboard still use the click). A clear strip above the menu means the mouse can cross the gap without the menu closing. New **FAQ** link after Pricing, which jumps to the home page questions (`/#faq`). Rule for later menus with sub-links: same behavior (Miguelle).
+- **SEO files (handbook Section 12):**
+  - `lib/site.ts` now has `url` and `indexable`. The domain isn't chosen yet, so `url` comes from Netlify's build settings (`URL`, or `DEPLOY_PRIME_URL` on previews), and on your own computer it's localhost. **When the domain is chosen, write it there.**
+  - Search engines: everything stays `noindex` while Studio is a prototype (`site.indexable: false`). At launch, setting it to `true` opens up the public pages only (the public layout overrides the root's `noindex`). `robots.txt` then blocks `/dashboard` and `/preview`; Log in and Create an account stay `noindex`.
+  - New `app/sitemap.ts`: the home page, `/templates`, `/pricing`, every industry page and every template page (added from the data). Add new public pages to it.
+  - Each public page sets its own canonical address. Industry page titles shortened to "<Industry> Templates" (all titles are 38 characters or fewer).
+  - **Link preview image** `app/opengraph-image.jpg` (1200×630, 49 KB, with alt text in `opengraph-image.alt.txt`): the home page hero with the brand, headline and prices centered for square crops. Made by `tools/make-link-preview.cjs` (instructions inside). Remake it when the hero's wording or prices change.
+- **404 status** fixed (see "404 status" above). The "Page not found" page now links to the home page and the templates, not the dashboard.
+- `/templates` hero reworded to match the new direction: "Templates made to fit any business".
+- **Verified on a production build of a copy:**
+  - axe finds no issues on 18 pages (9 public, including the 404, plus 9 dashboard, editor and preview pages), in light and dark mode in Chromium and in WebKit (Safari's engine).
+  - No sideways scrolling at 320, 390, 768, 1024, 1440 and 1920px on all 18.
+  - Every public page has one `h1`, a canonical address, a description, the preview image with its alt text, and `noindex`. Unknown template and industry addresses answer 404.
+  - The hover menu opens, stays open while the mouse moves into it, and closes on leaving. The FAQ link lands on the questions.
+  - Not counted: the back-to-top button's best-practice "region" note (known, see above), and one WebKit message about a prefetch cut short when the test left a page quickly (not seen in normal use).
+- **Not done (needs the real domain):** testing the preview image with a meta-tag inspector on the live address, and Search Console. Both are launch checks.
+- **Next:** Miguelle reviews; then commit and push when asked. Then Phase 3 (real accounts with Supabase).
+
+**2026-11-28: domain bought, `migsflow.studio`** (not committed)
+- `lib/site.ts`: `url` is now `https://migsflow.studio` (bare domain, no `www`) for canonicals, the sitemap and the preview image. Only a Netlify preview build uses its own address (`DEPLOY_PRIME_URL`), so the preview image loads there.
+- Still to do at launch: point the domain at the Netlify site (`www` CNAME + bare-domain A record), set the bare domain as primary so `www` redirects to it, then the preview-image inspector check and Search Console. `site.indexable` stays `false` until then.
+- **Next:** Miguelle reviews step 6 + this; commit and push when asked. Then Phase 3.

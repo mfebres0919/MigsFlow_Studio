@@ -29,6 +29,7 @@ import { formatPrice } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Pricing",
+  alternates: { canonical: "/pricing" },
   description: "Pay once for your website. Hosting with working forms and your own domain is an optional monthly extra.",
 };
 
