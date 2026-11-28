@@ -3,10 +3,8 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Check, Minus, PencilLine, Receipt, ServerCog } from "lucide-react";
 import { ArcDivider, FlowDivider, WaveDivider } from "@/components/marketing/landing/Dividers";
 import FaqList from "@/components/marketing/landing/FaqList";
-import NeonRings from "@/components/marketing/landing/NeonRings";
 import SectionHeading from "@/components/marketing/landing/SectionHeading";
 import PageHero from "@/components/marketing/PageHero";
-import StarField from "@/components/marketing/StarField";
 import DemoLabel from "@/components/ui/DemoLabel";
 import { getHostingPrice, getTemplates } from "@/lib/data/templates";
 import { formatPrice } from "@/lib/format";
@@ -230,12 +228,8 @@ export default async function PricingPage() {
       <WaveDivider />
       <section
         aria-labelledby="compare-title"
-        data-pause-offscreen
-        suppressHydrationWarning
         className="flow-lines-bg overflow-clip bg-panel/60 py-12 sm:py-16"
       >
-        <NeonRings />
-        <StarField count={10} />
         <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
           <SectionHeading id="compare-title" eyebrow="Compare plans" title="Both plans, line by line" />
 

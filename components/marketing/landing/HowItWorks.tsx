@@ -1,6 +1,5 @@
 import { LayoutTemplate, PenLine, Rocket } from "lucide-react";
 import SectionHeading from "@/components/marketing/landing/SectionHeading";
-import StarField from "@/components/marketing/StarField";
 
 // "How it works": the three steps from browsing to a live website.
 
@@ -31,12 +30,8 @@ export default function HowItWorks({ hostingPrice }: HowItWorksProps) {
   return (
     <section
       aria-labelledby="how-title"
-      data-pause-offscreen
-      suppressHydrationWarning
       className="relative isolate mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24"
     >
-      {/* Twinkling stars, as in every section (Miguelle, 2026-11-23). */}
-      <StarField count={8} />
       <SectionHeading id="how-title" eyebrow="How it works" title="From template to website in three steps" />
 
       {/* An ordered list: the steps happen in this order. */}

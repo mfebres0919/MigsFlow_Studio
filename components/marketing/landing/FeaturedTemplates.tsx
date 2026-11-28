@@ -3,7 +3,6 @@ import { ArrowRight } from "lucide-react";
 import SectionHeading from "@/components/marketing/landing/SectionHeading";
 import TemplateGrid from "@/components/marketing/TemplateGrid";
 import type { Template } from "@/lib/types";
-import StarField from "@/components/marketing/StarField";
 
 // "Made to fit any business": one template from each industry, the same
 // cards as the shop, and a link to all of them.
@@ -23,12 +22,8 @@ export default function FeaturedTemplates({ featured, total }: FeaturedTemplates
   return (
     <section
       aria-labelledby="featured-title"
-      data-pause-offscreen
-      suppressHydrationWarning
       className="relative isolate mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24"
     >
-      {/* Twinkling stars, as in every section (Miguelle, 2026-11-23). */}
-      <StarField count={8} />
       <div className="flex flex-wrap items-end justify-between gap-6">
         <SectionHeading
           id="featured-title"

@@ -1,8 +1,6 @@
 import { Eye, EyeOff, ImageDown, Palette, ShieldCheck, Smartphone } from "lucide-react";
 import { WaveDivider } from "@/components/marketing/landing/Dividers";
-import NeonRings from "@/components/marketing/landing/NeonRings";
 import SectionHeading from "@/components/marketing/landing/SectionHeading";
-import StarField from "@/components/marketing/StarField";
 
 // "What's included": what every template comes with. Each point describes
 // something Studio really does (or will do once publishing is built),
@@ -38,16 +36,11 @@ export default function Included() {
     // The light band, with a wave leading in and out of it.
     <div className="mt-8">
       <WaveDivider />
-      {/* The band also carries migsflow.com's flowing line art and neon rings.
-          data-pause-offscreen stops the rings floating while it is scrolled away. */}
+      {/* The band also carries migsflow.com's flowing line art. */}
       <section
         aria-labelledby="included-title"
-        data-pause-offscreen
-        suppressHydrationWarning
         className="flow-lines-bg overflow-clip bg-panel/60"
       >
-        <NeonRings />
-        <StarField count={10} />
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
           <SectionHeading
             id="included-title"

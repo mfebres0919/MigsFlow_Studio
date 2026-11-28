@@ -2,7 +2,6 @@ import { ArrowRight } from "lucide-react";
 import FaqTabs, { type FaqGroup } from "@/components/marketing/landing/FaqTabs";
 import SectionHeading from "@/components/marketing/landing/SectionHeading";
 import DemoLabel from "@/components/ui/DemoLabel";
-import StarField from "@/components/marketing/StarField";
 
 // "Questions": a short FAQ. Only answers Miguelle has already decided are
 // here (2026-11-23). Ownership, refunds and terms are still open decisions
@@ -91,12 +90,8 @@ export default function LandingFaq({ hostingPrice, lowestPrice }: { hostingPrice
     <section
       id="faq" // the header's "FAQ" link jumps here (/#faq)
       aria-labelledby="faq-title"
-      data-pause-offscreen
-      suppressHydrationWarning
       className="relative isolate mx-auto grid max-w-6xl scroll-mt-20 gap-10 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-16"
     >
-      {/* Twinkling stars, as in every section (Miguelle, 2026-11-23). */}
-      <StarField count={8} />
       {/* The left column stays in view while the questions scroll (the project's sticky-column rule). */}
       <div className="lg:sticky lg:top-28 lg:self-start">
         <SectionHeading

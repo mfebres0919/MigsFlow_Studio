@@ -10,7 +10,6 @@ import FeaturedTemplates from "@/components/marketing/landing/FeaturedTemplates"
 import HowItWorks from "@/components/marketing/landing/HowItWorks";
 import Included from "@/components/marketing/landing/Included";
 import LandingFaq from "@/components/marketing/landing/LandingFaq";
-import StarField from "@/components/marketing/StarField";
 import DemoLabel from "@/components/ui/DemoLabel";
 import { getHostingPrice, getTemplates } from "@/lib/data/templates";
 import { formatPrice } from "@/lib/format";
@@ -74,22 +73,17 @@ export default async function Home() {
           rest of the page: soft blues in light mode, deep navy in dark mode
           (".hero-panel" in app/globals.css). */}
         <section
-          data-pause-offscreen
-          suppressHydrationWarning
           aria-labelledby="hero-title"
           className="hero-panel relative isolate overflow-clip rounded-4xl border border-line pt-12 pb-14 text-fg sm:pt-16 lg:pb-20"
         >
           <HeroRings />
-          <StarField shooting />
 
           <div className="mx-auto grid max-w-6xl items-center gap-x-10 gap-y-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] xl:max-w-7xl xl:gap-x-20 2xl:gap-x-28">
             <div className="motion-safe:animate-rise">
               <p className="inline-flex items-center gap-2 rounded-full border border-line bg-panel/85 px-3.5 py-1.5 text-sm font-medium text-fg-muted shadow-sm">
-                {/* A small pulsing light, like a "live" indicator. */}
-                <span aria-hidden="true" className="relative flex size-2">
-                  <span className="absolute inset-0 rounded-full bg-signal opacity-60 motion-safe:animate-ping" />
-                  <span className="relative size-2 rounded-full bg-signal" />
-                </span>
+                {/* A small still dot in the brand color. (It used to pulse; all looping
+                    decoration was removed for accessibility, Miguelle 2026-11-28.) */}
+                <span aria-hidden="true" className="size-2 rounded-full bg-signal" />
                 Website templates for any small business
               </p>
 

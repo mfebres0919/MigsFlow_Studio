@@ -85,13 +85,13 @@ export default function DeviceShowcase({ items }: { items: ShowcaseItem[] }) {
         className="devices-glow relative ml-[13%] aspect-1210/1060 cursor-pointer rounded-full"
       >
         {/* Soft shadows on the "floor" under each device. They stay still while
-            the devices float above them: a still shadow is drawn once, while a
+            the devices sit above them: a still shadow is drawn once, while a
             shadow attached to a moving picture (the main site's drop-shadow)
             is redrawn on every frame, which made the page lag in Firefox. */}
         <div className="absolute top-[62%] left-[18%] h-[34%] w-[84%] -rotate-[28deg] rounded-[50%] bg-[radial-gradient(closest-side,rgb(30_64_175/0.22),transparent)] dark:bg-[radial-gradient(closest-side,rgb(0_0_0/0.6),transparent)]" />
         <div className="absolute top-[88%] left-[-6%] h-[12%] w-[30%] -rotate-[28deg] rounded-[50%] bg-[radial-gradient(closest-side,rgb(30_64_175/0.22),transparent)] dark:bg-[radial-gradient(closest-side,rgb(0_0_0/0.6),transparent)]" />
 
-        <div className="absolute top-[0.5%] left-[9.7%] w-[90.3%] motion-safe:animate-float-slow">
+        <div className="absolute top-[0.5%] left-[9.7%] w-[90.3%]">
           <Image src={laptopFrame} alt="" sizes="(min-width: 1024px) 490px, 75vw" preload className="block h-auto w-full" />
           {/* The screen area, measured on the frame picture. */}
           <div className="absolute top-[1.24%] left-[37.15%] h-[73.21%] w-[61.3%]">
@@ -109,7 +109,7 @@ export default function DeviceShowcase({ items }: { items: ShowcaseItem[] }) {
           </div>
         </div>
 
-        <div className="absolute top-[39%] left-[-13.5%] w-[47.5%] motion-safe:animate-float">
+        <div className="absolute top-[39%] left-[-13.5%] w-[47.5%]">
           <Image src={phoneFrame} alt="" sizes="(min-width: 1024px) 230px, 35vw" className="block h-auto w-full" />
           <div className="absolute top-[10.14%] left-[33.2%] h-[78.85%] w-[32.2%]">
             {items.map((item, i) => (

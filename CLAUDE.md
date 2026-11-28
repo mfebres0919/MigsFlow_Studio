@@ -559,7 +559,7 @@ Newest first.
 - Verified on a production build of a copy: axe finds no issues on `/`, `/pricing` and `/templates` in light and dark mode; no sideways scrolling from 320 to 1920px; the header is one line at every width; the templates menu and the FAQ tabs work by mouse and keyboard. Known, not new: axe's best-practice "region" note on the back-to-top button (it sits outside the page's landmarks).
 - **Next:** Miguelle reviews; then commit and push when asked. Then step 6 (the checks).
 
-**2026-11-27: Phase 2 step 6, the checks and SEO files; hover menu and FAQ link** (not committed)
+**2026-11-27: Phase 2 step 6, the checks and SEO files; hover menu and FAQ link** (committed as `c9815e0`, pushed 2026-11-28)
 - **Header:** the "All templates" menu also opens when the mouse hovers over it, and closes 0.2 seconds after the mouse leaves (touch and keyboard still use the click). A clear strip above the menu means the mouse can cross the gap without the menu closing. New **FAQ** link after Pricing, which jumps to the home page questions (`/#faq`). Rule for later menus with sub-links: same behavior (Miguelle).
 - **SEO files (handbook Section 12):**
   - `lib/site.ts` now has `url` and `indexable`. The domain isn't chosen yet, so `url` comes from Netlify's build settings (`URL`, or `DEPLOY_PRIME_URL` on previews), and on your own computer it's localhost. **When the domain is chosen, write it there.**
@@ -578,7 +578,16 @@ Newest first.
 - **Not done (needs the real domain):** testing the preview image with a meta-tag inspector on the live address, and Search Console. Both are launch checks.
 - **Next:** Miguelle reviews; then commit and push when asked. Then Phase 3 (real accounts with Supabase).
 
-**2026-11-28: domain bought, `migsflow.studio`** (not committed)
+**2026-11-28: domain bought, `migsflow.studio`** (committed with step 6 as `c9815e0`, pushed)
 - `lib/site.ts`: `url` is now `https://migsflow.studio` (bare domain, no `www`) for canonicals, the sitemap and the preview image. Only a Netlify preview build uses its own address (`DEPLOY_PRIME_URL`), so the preview image loads there.
 - Still to do at launch: point the domain at the Netlify site (`www` CNAME + bare-domain A record), set the bare domain as primary so `www` redirects to it, then the preview-image inspector check and Search Console. `site.indexable` stays `false` until then.
 - **Next:** Miguelle reviews step 6 + this; commit and push when asked. Then Phase 3.
+- Porkbun DNS set by Miguelle (2026-11-28): `www` CNAME to the Netlify site, bare domain to Netlify (parking ALIAS replaced). Waiting for it to take effect.
+- **Next:** Phase 3 (real accounts with Supabase).
+- Miguelle asked (2026-11-28) whether to offer Google and Microsoft sign-in in Phase 3. Claude explained how it works and its security; recommended email + Google first, Microsoft optional. **Decided: email + Google for Phase 3** (Microsoft later, only if customers ask).
+
+**2026-11-28: calmer public pages (accessibility)** (committed and pushed)
+- Miguelle asked to remove the flashy decoration everywhere (moving circles, stars) so the pages aren't overbearing. Removed: the twinkling stars and shooting stars (`StarField`), the floating neon rings (`NeonRings`), the floating laptop and phone, and the pulsing dot in the home hero badge. `PauseOffscreen` was deleted too, since nothing loops any more. Their CSS is gone from `app/globals.css`, which now states the rule: **no looping decoration on public pages**.
+- Kept: the still rings in the hero (`HeroRings`), the glows and flowing line art (all still), the one-time rise and caption entrances (skipped with reduced motion), and the template showcase, which changes slides but has a pause button.
+- Checked on a production build: no endlessly repeating animation on home, pricing, templates, an industry page, log in or sign up; axe clean on all six.
+- **Next:** Miguelle reviews; commit and push when asked. Then Phase 3 (email + Google sign-in with Supabase).

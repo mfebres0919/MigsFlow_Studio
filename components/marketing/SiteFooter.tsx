@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import mark from "@/public/images/brand/migsflow-mark.svg";
 import CurrentYear from "@/components/marketing/CurrentYear";
-import StarField from "@/components/marketing/StarField";
 import DemoLabel from "@/components/ui/DemoLabel";
 import { industries } from "@/lib/industries";
 import { site } from "@/lib/site";
@@ -74,8 +73,7 @@ const linkClass =
 
 export default function SiteFooter() {
   return (
-    <footer data-pause-offscreen suppressHydrationWarning className="relative isolate overflow-clip px-4 pt-20 pb-8 sm:px-6 sm:pt-24">
-      <StarField count={18} />
+    <footer className="relative isolate overflow-clip px-4 pt-20 pb-8 sm:px-6 sm:pt-24">
       {/* A thin line of light across the top, fading out at both ends. */}
       <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-signal/40 to-transparent" />
 

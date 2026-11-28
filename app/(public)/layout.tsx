@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import PauseOffscreen from "@/components/marketing/PauseOffscreen";
 import SiteFooter from "@/components/marketing/SiteFooter";
 import SiteHeader from "@/components/marketing/SiteHeader";
 import BackToTop from "@/components/ui/BackToTop";
@@ -25,8 +24,6 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
         {children}
       </main>
       <SiteFooter />
-      {/* Freezes the stars and other animations while they are scrolled out of view. */}
-      <PauseOffscreen />
       <BackToTop />
     </div>
   );
